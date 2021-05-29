@@ -25,5 +25,3 @@ $TFTManager-theme: mat-light-theme($TFTManager-primary, $TFTManager-accent, $TFT
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($TFTManager-theme);
-
-@import '../src/assets/material-dashboard.scss';

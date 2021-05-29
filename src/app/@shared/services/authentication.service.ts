@@ -37,7 +37,7 @@ export class AuthenticationService {
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem("currentUser");
-    this.currentUserSubject!.unsubscribe()
+    this.currentUserSubject!.next(null);
   }
 
   checkPermission(permission: string | undefined): boolean {

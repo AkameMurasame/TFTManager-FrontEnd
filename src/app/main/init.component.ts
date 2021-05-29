@@ -80,7 +80,7 @@ export class InitComponent implements OnInit {
           })
         });
       } else {
-        this.authService.logout();
+        //this.authService.logout();
         this.authService.login(this.makeUser(player)).subscribe(login => {
           this.verifyRole(this.authService.currentUserValue.user);
           this.verifyPlayer(this.authService.currentUserValue.user.id, player);
