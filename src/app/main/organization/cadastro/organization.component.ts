@@ -38,11 +38,12 @@ export class OrganizationComponent implements OnInit, OnDestroy {
   onSubmit() {
     const _formulario = this.formulario.value;
 
-    let organization = new Organization();
-    organization.name = _formulario.nomeOrganizacao;
-    organization.logo = _formulario.linkLogo;
+    const request: Organization = {
+      name: _formulario.nomeOrganizacao,
+      logo: _formulario.linkLogo
+    };
 
-    this.subscriptions.push(this.organizationService.organizationRegister(organization).subscribe(organization => {
+    this.subscriptions.push(this.organizationService.organizationRegister(request).subscribe(organization => {
       //notificação para sucesso
       this.dialogRef.close();
     }));

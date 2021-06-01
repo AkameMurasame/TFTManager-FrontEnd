@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup } from '@ngneat/reactive-forms/public-api';
+import { FormBuilder, FormGroup } from '@ngneat/reactive-forms';
 import { Subscription } from 'rxjs';
-import { Player } from 'src/app/@shared/models/player/Player';
 import { User } from 'src/app/@shared/models/user/User';
 import { OrganizationService } from 'src/app/@shared/services/organization.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
@@ -11,6 +10,7 @@ import { ToastService } from 'src/app/@shared/services/toast.service';
 export interface FormularioAdmin {
   id: number;
 }
+
 
 @Component({
   selector: 'app-adicionar-administrador',

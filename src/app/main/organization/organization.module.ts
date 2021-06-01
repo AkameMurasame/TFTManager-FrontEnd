@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/@shared/shared.module';
 import { AdicionarAdministradorComponent } from './admin/adicionar-administrador/adicionar-administrador.component';
 
@@ -29,6 +29,7 @@ const MATERIAL = [
     CommonModule,
     OrganizationRoutes,
     ReactiveFormsModule,
+    FormsModule,
     SharedModule,
     ...MATERIAL
   ]
