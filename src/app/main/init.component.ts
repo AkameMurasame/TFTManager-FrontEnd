@@ -36,6 +36,7 @@ export class InitComponent implements OnInit {
 
   init() {
     this.lcuService.getLcuPlayer().subscribe(player => {
+      console.log(player)
       if (this.authService.currentUserValue) {
         if (this.authService.currentUserValue.user.username == player.summonerId.toString()) {
           this.authService.logout();

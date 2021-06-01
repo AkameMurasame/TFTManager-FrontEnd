@@ -26,6 +26,18 @@ function createWindow() {
     connector.on("connect", function (data) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
         var _this = this;
         return tslib_1.__generator(this, function (_a) {
+            win.webContents
+                .executeJavaScript("localStorage.removeItem('Api');", true)
+                .then(function (result) {
+                win.webContents
+                    .executeJavaScript("localStorage.removeItem('currentUser');", true)
+                    .then(function (result) {
+                    win.webContents
+                        .executeJavaScript("localStorage.removeItem('currentPlayer');", true)
+                        .then(function (result) {
+                    });
+                });
+            });
             setTimeout(function () { return tslib_1.__awaiter(_this, void 0, void 0, function () {
                 return tslib_1.__generator(this, function (_a) {
                     win.webContents.send('lcu-load', data);
@@ -36,6 +48,10 @@ function createWindow() {
         });
     }); });
     win.webContents.openDevTools();
+    win.on('minimize', function (event) {
+        event.preventDefault();
+        win.hide();
+    });
     win.on("closed", function () {
         win = null;
     });
@@ -52,28 +68,6 @@ electron_1.app.on("activate", function () {
 });
 // Quit when all windows are closed.
 electron_1.app.on("window-all-closed", function () {
-    /*win.webContents
-      .executeJavaScript(
-        `localStorage.removeItem('Api');`,
-        true
-      )
-      .then((result) => {
-        win.webContents
-          .executeJavaScript(
-            `localStorage.removeItem('currentUser');`,
-            true
-          )
-          .then((result) => {
-            win.webContents
-              .executeJavaScript(
-                `localStorage.removeItem('currentPlayer');`,
-                true
-              )
-              .then((result) => {
-  
-              });
-          });
-      });*/
     if (process.platform !== "darwin") {
         electron_1.app.quit();
     }

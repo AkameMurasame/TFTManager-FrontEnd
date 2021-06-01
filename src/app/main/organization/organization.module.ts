@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/@shared/shared.module';
+import { AdicionarAdministradorComponent } from './admin/adicionar-administrador/adicionar-administrador.component';
 
 const MATERIAL = [
   MatCardModule,
@@ -23,7 +24,7 @@ const MATERIAL = [
 ]
 
 @NgModule({
-  declarations: [CadastroComponent, DashboardComponent, OrganizationComponent],
+  declarations: [CadastroComponent, DashboardComponent, OrganizationComponent, AdicionarAdministradorComponent],
   imports: [
     CommonModule,
     OrganizationRoutes,

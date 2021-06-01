@@ -7,14 +7,17 @@ import { RouterModule } from '@angular/router';
 import { PermissionDirective } from './directives/permission.directive';
 import { ToastService } from './services/toast.service';
 import { RiotModule } from '../@riotApi/riot.module';
+import { HotToastModule } from '@ngneat/hot-toast';
 
 @NgModule({
   declarations: [SidebarComponent, NavbarComponent, ContentComponent, PermissionDirective],
   imports: [
     CommonModule,
     RouterModule,
-    RiotModule
+    RiotModule,
+    HotToastModule
   ],
-  exports: [SidebarComponent, NavbarComponent, ContentComponent, PermissionDirective]
+  exports: [SidebarComponent, NavbarComponent, ContentComponent, PermissionDirective],
+  providers: [ToastService]
 })
 export class SharedModule { }

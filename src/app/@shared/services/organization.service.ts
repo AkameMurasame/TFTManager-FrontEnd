@@ -7,7 +7,7 @@ import { Organization } from "../models/organization/organization";
 @Injectable({ providedIn: "root" })
 export class OrganizationService {
 
-    private organization: Organization | undefined;
+    private organization: Organization;
 
     constructor(private http: ApiHttpClient) { }
 
@@ -36,5 +36,16 @@ export class OrganizationService {
               return organization;
           })
       );
+    }
+
+    addAdmin(organization: Organization) : Observable<Organization> {
+        return this.http
+            .post<Organization>(`organization/addAdmin`, organization)
+            .pipe(
+                map((organization) => {
+                    this.organization = organization;
+                    return organization;
+                })
+            );
     }
 }

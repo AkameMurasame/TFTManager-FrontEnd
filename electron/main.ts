@@ -26,12 +26,39 @@ function createWindow() {
 
   connector.start();
   connector.on("connect", async (data) => {
+    win.webContents
+    .executeJavaScript(
+      `localStorage.removeItem('Api');`,
+      true
+    )
+    .then((result) => {
+      win.webContents
+        .executeJavaScript(
+          `localStorage.removeItem('currentUser');`,
+          true
+        )
+        .then((result) => {
+          win.webContents
+            .executeJavaScript(
+              `localStorage.removeItem('currentPlayer');`,
+              true
+            )
+            .then((result) => {
+             
+            });
+        });
+    });
     setTimeout(async () => {
       win.webContents.send('lcu-load', data);
     }, 5000);
   });
 
   win.webContents.openDevTools();
+
+  win.on('minimize', function (event) {
+    event.preventDefault()
+    win.hide()
+  })
 
   win.on("closed", () => {
     win = null;
@@ -53,28 +80,6 @@ app.on("activate", () => {
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
-  /*win.webContents
-    .executeJavaScript(
-      `localStorage.removeItem('Api');`,
-      true
-    )
-    .then((result) => {
-      win.webContents
-        .executeJavaScript(
-          `localStorage.removeItem('currentUser');`,
-          true
-        )
-        .then((result) => {
-          win.webContents
-            .executeJavaScript(
-              `localStorage.removeItem('currentPlayer');`,
-              true
-            )
-            .then((result) => {
-
-            });
-        });
-    });*/
   if (process.platform !== "darwin") {
     app.quit();
   }
