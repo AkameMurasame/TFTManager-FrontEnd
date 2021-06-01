@@ -1,8 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
-import { catchError, map } from "rxjs/operators";
-import { PlayerModule } from "src/app/main/player/player.module";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import { Player } from "../models/player/Player";
 
 @Injectable({ providedIn: "root" })
