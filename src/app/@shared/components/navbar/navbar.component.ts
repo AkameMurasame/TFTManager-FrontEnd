@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 
@@ -10,13 +10,14 @@ import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common'
 })
 export class NavbarComponent implements OnInit {
 
+  patch: string;
   private listTitles: any[] = [];
   location: Location;
   mobile_menu_visible: any = 0;
   private toggleButton: any;
   private sidebarVisible: boolean;
 
-  constructor(location: Location, private element: ElementRef, private router: Router) {
+  constructor(location: Location, private element: ElementRef, private router: Router, private route: ActivatedRoute) {
     this.location = location;
     this.sidebarVisible = false;
   }
@@ -110,17 +111,13 @@ export class NavbarComponent implements OnInit {
     }
   };
 
-  getTitle() {
-    var titlee = this.location.prepareExternalUrl(this.location.path());
-    if (titlee.charAt(0) === '#') {
-      titlee = titlee.slice(1);
-    }
-
-    for (var item = 0; item < this.listTitles.length; item++) {
-      if (this.listTitles[item].path === titlee) {
-        return this.listTitles[item].title;
+  getAtualRoute() {
+    this.route.url.subscribe(url => {
+      for (let x = 0; x < url.length; x++) {
+        if ((x + 1) === url.length) {
+          this.patch = url[x]['path'].toLocaleUpperCase();
+        }
       }
-    }
-    return 'Dashboard';
+    });
   }
 }
