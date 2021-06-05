@@ -1,10 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@ngneat/reactive-forms';
 import { Subscription } from 'rxjs';
 import { Organization } from 'src/app/@shared/models/organization/organization';
 import { OrganizationService } from 'src/app/@shared/services/organization.service';
+
+export interface FormularioOrganizacao {
+  nomeOrganizacao: string;
+  linkLogo: string;
+}
 
 @Component({
   selector: 'app-organization',
@@ -13,7 +19,7 @@ import { OrganizationService } from 'src/app/@shared/services/organization.servi
 })
 export class OrganizationComponent implements OnInit, OnDestroy {
 
-  formulario!: FormGroup;
+  formulario!: FormGroup<FormularioOrganizacao>;
 
   private subscriptions: Subscription[] = [];
 
@@ -29,7 +35,7 @@ export class OrganizationComponent implements OnInit, OnDestroy {
   }
 
   construirFormulario() {
-    this.formulario = this.fb.group({
+    this.formulario = this.fb.group<FormularioOrganizacao>({
       nomeOrganizacao: ['', [Validators.required]],
       linkLogo: ['', [Validators.required]]
     });
