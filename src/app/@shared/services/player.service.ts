@@ -45,4 +45,8 @@ export class PlayerService {
   getPartidasTft(request: RequestPartidas): Observable<any> {
     return this.http.post(`player/getPartidasTft`, request);
   }
+
+  getPlayersLike(nickName: string) : Observable<Player[]> {
+    return this.http.get<Player[]>(`player/getPLayersByNick/${nickName}`);
+  }
 }

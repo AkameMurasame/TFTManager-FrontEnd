@@ -3,12 +3,16 @@ import { Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@ngneat/reactive-forms';
 import { Subscription } from 'rxjs';
+import { AddAdmin } from 'src/app/@shared/models/organization/addAdmin';
+import { Player } from 'src/app/@shared/models/player/Player';
 import { User } from 'src/app/@shared/models/user/User';
 import { OrganizationService } from 'src/app/@shared/services/organization.service';
+import { PlayerService } from 'src/app/@shared/services/player.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 
 export interface FormularioAdmin {
-  id: number;
+  nickPlayer: number;
+  nick: string;
 }
 
 
@@ -23,8 +27,11 @@ export class AdicionarAdministradorComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
+  playersPorNick!: Player[];
+
   constructor(private organizationService: OrganizationService, private fb: FormBuilder,
-    private dialogRef: MatDialogRef<AdicionarAdministradorComponent>, private toast: ToastService) { }
+    private dialogRef: MatDialogRef<AdicionarAdministradorComponent>, private toast: ToastService,
+    private playerService: PlayerService) { }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe());
@@ -34,22 +41,34 @@ export class AdicionarAdministradorComponent implements OnInit, OnDestroy {
     this.construirFormulario();
   }
 
+  onChangeNickName(nickName: string) {
+    console.log(nickName)
+  }
+
   construirFormulario() {
     this.formulario = this.fb.group({
-      id: [, [Validators.required]]
+      nickPlayer: [, [Validators.required]],
+      nick: [, [Validators.required]],
     });
+
+    this.formulario.controls.nick.valueChanges.subscribe(nick => {
+      if (nick.length > 3) {
+        this.playerService.getPlayersLike(nick).subscribe(players => {
+          console.log(players)
+          this.playersPorNick = players;
+        })
+      }
+    })
   }
 
   onSubmit() {
     const _formulario = this.formulario.value;
 
-    let user = new User();
-    user.id = _formulario.id;
+    const addAdmin: AddAdmin = {
+      displayName: _formulario.nickPlayer
+    };
 
-    let organization = this.organizationService.getOrganization;
-    organization.organizatinoMembers.push(user);
-
-    this.subscriptions.push(this.organizationService.addAdmin(organization).subscribe((result) => {
+    this.subscriptions.push(this.organizationService.addAdmin(addAdmin).subscribe((result) => {
       this.toast.success("Administrador adicionado!");
       this.dialogRef.close();
     }));

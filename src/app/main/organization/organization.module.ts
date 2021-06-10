@@ -13,6 +13,8 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/@shared/shared.module';
 import { AdicionarAdministradorComponent } from './admin/adicionar-administrador/adicionar-administrador.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatAutocompleteModule } from "@angular/material/autocomplete"
 
 const MATERIAL = [
   MatCardModule,
@@ -20,7 +22,9 @@ const MATERIAL = [
   MatFormFieldModule,
   MatInputModule,
   MatButtonModule,
-  MatIconModule
+  MatIconModule,
+  MatTableModule,
+  MatAutocompleteModule
 ]
 
 @NgModule({

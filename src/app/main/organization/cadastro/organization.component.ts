@@ -10,6 +10,7 @@ import { OrganizationService } from 'src/app/@shared/services/organization.servi
 export interface FormularioOrganizacao {
   nomeOrganizacao: string;
   linkLogo: string;
+  sobre: string;
 }
 
 @Component({
@@ -37,7 +38,8 @@ export class OrganizationComponent implements OnInit, OnDestroy {
   construirFormulario() {
     this.formulario = this.fb.group<FormularioOrganizacao>({
       nomeOrganizacao: ['', [Validators.required]],
-      linkLogo: ['', [Validators.required]]
+      linkLogo: ['', [Validators.required]],
+      sobre: ['', [Validators.required]]
     });
   }
 
@@ -46,7 +48,8 @@ export class OrganizationComponent implements OnInit, OnDestroy {
 
     const request: Organization = {
       name: _formulario.nomeOrganizacao,
-      logo: _formulario.linkLogo
+      logo: _formulario.linkLogo,
+      about: _formulario.sobre
     };
 
     this.subscriptions.push(this.organizationService.organizationRegister(request).subscribe(organization => {

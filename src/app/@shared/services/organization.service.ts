@@ -2,12 +2,16 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { ApiHttpClient } from "src/app/@core/services/api-http-client";
+import { AddAdmin } from "../models/organization/addAdmin";
 import { Organization } from "../models/organization/organization";
+import { RemoveAdmin } from "../models/organization/removeAdmin";
+import { Player } from "../models/player/Player";
 
 @Injectable({ providedIn: "root" })
 export class OrganizationService {
 
     private organization: Organization;
+    carregado: boolean = false;
 
     constructor(private http: ApiHttpClient) { }
 
@@ -27,21 +31,34 @@ export class OrganizationService {
     }
 
     getOrganizationByUserId(userId: number): Observable<Organization> {
-      return this.http
-      .get<Organization>(`organization/getOrganizationByUserId/${userId}`)
-      .pipe(
-          map((organization) => {
-            console.log(organization)
-              this.organization = organization;
-              return organization;
-          })
-      );
+        return this.http
+            .get<Organization>(`organization/getOrganizationByUserId/${userId}`)
+            .pipe(
+                map((organization) => {
+                    this.organization = organization;
+                    return organization;
+                })
+            );
     }
 
-    addAdmin(organization: Organization) : Observable<Organization> {
+    addAdmin(addAdmin: AddAdmin): Observable<Organization> {
         return this.http
-            .post<Organization>(`organization/addAdmin`, organization)
+            .post<Organization>(`organization/addAdmin`, addAdmin)
             .pipe(
+                map((organization) => {
+                    this.organization = organization;
+                    return organization;
+                })
+            );
+    }
+
+    getOrganizationMenbers() {
+        return this.http.get<Player[]>(`organization/getOrganizationMembers/${this.organization.id}`);
+    }
+
+    removeAdmin(removeAdmin: RemoveAdmin): Observable<Organization> {
+        return this.http
+            .post<Organization>(`organization/removeAdmin`, removeAdmin).pipe(
                 map((organization) => {
                     this.organization = organization;
                     return organization;

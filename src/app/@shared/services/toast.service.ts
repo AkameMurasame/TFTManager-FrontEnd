@@ -17,6 +17,7 @@ export class ToastService {
     }
 
     error(message: string) {
+        console.log("carai")
         this.toast.error(message, {
             position: 'top-right',
             dismissible: true,

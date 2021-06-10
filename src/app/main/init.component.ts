@@ -34,6 +34,22 @@ export class InitComponent implements OnInit {
     await this.verifylolClient();
   }
 
+  login() {
+    let role = new Role();
+    role.id = 1;
+
+
+    let user = new User();
+    user.username = "4976434";
+    user.password = "4976434";
+    user.role = role;
+
+    this.authService.login(user).subscribe(login => {
+      this.verifyRole(this.authService.currentUserValue.user);
+      this.verifyPlayer(this.authService.currentUserValue.user.id, null);
+    })
+  }
+
   init() {
     this.lcuService.getLcuPlayer().subscribe(player => {
       console.log(player)
@@ -97,7 +113,7 @@ export class InitComponent implements OnInit {
 
     let user = new User();
     user.username = player.summonerId.toString();
-    user.password = player.accountId.toString();
+    user.password = player.summonerId.toString();
     user.role = role;
 
     return user;

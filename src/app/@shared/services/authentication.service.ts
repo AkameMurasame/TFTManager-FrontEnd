@@ -32,7 +32,7 @@ export class AuthenticationService {
           return user;
         })
       );
-  } 
+  }
 
   logout() {
     // remove user from local storage to log user out
@@ -41,8 +41,10 @@ export class AuthenticationService {
   }
 
   checkPermission(permission: string | undefined): boolean {
-    if (this.currentUserValue.user.role.nome == permission) {
-      return true;
+    if (this.currentUserValue) {
+      if (this.currentUserValue.user.role.nome == permission) {
+        return true;
+      }
     }
     return false;
   }
