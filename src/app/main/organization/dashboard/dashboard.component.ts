@@ -10,6 +10,7 @@ import { AdicionarAdministradorComponent } from '../admin/adicionar-administrado
 import { OrganizationComponent } from '../cadastro/organization.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { RemoveAdmin } from 'src/app/@shared/models/organization/removeAdmin';
+import { CadastroComponent } from '../tournament/cadastro/cadastro.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -58,7 +59,7 @@ export class DashboardComponent implements OnInit {
   }
 
   novoCampeonato() {
-    alert("Já Vai")
+    this.dialogService.open(CadastroComponent);
   }
 
   removerAdmin(player) {

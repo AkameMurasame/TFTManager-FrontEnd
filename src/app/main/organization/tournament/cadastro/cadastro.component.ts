@@ -1,9 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Game } from 'src/app/@shared/models/tournament/game';
+import { FormBuilder, FormGroup } from '@ngneat/reactive-forms';
+import { Subscription } from 'rxjs';
 import { Tournament } from 'src/app/@shared/models/tournament/tournament';
 import { OrganizationService } from 'src/app/@shared/services/organization.service';
+import { ToastService } from 'src/app/@shared/services/toast.service';
 import { TournamentService } from 'src/app/@shared/services/tournament.service';
+
+export interface FormularioTournament {
+  game: number;
+  time: string;
+  date: Date;
+  name: string;
+}
 
 @Component({
   selector: 'app-cadastro',
@@ -11,25 +22,41 @@ import { TournamentService } from 'src/app/@shared/services/tournament.service';
   styleUrls: ['./cadastro.component.css']
 })
 export class CadastroComponent implements OnInit {
-  constructor(private organizationService: OrganizationService, private tournamentService: TournamentService, private router: Router) { }
+
+  formulario!: FormGroup<FormularioTournament>;
+
+  private subscriptions: Subscription[] = [];
+
+  constructor(private dialogRef: MatDialogRef<CadastroComponent>, private fb: FormBuilder, private toastService: ToastService,
+    private organizationService: OrganizationService, private tournamentService: TournamentService, private router: Router) { }
 
   ngOnInit() {
-    this.onSubmit();
+    this.montarFormulario();
+  }
+
+  montarFormulario() {
+    this.formulario = this.fb.group({
+      name: [, [Validators.required]],
+      time: [, [Validators.required]],
+      date: [, [Validators.required]],
+      game: [, [Validators.required]],
+    });
   }
 
   onSubmit() {
-    let game = new Game();
-    game.id = 1;
+    const _formulario = this.formulario.value;
 
-    let tournament = new Tournament();
-    tournament.time = "19:00";
-    tournament.date = Date.now().toString();
-    tournament.game = game;
-    tournament.name = "Campeonato de Teste";
-    tournament.organization = this.organizationService.getOrganization;
+    const tournament: Tournament = {
+      name: _formulario.name,
+      date: _formulario.date.toString(),
+      game: _formulario.game,
+      time: _formulario.time,
+      organization: this.organizationService.getOrganization.id
+    }
 
-    this.tournamentService.tournamentRegister(tournament).subscribe(tournament => {
-      this.router.navigate(['organization/dashboard']);
-    });
+    this.subscriptions.push(this.tournamentService.tournamentRegister(tournament).subscribe(tournament => {
+      this.toastService.success("Torneio cadastrado com sucesso!");
+      this.dialogRef.close();
+    }));
   }
 }
