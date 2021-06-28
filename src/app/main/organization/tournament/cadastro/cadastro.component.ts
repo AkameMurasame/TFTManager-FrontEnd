@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@ngneat/reactive-forms';
 import { Subscription } from 'rxjs';
+import { Game } from 'src/app/@shared/models/tournament/game';
 import { Tournament } from 'src/app/@shared/models/tournament/tournament';
 import { OrganizationService } from 'src/app/@shared/services/organization.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
@@ -14,6 +15,8 @@ export interface FormularioTournament {
   time: string;
   date: Date;
   name: string;
+  qtdJogPorTime: number;
+  qtdJogadores: number;
 }
 
 @Component({
@@ -40,19 +43,29 @@ export class CadastroComponent implements OnInit {
       time: [, [Validators.required]],
       date: [, [Validators.required]],
       game: [, [Validators.required]],
+      qtdJogadores: [, [Validators.required]],
+      qtdJogPorTime: [, [Validators.required]],
     });
   }
 
   onSubmit() {
     const _formulario = this.formulario.value;
 
+    const game: Game = {
+      id: _formulario.game
+    }
+
     const tournament: Tournament = {
       name: _formulario.name,
-      date: _formulario.date.toString(),
-      game: _formulario.game,
+      date: Date.now().toString(),
+      game: game,
       time: _formulario.time,
-      organization: this.organizationService.getOrganization.id
+      qtdJogPorTime: Number.parseInt(_formulario.qtdJogPorTime.toString()),
+      qtdJogadores: Number.parseInt(_formulario.qtdJogadores.toString()),
+      organization: this.organizationService.getOrganization
     }
+
+    console.log(tournament)
 
     this.subscriptions.push(this.tournamentService.tournamentRegister(tournament).subscribe(tournament => {
       this.toastService.success("Torneio cadastrado com sucesso!");

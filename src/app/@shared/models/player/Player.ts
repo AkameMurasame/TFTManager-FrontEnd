@@ -1,4 +1,5 @@
 export class Player {
+    id?: number;
     accountId!: number;
     displayName!: string;
     internalName!: string;

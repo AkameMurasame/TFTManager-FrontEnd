@@ -24,7 +24,7 @@ export class PlayerService {
 
   getPlayerByUserId(id: number): Observable<Player> {
     return this.http.get<Player>(`player/getById/${id}`).pipe(
-      map((player) => {
+      map((player: Player) => {
         localStorage.setItem("currentPlayer", JSON.stringify(player));
         this.player.next(player);
         return player;
@@ -34,7 +34,7 @@ export class PlayerService {
 
   registerPlayer(player: Player): Observable<any> {
     return this.http.post<any>(`player/create`, player).pipe(
-      map((player) => {
+      map((player: Player) => {
         localStorage.setItem("currentPlayer", JSON.stringify(player));
         this.player.next(player);
         return player;

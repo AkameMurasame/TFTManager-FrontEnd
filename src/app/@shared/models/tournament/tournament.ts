@@ -6,8 +6,10 @@ export interface Tournament {
     name: string;
     date: string;
     time: string;
-    organization: number;
+    organization: Organization;
     // tournamentPlayers;
     //championship;
-    game: number;
+    game: Game;
+    qtdJogadores: number;
+    qtdJogPorTime: number;
 }

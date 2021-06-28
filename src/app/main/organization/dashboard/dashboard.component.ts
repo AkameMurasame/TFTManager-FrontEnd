@@ -11,6 +11,7 @@ import { OrganizationComponent } from '../cadastro/organization.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { RemoveAdmin } from 'src/app/@shared/models/organization/removeAdmin';
 import { CadastroComponent } from '../tournament/cadastro/cadastro.component';
+import { Tournament } from 'src/app/@shared/models/tournament/tournament';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,6 +26,10 @@ export class DashboardComponent implements OnInit {
 
   readonly displayedColumns: string[] = ['Nick', 'Acoes'];
 
+  readonly dataSourceTournament = new MatTableDataSource<Tournament>();
+
+  readonly displayedColumnsTournament: string[] = ['Nome', 'Data', 'Hora', "qtdPlayer", "qtdPlayerTeam"];
+
   constructor(private router: Router, private organizationService: OrganizationService,
     private dialogService: MatDialog, private authService: AuthenticationService, private toastService: ToastService) { }
 
@@ -33,7 +38,7 @@ export class DashboardComponent implements OnInit {
       this.organizationService.getOrganizationByUserId(this.authService.currentUserValue.user.id).subscribe(org => {
         if (org != null) {
           this.organization = this.organizationService.getOrganization;
-          this.getOrganizationMenbers();
+          this.popularTabelas();
         } else {
           this.dialogService.open(OrganizationComponent).afterClosed().subscribe(result => {
             this.organization = this.organizationService.getOrganization;
@@ -41,20 +46,24 @@ export class DashboardComponent implements OnInit {
               this.toastService.error("Conclua o cadastro de organização!")
               this.router.navigate(['player']);
             } else {
-              this.getOrganizationMenbers();
+              this.popularTabelas();
             }
           });
         }
       });
     } else {
       this.organization = this.organizationService.getOrganization;
-      this.getOrganizationMenbers();
+      this.popularTabelas();
     }
   }
 
-  getOrganizationMenbers() {
+  popularTabelas() {
     this.organizationService.getOrganizationMenbers().subscribe(menbers => {
       this.dataSource.data = menbers;
+    });
+
+    this.organizationService.getAllTorunamentByOrganization().subscribe(tournaments => {
+      this.dataSourceTournament.data = tournaments;
     });
   }
 

@@ -6,6 +6,7 @@ import { AddAdmin } from "../models/organization/addAdmin";
 import { Organization } from "../models/organization/organization";
 import { RemoveAdmin } from "../models/organization/removeAdmin";
 import { Player } from "../models/player/Player";
+import { Tournament } from "../models/tournament/tournament";
 
 @Injectable({ providedIn: "root" })
 export class OrganizationService {
@@ -23,7 +24,7 @@ export class OrganizationService {
         return this.http
             .post<Organization>(`organization/create`, organization)
             .pipe(
-                map((organization) => {
+                map((organization: Organization) => {
                     this.organization = organization;
                     return organization;
                 })
@@ -34,7 +35,7 @@ export class OrganizationService {
         return this.http
             .get<Organization>(`organization/getOrganizationByUserId/${userId}`)
             .pipe(
-                map((organization) => {
+                map((organization: Organization) => {
                     this.organization = organization;
                     return organization;
                 })
@@ -45,7 +46,7 @@ export class OrganizationService {
         return this.http
             .post<Organization>(`organization/addAdmin`, addAdmin)
             .pipe(
-                map((organization) => {
+                map((organization: Organization) => {
                     this.organization = organization;
                     return organization;
                 })
@@ -59,10 +60,14 @@ export class OrganizationService {
     removeAdmin(removeAdmin: RemoveAdmin): Observable<Organization> {
         return this.http
             .post<Organization>(`organization/removeAdmin`, removeAdmin).pipe(
-                map((organization) => {
+                map((organization: Organization) => {
                     this.organization = organization;
                     return organization;
                 })
             );
+    }
+
+    getAllTorunamentByOrganization() {
+        return this.http.get<Tournament[]>(`tournament/getAllTournamentsByOrganization/${this.organization.id}`);
     }
 }

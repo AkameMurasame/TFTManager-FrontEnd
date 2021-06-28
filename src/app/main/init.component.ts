@@ -2,13 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { SummonerService } from "src/app/@riotApi/index";
+import { TeamType } from '../@shared/enum/teamType.enum';
 import { Player } from '../@shared/models/player/Player';
+import { Team } from '../@shared/models/team/team';
 import { Role } from '../@shared/models/user/Role';
 import { User } from '../@shared/models/user/User';
 import { AuthenticationService } from '../@shared/services/authentication.service';
 import { LcuService } from '../@shared/services/lcu.service';
 import { OrganizationService } from '../@shared/services/organization.service';
 import { PlayerService } from '../@shared/services/player.service';
+import { TeamService } from '../@shared/services/team.service';
 import { UserService } from '../@shared/services/user.service';
 
 @Component({
@@ -28,7 +31,8 @@ export class InitComponent implements OnInit {
     private playerService: PlayerService,
     private router: Router,
     private riotSummonerService: SummonerService,
-    private organizationService: OrganizationService) { }
+    private organizationService: OrganizationService,
+    private teamService: TeamService) { }
 
   async ngOnInit() {
     await this.verifylolClient();
@@ -52,7 +56,6 @@ export class InitComponent implements OnInit {
 
   init() {
     this.lcuService.getLcuPlayer().subscribe(player => {
-      console.log(player)
       if (this.authService.currentUserValue) {
         if (this.authService.currentUserValue.user.username == player.summonerId.toString()) {
           this.authService.logout();
@@ -76,11 +79,19 @@ export class InitComponent implements OnInit {
           //this.riotSummonerService.getTftSummoner(player.displayName).subscribe(summoner => {
           //player.puuid = summoner.puuid;
           this.playerService.registerPlayer(player).subscribe(newPlayer => {
-            console.log(newPlayer);
-            this.router.navigate(['player/dashboard']);
+            const team: Team = {
+              name: player.displayName,
+              capitain: player.accountId,
+              teamType: TeamType.SINGLEPLAYER,
+            };
+
+            this.teamService.teamRegister(team).subscribe(t => {
+              this.router.navigate(['player/dashboard']);
+            })
           });
           //})
         }
+        console.log(this.playerService.getPlayer)
         this.router.navigate(['player/dashboard']);
       });
     }

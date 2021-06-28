@@ -1,0 +1,4 @@
+export enum TeamType {
+  SINGLEPLAYER = 'SINGLEPLAYER',
+  MULTIPLAYER = 'MULTIPLAYER'
+}

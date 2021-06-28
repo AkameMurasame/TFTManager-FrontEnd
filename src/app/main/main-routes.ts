@@ -12,13 +12,19 @@ const routes: Routes = [
     path: "player",
     loadChildren: () =>
       import('src/app/main/player/player.module').then((m) => m.PlayerModule),
-      canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: "organization",
     loadChildren: () =>
       import('src/app/main/organization/organization.module').then((m) => m.OrganizationModule),
-      canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "team",
+    loadChildren: () =>
+      import('src/app/main/team/team.module').then((m) => m.TeamModule),
+    canActivate: [AuthGuard]
   },
   {
     path: '', redirectTo: 'app', pathMatch: 'full'
