@@ -12,4 +12,5 @@ export interface Tournament {
     game: Game;
     qtdJogadores: number;
     qtdJogPorTime: number;
+    battlefyLink: string;
 }

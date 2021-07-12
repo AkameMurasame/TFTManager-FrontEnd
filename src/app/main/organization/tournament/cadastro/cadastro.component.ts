@@ -17,6 +17,7 @@ export interface FormularioTournament {
   name: string;
   qtdJogPorTime: number;
   qtdJogadores: number;
+  battlefyLink: string;
 }
 
 @Component({
@@ -45,6 +46,7 @@ export class CadastroComponent implements OnInit {
       game: [, [Validators.required]],
       qtdJogadores: [, [Validators.required]],
       qtdJogPorTime: [, [Validators.required]],
+      battlefyLink: [, [Validators.required]]
     });
   }
 
@@ -62,7 +64,8 @@ export class CadastroComponent implements OnInit {
       time: _formulario.time,
       qtdJogPorTime: Number.parseInt(_formulario.qtdJogPorTime.toString()),
       qtdJogadores: Number.parseInt(_formulario.qtdJogadores.toString()),
-      organization: this.organizationService.getOrganization
+      organization: this.organizationService.getOrganization,
+      battlefyLink: _formulario.battlefyLink
     }
 
     console.log(tournament)

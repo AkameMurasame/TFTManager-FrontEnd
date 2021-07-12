@@ -15,6 +15,9 @@ import { SharedModule } from 'src/app/@shared/shared.module';
 import { AdicionarAdministradorComponent } from './admin/adicionar-administrador/adicionar-administrador.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatAutocompleteModule } from "@angular/material/autocomplete"
+import { MatDatepickerModule } from "@angular/material/datepicker"
+import { MatNativeDateModule } from '@angular/material/core';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 const MATERIAL = [
   MatCardModule,
@@ -24,8 +27,11 @@ const MATERIAL = [
   MatButtonModule,
   MatIconModule,
   MatTableModule,
-  MatAutocompleteModule
-]
+  MatAutocompleteModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  NgxMaterialTimepickerModule.setLocale('pt-BR')
+];
 
 @NgModule({
   declarations: [CadastroComponent, DashboardComponent, OrganizationComponent, AdicionarAdministradorComponent],
@@ -36,6 +42,9 @@ const MATERIAL = [
     FormsModule,
     SharedModule,
     ...MATERIAL
-  ]
+  ],
+  providers: [  
+    MatDatepickerModule,  
+  ],
 })
 export class OrganizationModule { }

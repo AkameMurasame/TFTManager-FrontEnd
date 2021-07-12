@@ -63,6 +63,7 @@ export class DashboardComponent implements OnInit {
     });
 
     this.organizationService.getAllTorunamentByOrganization().subscribe(tournaments => {
+      console.log(tournaments)
       this.dataSourceTournament.data = tournaments;
     });
   }

@@ -31,6 +31,7 @@
     "fs-extra": "^8.1.0",
     "hammerjs": "^2.0.8",
     "lcu-connector": "^2.1.2",
+    "ngx-material-timepicker": "^5.5.3",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "rxjs": "~6.6.0",
