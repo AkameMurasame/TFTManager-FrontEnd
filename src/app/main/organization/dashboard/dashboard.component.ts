@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
 
   readonly dataSourceTournament = new MatTableDataSource<Tournament>();
 
-  readonly displayedColumnsTournament: string[] = ['Nome', 'Data', 'Hora', "qtdPlayer", "qtdPlayerTeam"];
+  readonly displayedColumnsTournament: string[] = ['Nome', 'Data', 'Hora', "qtdPlayer", "qtdPlayerTeam", "Acoes"];
 
   constructor(private router: Router, private organizationService: OrganizationService,
     private dialogService: MatDialog, private authService: AuthenticationService, private toastService: ToastService) { }
@@ -85,5 +85,9 @@ export class DashboardComponent implements OnInit {
 
   adicionarAdministrador() {
     this.dialogService.open(AdicionarAdministradorComponent);
+  }
+
+  detalhesTournament(idTournament: number) {
+    this.router.navigate(['/organization/tournament/dashboard/' + idTournament]);
   }
 }

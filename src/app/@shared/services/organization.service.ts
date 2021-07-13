@@ -6,12 +6,14 @@ import { AddAdmin } from "../models/organization/addAdmin";
 import { Organization } from "../models/organization/organization";
 import { RemoveAdmin } from "../models/organization/removeAdmin";
 import { Player } from "../models/player/Player";
+import { Stage } from "../models/tournament/stage";
 import { Tournament } from "../models/tournament/tournament";
 
 @Injectable({ providedIn: "root" })
 export class OrganizationService {
 
     private organization: Organization;
+
     carregado: boolean = false;
 
     constructor(private http: ApiHttpClient) { }

@@ -93,9 +93,8 @@
                   <ng-container matColumnDef="Acoes">
                     <th mat-header-cell *matHeaderCellDef> Ações </th>
                     <td mat-cell *matCellDef="let element">
-                      <button type="button" title="Remover" mat-icon-button (click)="removerAdmin(element.id)">
-                        <mat-icon>close</mat-icon>
-                      </button>
+                      <button type="button" (click)="detalhesTournament(element.id)" mat-button
+                      class="btn btn-success">Detalhes</button>
                     </td>
                   </ng-container>
 

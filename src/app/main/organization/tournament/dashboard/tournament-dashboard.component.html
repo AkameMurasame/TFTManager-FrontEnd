@@ -1,0 +1,41 @@
+<app-content>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Chave: {{ this.tournament.name }}</h4>
+
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-accordion class="example-headers-align" multi>
+                                <mat-expansion-panel *ngFor="let item of this.stages;">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-description>
+                                            <h4>Chave: {{ item.stage.name }}</h4>
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+
+                                    <div class="row">
+                                        <div class="col-2" *ngFor="let group of item.groups; let index = index;">
+                                            <div class="card">
+                                                <div class="card-header card-header-primary">
+                                                    <h4 class="card-title">Grupo: {{ index + 1 }}</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 *ngFor="let player of group; let index = index;">{{ player.name }}</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-content>
