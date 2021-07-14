@@ -13,6 +13,7 @@ import { OrganizationService } from '../@shared/services/organization.service';
 import { PlayerService } from '../@shared/services/player.service';
 import { TeamService } from '../@shared/services/team.service';
 import { UserService } from '../@shared/services/user.service';
+import { WebsocketService } from '../@shared/services/websocket.service';
 
 @Component({
   selector: 'app-init',
@@ -32,7 +33,8 @@ export class InitComponent implements OnInit {
     private router: Router,
     private riotSummonerService: SummonerService,
     private organizationService: OrganizationService,
-    private teamService: TeamService) { }
+    private teamService: TeamService,
+    private webSocketService: WebsocketService) { }
 
   async ngOnInit() {
     await this.verifylolClient();
@@ -46,8 +48,8 @@ export class InitComponent implements OnInit {
     let user = new User();
     //user.username = "4976434";
     //user.password = "4976434";
-    user.username = "TFT Akame";
-    user.password = "TFT Akame";
+    user.username = "18605885";
+    user.password = "18605885";
     user.role = role;
 
     this.authService.login(user).subscribe(login => {
@@ -92,9 +94,19 @@ export class InitComponent implements OnInit {
             })
           });
           //})
+        } else {
+          this.webSocketService.initWebSocket(this.playerService.getPlayer.displayName);
+          if (this.playerService.getPlayer.displayName != this.lcuService.getlcuPlayer.displayName) {
+            console.log("update")
+            var player = this.playerService.getPlayer;
+            player.displayName = this.lcuService.getlcuPlayer.displayName;
+            this.playerService.updatePlayer(player).subscribe(player => {
+              this.router.navigate(['player/dashboard']);
+            });
+          } else {
+            this.router.navigate(['player/dashboard']);
+          }
         }
-        console.log(this.playerService.getPlayer)
-        this.router.navigate(['player/dashboard']);
       });
     }
     this.router.navigate(['player/dashboard']);
@@ -135,7 +147,7 @@ export class InitComponent implements OnInit {
   verifyRole(user: User) {
     if (user.role.id == 2) {
       this.organizationService.getOrganizationByUserId(user.id).subscribe(organization => {
-        console.log(organization)
+
       });
     }
   }

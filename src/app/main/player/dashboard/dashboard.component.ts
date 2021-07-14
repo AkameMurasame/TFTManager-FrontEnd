@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MatchService } from 'src/app/@riotApi/services/match.service';
 import { AuthenticationService } from 'src/app/@shared/services/authentication.service';
 import { PlayerService } from 'src/app/@shared/services/player.service';
+import { LcuService } from '../../../@shared/services/lcu.service';
 import { WebsocketService } from '../../../@shared/services/websocket.service';
 
 @Component({
@@ -15,12 +16,11 @@ export class DashboardComponent implements OnInit {
   partidas: String[] = [];
 
   constructor(private playerService: PlayerService, private authService: AuthenticationService, private matchService: MatchService,
-    private router: Router, private webSocketService: WebsocketService
-    ) { }
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    console.log(this.playerService.getPlayer)
-    this.webSocketService.initWebSocket(this.playerService.getPlayer.displayName);
+    
   }
 
   getPartidasTft() {

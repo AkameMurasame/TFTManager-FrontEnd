@@ -15393,6 +15393,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-position: center center;
   }
   
+  .material-icons {
+    color: #000000 !important;
+  }
+
   .sidebar .sidebar-background:after {
     position: absolute;
     z-index: 3;
@@ -15400,7 +15404,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     height: 100%;
     content: "";
     display: block;
-    background: #FFFFFF;
+    background: #d2d2d2;
     opacity: .93;
   }
   
