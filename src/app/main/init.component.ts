@@ -44,8 +44,10 @@ export class InitComponent implements OnInit {
 
 
     let user = new User();
-    user.username = "4976434";
-    user.password = "4976434";
+    //user.username = "4976434";
+    //user.password = "4976434";
+    user.username = "TFT Akame";
+    user.password = "TFT Akame";
     user.role = role;
 
     this.authService.login(user).subscribe(login => {
