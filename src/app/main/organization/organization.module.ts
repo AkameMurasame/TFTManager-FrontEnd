@@ -18,8 +18,9 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete"
 import { MatDatepickerModule } from "@angular/material/datepicker"
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatExpansionModule } from '@angular/material/expansion'
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { TournamentDashboardComponent } from './tournament/dashboard/tournament-dashboard.component';
+import { GroupComponent } from './tournament/group/group.component';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule,NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 
 const MATERIAL = [
   MatCardModule,
@@ -32,12 +33,14 @@ const MATERIAL = [
   MatAutocompleteModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  NgxMaterialTimepickerModule.setLocale('pt-BR'),
-  MatExpansionModule
+  MatExpansionModule,
+  NgxMatDatetimePickerModule,
+  NgxMatNativeDateModule,
+  NgxMatTimepickerModule
 ];
 
 @NgModule({
-  declarations: [CadastroComponent, DashboardComponent, OrganizationComponent, AdicionarAdministradorComponent, TournamentDashboardComponent],
+  declarations: [CadastroComponent, DashboardComponent, OrganizationComponent, AdicionarAdministradorComponent, TournamentDashboardComponent, GroupComponent],
   imports: [
     CommonModule,
     OrganizationRoutes,

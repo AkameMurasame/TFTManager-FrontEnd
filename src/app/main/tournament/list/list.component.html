@@ -1,3 +1,13 @@
-<p>
-  list works!
-</p>
+<app-content>
+    <div class="col-4" *ngFor="let tournament of this.tournaments; let index = index;">
+      <div class="card">
+        <img src="{{ tournament.banner }}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ tournament.name }}</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
+          <a [routerLink]="['/tournament/view', tournament.id]" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+</app-content>

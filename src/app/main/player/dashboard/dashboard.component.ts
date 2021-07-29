@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
   partidas: String[] = [];
 
   constructor(private playerService: PlayerService, private authService: AuthenticationService, private matchService: MatchService,
-    private router: Router
+    private router: Router, private w: WebsocketService, private lcu: LcuService
   ) { }
 
   ngOnInit() {

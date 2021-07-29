@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Chave } from '../../../../@shared/models/tournament/chave';
 import { Group } from '../../../../@shared/models/tournament/group';
 import { Stage } from '../../../../@shared/models/tournament/stage';
 import { Tournament } from '../../../../@shared/models/tournament/tournament';
 import { ActiveTournamentService } from '../../../../@shared/services/active-tournament.service';
+import { GroupComponent } from '../group/group.component';
 
 @Component({
   selector: 'app-tournament-dashboard',
@@ -17,14 +19,14 @@ export class TournamentDashboardComponent implements OnInit {
   tournament: Tournament;
   stages: Chave[];
 
-  constructor(private activeTournamentService: ActiveTournamentService, private activeRoute: ActivatedRoute) {
-    this.tournamentId = this.activeRoute.snapshot.params.tournamentId;
-    this.getActiveTournament();
-    this.stages = [];
+  constructor(private activeTournamentService: ActiveTournamentService, private activeRoute: ActivatedRoute, private dialogService: MatDialog) {
+
   }
 
   ngOnInit(): void {
-
+    this.tournamentId = this.activeRoute.snapshot.params.tournamentId;
+    this.getActiveTournament();
+    this.stages = [];
   }
 
   getActiveTournament() {
@@ -66,8 +68,15 @@ export class TournamentDashboardComponent implements OnInit {
               console.log(group)
             })
           }
+          this.stages = this.activeTournamentService.getGroups;
         }
       });
+    });
+  }
+
+  detalhesGroup(group) {
+    this.dialogService.open(GroupComponent, {
+      data: group
     });
   }
 }

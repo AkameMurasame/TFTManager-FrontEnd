@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { RemoveAdmin } from 'src/app/@shared/models/organization/removeAdmin';
 import { CadastroComponent } from '../tournament/cadastro/cadastro.component';
 import { Tournament } from 'src/app/@shared/models/tournament/tournament';
+import { WebsocketService } from '../../../@shared/services/websocket.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -69,7 +70,18 @@ export class DashboardComponent implements OnInit {
   }
 
   novoCampeonato() {
-    this.dialogService.open(CadastroComponent);
+    this.dialogService.open(CadastroComponent).afterClosed().subscribe(closed => {
+      this.popularTabelas();
+    });
+  }
+
+  validarBtn(status) {
+    console.log(status)
+    if(status != "CHECKIN" && status != "FINALIZADO") {
+      return true;
+    } else {
+      false;
+    }
   }
 
   removerAdmin(player) {

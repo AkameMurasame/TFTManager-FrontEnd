@@ -16,6 +16,7 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     this.tournamentService.getAllTournamentsJogaveis().subscribe(tournaments => {
       this.tournaments = tournaments;
+      console.log(this.tournaments)
     });
   }
 }

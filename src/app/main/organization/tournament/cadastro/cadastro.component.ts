@@ -4,19 +4,12 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@ngneat/reactive-forms';
 import { Subscription } from 'rxjs';
-import { Game } from 'src/app/@shared/models/tournament/game';
 import { Tournament } from 'src/app/@shared/models/tournament/tournament';
 import { OrganizationService } from 'src/app/@shared/services/organization.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { TournamentService } from 'src/app/@shared/services/tournament.service';
 
 export interface FormularioTournament {
-  game: number;
-  time: string;
-  date: Date;
-  name: string;
-  qtdJogPorTime: number;
-  qtdJogadores: number;
   battlefyLink: string;
 }
 
@@ -40,12 +33,6 @@ export class CadastroComponent implements OnInit {
 
   montarFormulario() {
     this.formulario = this.fb.group({
-      name: [, [Validators.required]],
-      time: [, [Validators.required]],
-      date: [, [Validators.required]],
-      game: [, [Validators.required]],
-      qtdJogadores: [, [Validators.required]],
-      qtdJogPorTime: [, [Validators.required]],
       battlefyLink: [, [Validators.required]]
     });
   }
@@ -53,19 +40,9 @@ export class CadastroComponent implements OnInit {
   onSubmit() {
     const _formulario = this.formulario.value;
 
-    const game: Game = {
-      id: _formulario.game
-    }
-
     const tournament: Tournament = {
-      name: _formulario.name,
-      date: Date.now().toString(),
-      game: game,
-      time: _formulario.time,
-      qtdJogPorTime: Number.parseInt(_formulario.qtdJogPorTime.toString()),
-      qtdJogadores: Number.parseInt(_formulario.qtdJogadores.toString()),
       organization: this.organizationService.getOrganization,
-      battlefyLink: _formulario.battlefyLink
+      battlefyLink: _formulario.battlefyLink,
     }
 
     console.log(tournament)

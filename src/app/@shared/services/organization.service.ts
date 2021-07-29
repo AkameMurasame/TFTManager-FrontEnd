@@ -70,7 +70,6 @@ export class OrganizationService {
     }
 
     getAllTorunamentByOrganization() {
-        console.log(this.organization)
         return this.http.get<Tournament[]>(`tournament/getAllTournamentsByOrganization/${this.organization.id}`);
     }
 }

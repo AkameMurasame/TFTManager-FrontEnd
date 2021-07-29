@@ -27,6 +27,12 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: "tournament",
+    loadChildren: () =>
+      import('src/app/main/tournament/tournament.module').then((m) => m.TournamentModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '', redirectTo: 'app', pathMatch: 'full'
   }
 ];

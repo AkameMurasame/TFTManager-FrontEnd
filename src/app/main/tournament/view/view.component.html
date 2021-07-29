@@ -1,0 +1,48 @@
+<app-content>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card">
+                <img src="{{ this.battlefyData.bannerUrl }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <mat-tab-group>
+                        <mat-tab label="Regras">
+                            <div [innerHTML]='this.battlefyData.rules.complete' style="
+                            padding: 20px;
+                            margin-bottom: 10px;
+                            color: #7e838c;"></div>
+                        </mat-tab>
+                        <mat-tab label="Contato">
+                            <div [innerHTML]="this.battlefyData.contactDetails" style="
+                            padding: 20px;
+                            margin-bottom: 10px;
+                            color: #7e838c;"></div>
+                        </mat-tab>
+                        <mat-tab label="Schedule">
+                            <div [innerHTML]="this.battlefyData.schedule" style="
+                            padding: 20px;
+                            margin-bottom: 10px;
+                            color: #7e838c;"></div>
+                        </mat-tab>
+                        <mat-tab label="Prizes">
+                            <div [innerHTML]="this.battlefyData.prizes" style="
+                            padding: 20px;
+                            margin-bottom: 10px;
+                            color: #7e838c;"></div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card">
+                <h5 class="card-title text-center">{{ tournament.name }}</h5>
+                <br>
+                <div class="card-body">
+                    <div [innerHTML]="this.battlefyData.about"></div>
+                </div>
+
+                <button type="button" (click)="this.entryTournament()" mat-button class="btn btn-primary">Participar</button>
+            </div>
+        </div>
+    </div>
+</app-content>

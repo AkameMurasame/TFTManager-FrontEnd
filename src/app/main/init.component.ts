@@ -4,6 +4,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { SummonerService } from "src/app/@riotApi/index";
 import { TeamType } from '../@shared/enum/teamType.enum';
 import { Player } from '../@shared/models/player/Player';
+import { PlayerConnect } from '../@shared/models/socket/player-connect';
 import { Team } from '../@shared/models/team/team';
 import { Role } from '../@shared/models/user/Role';
 import { User } from '../@shared/models/user/User';
@@ -24,6 +25,7 @@ export class InitComponent implements OnInit {
 
   isLcu: String = "";
   enable: boolean = false;
+  player: Player;
 
   constructor(private userService: UserService,
     private authService: AuthenticationService,
@@ -53,7 +55,6 @@ export class InitComponent implements OnInit {
     user.role = role;
 
     this.authService.login(user).subscribe(login => {
-      this.verifyRole(this.authService.currentUserValue.user);
       this.verifyPlayer(this.authService.currentUserValue.user.id, null);
     })
   }
@@ -64,7 +65,6 @@ export class InitComponent implements OnInit {
         if (this.authService.currentUserValue.user.username == player.summonerId.toString()) {
           this.authService.logout();
           this.authService.login(this.makeUser(player)).subscribe(login => {
-            this.verifyRole(this.authService.currentUserValue.user);
             this.verifyPlayer(this.authService.currentUserValue.user.id, player);
           })
         } else {
@@ -79,24 +79,27 @@ export class InitComponent implements OnInit {
   verifyPlayer(id: number, player: Player) {
     if (!this.playerService.getPlayer) {
       this.playerService.getPlayerByUserId(id).subscribe(bdplayer => {
+        this.player = bdplayer;
         if (!bdplayer) {
           //this.riotSummonerService.getTftSummoner(player.displayName).subscribe(summoner => {
           //player.puuid = summoner.puuid;
           this.playerService.registerPlayer(player).subscribe(newPlayer => {
+            this.player = newPlayer;
             const team: Team = {
               name: player.displayName,
               capitain: player.accountId,
               teamType: TeamType.SINGLEPLAYER,
             };
-
+            this.verifyRole(this.authService.currentUserValue.user);
             this.teamService.teamRegister(team).subscribe(t => {
               this.router.navigate(['player/dashboard']);
             })
           });
           //})
         } else {
-          this.webSocketService.initWebSocket(this.playerService.getPlayer.displayName);
-          if (this.playerService.getPlayer.displayName != this.lcuService.getlcuPlayer.displayName) {
+          this.verifyRole(this.authService.currentUserValue.user);
+          this.router.navigate(['player/dashboard']);
+          /* if (this.playerService.getPlayer.displayName != this.lcuService.getlcuPlayer.displayName) {
             console.log("update")
             var player = this.playerService.getPlayer;
             player.displayName = this.lcuService.getlcuPlayer.displayName;
@@ -105,7 +108,7 @@ export class InitComponent implements OnInit {
             });
           } else {
             this.router.navigate(['player/dashboard']);
-          }
+          } */
         }
       });
     }
@@ -117,14 +120,12 @@ export class InitComponent implements OnInit {
       if (!user) {
         this.userService.userRegister(this.makeUser(player)).subscribe(newUser => {
           this.authService.login(this.makeUser(player)).subscribe(login => {
-            this.verifyRole(this.authService.currentUserValue.user);
             this.verifyPlayer(this.authService.currentUserValue.user.id, player);
           })
         });
       } else {
         //this.authService.logout();
         this.authService.login(this.makeUser(player)).subscribe(login => {
-          this.verifyRole(this.authService.currentUserValue.user);
           this.verifyPlayer(this.authService.currentUserValue.user.id, player);
         });
       }
@@ -148,7 +149,29 @@ export class InitComponent implements OnInit {
     if (user.role.id == 2) {
       this.organizationService.getOrganizationByUserId(user.id).subscribe(organization => {
 
+        const playerConnect: PlayerConnect = {
+          id: this.playerService.getPlayer.id,
+          summonerId: this.playerService.getPlayer.summonerId,
+          displayName: this.playerService.getPlayer.displayName,
+          organizationId: organization.id
+        };
+
+        console.log(playerConnect);
+
+        this.webSocketService.initWebSocket(playerConnect)
       });
+    } else {
+      console.log("carai", this.player)
+      const playerConnect: PlayerConnect = {
+        id: this.player.id,
+        summonerId: this.player.summonerId,
+        displayName: this.player.displayName,
+        organizationId: null
+      };
+
+      console.log(playerConnect);
+
+      this.webSocketService.initWebSocket(playerConnect);
     }
   }
 

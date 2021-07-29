@@ -1,7 +1,11 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ROUTES } from '../sidebar/sidebar.component';
-import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
+import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { PlayerService } from '../../services/player.service';
+import { WebsocketService } from '../../services/websocket.service';
+import { OrganizationService } from '../../services/organization.service';
+import { PlayerConnect } from '../../models/socket/player-connect';
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +21,8 @@ export class NavbarComponent implements OnInit {
   private toggleButton: any;
   private sidebarVisible: boolean;
 
-  constructor(location: Location, private element: ElementRef, private router: Router, private route: ActivatedRoute) {
+  constructor(location: Location, private element: ElementRef, private router: Router, private route: ActivatedRoute,
+    private webSocketService: WebsocketService, private playerService: PlayerService, private organizationService: OrganizationService) {
     this.location = location;
     this.sidebarVisible = false;
   }
@@ -34,6 +39,7 @@ export class NavbarComponent implements OnInit {
         this.mobile_menu_visible = 0;
       }
     });
+    this.patch = this.router.url;
   }
 
   sidebarOpen() {
@@ -115,7 +121,8 @@ export class NavbarComponent implements OnInit {
     this.route.url.subscribe(url => {
       for (let x = 0; x < url.length; x++) {
         if ((x + 1) === url.length) {
-          this.patch = url[x]['path'].toLocaleUpperCase();
+          console.log(url)
+          this.patch = url[x]['path'].toLocaleLowerCase();
         }
       }
     });
