@@ -13,6 +13,7 @@ import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { EventList } from "../models/lcu/EventList";
 import { EventLcu } from "../models/lcu/EventLcu";
+import { TournamentService } from "./tournament.service";
 
 @Injectable({ providedIn: "root" })
 export class WebsocketService {
@@ -25,10 +26,10 @@ export class WebsocketService {
     intervalPartida: any;
     eventsPartida: EventLcu[];
     lastCountEvent: number = 2;
-    activeTournament: number;
+    activeGroup: number;
     organizationTournament: number;
 
-    constructor(private http: HttpClient, private lcuService: LcuService, private playerService: PlayerService, private toastService: ToastService) { }
+    constructor(private http: HttpClient, private lcuService: LcuService, private playerService: PlayerService, private toastService: ToastService, private tournamentService: TournamentService) { }
 
     public get getconnection() {
         return this.connection;
@@ -50,17 +51,19 @@ export class WebsocketService {
                     //this.connection.then((stompClient) => this.stompClientSendMessage(stompClient, `/topic/organization/${this.organizationTournament}`, "oplhar object"));
                     this.eventsPartida = data.Events;
                     this.lastCountEvent = data.Events.length;
-                    console.log(data.Events, 51);
                 } else {
-                    if (data.Events.length < this.lastCountEvent) {
+                    if (data.Events.length > this.lastCountEvent) {
                         this.eventsPartida = data.Events;
-                        console.log(data.Events, 56);
-                        for (var x = this.lastCountEvent; x < data.Events.length; x++)
+                        for (var x = this.lastCountEvent; x < data.Events.length; x++) {
                             var event = data.Events[x];
-                        if (event.EventName == "ChampionKill") {
-                            console.log("jogador eliminado: " + event.KillerName);
+                            if (event.EventName == "ChampionKill") {
+                                console.log("jogador eliminado: " + event.KillerName);
+                                if (event.KillerName == "Àkäme") {
+                                    this.tournamentService.eliminatePlayerFromTournament(this.activeGroup, 4976434).subscribe();
+                                }
+                            }
+                            this.lastCountEvent = data.Events.length;
                         }
-                        this.lastCountEvent = data.Events.length;
                     }
                 }
             }
@@ -69,7 +72,7 @@ export class WebsocketService {
 
     initIntervalPartida() {
         console.log('init interval');
-        this.intervalPartida = setInterval(func => this.DataPartida().subscribe(), 15 * 1000);
+        this.intervalPartida = setInterval(func => this.DataPartida().subscribe(), 7 * 1000);
     }
 
     finishInterval() {
@@ -99,8 +102,6 @@ export class WebsocketService {
     }
 
     disconnect(stompClient, username, connectBtn, disconnectBtn, clicked = false) {
-        connectBtn.disabled = false
-        disconnectBtn.disabled = true
         if (clicked) {
             this.stompClientSendMessage(stompClient, '/app/unregister', username)
         }
@@ -123,61 +124,88 @@ export class WebsocketService {
         return stompClient
     }
 
-    connectCreateLobby(stompClient, player, initpartida) {
-        this.connection.then((stompClient) => this.stompSubscribe(stompClient, '/user/lobby-' + player.summonerId, (data) => { // 7
-            const teans = JSON.parse(data.body);
+    createLobby(object, stompClient) {
 
-            const lobby: CreateLobby = {
-                queueId: 1090
-            };
+        const teans = object.players;
+        this.activeGroup = object.groupId;
 
-            var invitationArray = Array<InvitationLobby>();
-            var actualPlayer;
-            console.log(teans);
+        const lobby: CreateLobby = {
+            queueId: 1090
+        };
 
-            this.lcuService.createLobby(lobby).subscribe(lobby => {
-                for (var x = 0; x < teans.length; x++) {
-                    if (teans[x].capitao.summonerId === null) {
-                        actualPlayer = teans[x];
-                        this.lcuService.findPlayer(teans[x].name).subscribe(player => {
-                            if (player != null) {
-                                const invitation: InvitationLobby = {
-                                    toSummonerId: 1903736,
-                                    toSummonerName: "INU Kuga"
-                                };
+        var invitationArray = Array<InvitationLobby>();
 
-                                invitationArray.push(invitation);
+        this.lcuService.createLobby(lobby).subscribe(lobby => {
+            for (var x = 0; x < teans.length; x++) {
+                let playerAtual = teans[x];
+                if (teans[x].capitao.summonerId === null) {
+                    this.lcuService.findPlayer(teans[x].name).subscribe(player => {
+                        if (player != null) {
+                            player.id = playerAtual.capitao.id;
+                            const update: UpdatePlayerLobby = {
+                                player: player,
+                                key: "410e8677-7073-48dd-a882-8a5e53d5a833"
+                            };
 
-                                this.lcuService.invitePlayers(invitationArray).subscribe(invite => {
-                                    invitationArray = [];
-                                    console.log(actualPlayer, 82);
+                            console.log(update, 161)
 
-                                    player.id = actualPlayer.capitao.id;
-                                    const update: UpdatePlayerLobby = {
-                                        player: player,
-                                        key: "410e8677-7073-48dd-a882-8a5e53d5a833"
-                                    };
+                            this.playerService.updatePlayerLobby(update).subscribe(playera => {
+                                console.log(playera, "UPDATE")
+                            });
 
-                                    this.playerService.updatePlayerLobby(update).subscribe();
-                                });
-                            } else {
-                                const invitation: InvitationLobby = {
-                                    toSummonerId: 1903736,
-                                    toSummonerName: "INU Kuga"
-                                };
+                            const invitation: InvitationLobby = {
+                                toSummonerId: 1903736,
+                                toSummonerName: "INU Kuga"
+                            };
 
-                                invitationArray.push(invitation);
+                            invitationArray.push(invitation);
 
-                                this.lcuService.invitePlayers(invitationArray).subscribe(invite => {
-                                    invitationArray = [];
-                                    console.log(invitationArray);
-                                });
-                            }
-                        });
-                    }
+                            this.lcuService.invitePlayers(invitationArray).subscribe(invite => {
+                                invitationArray = [];
+                                if (this.player.summonerId != playerAtual.capitao.summonerId) {
+                                    this.stompClientSendMessage(stompClient, '/user/' + player.summonerId, JSON.stringify({
+                                        message: "INIT_PARTIDA"
+                                    }));
+                                }
+                            });
+                        } else {
+                            //mudou o nick
+                        }
+                    });
+                } else {
+                    const invitation: InvitationLobby = {
+                        toSummonerId: 1903736,
+                        toSummonerName: "INU Kuga"
+                    };
+
+                    invitationArray.push(invitation);
+
+                    this.lcuService.invitePlayers(invitationArray).subscribe(invite => {
+                        invitationArray = [];
+                        if (this.player.summonerId != playerAtual.capitao.summonerId) {
+                            this.stompClientSendMessage(stompClient, '/user/' + playerAtual.capitao.summonerId, JSON.stringify({
+                                message: "INIT_PARTIDA"
+                            }));
+                        }
+                    });
                 }
-            });
-            initpartida();
+            }
+        });
+        this.intervalPartida = setInterval(func => this.DataPartida().subscribe(), 7 * 1000);
+    }
+
+    connectCreateLobby(stompClient, player) {
+        this.connection.then((stompClient) => this.stompSubscribe(stompClient, '/user/' + player.summonerId, (data) => { // 7
+            const json = JSON.parse(data.body);
+            switch (json.message) {
+                case "CREATE_LOBBY":
+                    this.createLobby(json, stompClient);
+                    break;
+
+                case "INIT_PARTIDA":
+                    this.initIntervalPartida();
+                    break;
+            }
         }));
         return stompClient;
     }
@@ -190,6 +218,6 @@ export class WebsocketService {
             .then((stompClient) => {
                 return stompClient;
             }).then((stompClient) => this.connectTopicOrganization(stompClient))
-            .then((stompClient) => this.connectCreateLobby(stompClient, player, this.initIntervalPartida));
+            .then((stompClient) => this.connectCreateLobby(stompClient, player));
     }
 }

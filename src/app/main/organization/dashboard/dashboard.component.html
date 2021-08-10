@@ -4,14 +4,12 @@
       <div class="card card-profile">
         <div class="card-avatar">
           <a href="#">
-            <img class="img" src="{{ this.organization.logo }}" />
+            <img class="img" src="{{ this.organization.logoUrl }}" />
           </a>
         </div>
         <div class="card-body">
           <h4 class="card-title">{{ this.organization.name }}</h4>
-          <p class="card-description">
-            {{ this.organization.about }}
-          </p>
+          <p class="card-description" [innerHTML]="this.organization.shortDescription"></p>
         </div>
       </div>
     </div>
@@ -94,7 +92,7 @@
                     <th mat-header-cell *matHeaderCellDef> Ações </th>
                     <td mat-cell *matCellDef="let element">
                       <button type="button" (click)="detalhesTournament(element.id)" mat-button
-                      class="btn btn-success">Detalhes</button>
+                        class="btn btn-success">Detalhes</button>
                     </td>
                   </ng-container>
 

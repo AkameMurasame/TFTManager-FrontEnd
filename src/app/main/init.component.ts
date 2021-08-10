@@ -50,8 +50,8 @@ export class InitComponent implements OnInit {
     let user = new User();
     //user.username = "4976434";
     //user.password = "4976434";
-    user.username = "18605885";
-    user.password = "18605885";
+    user.username = "14391894";
+    user.password = "14391894";
     user.role = role;
 
     this.authService.login(user).subscribe(login => {
@@ -76,18 +76,18 @@ export class InitComponent implements OnInit {
     });
   }
 
-  verifyPlayer(id: number, player: Player) {
-    if (!this.playerService.getPlayer) {
-      this.playerService.getPlayerByUserId(id).subscribe(bdplayer => {
-        this.player = bdplayer;
-        if (!bdplayer) {
-          //this.riotSummonerService.getTftSummoner(player.displayName).subscribe(summoner => {
-          //player.puuid = summoner.puuid;
-          this.playerService.registerPlayer(player).subscribe(newPlayer => {
+  verifyPlayer(id: number, player1: Player) {
+    console.log(this.playerService.getPlayer)
+    this.playerService.getPlayerByUserId(id).subscribe(bdplayer => {
+      this.player = bdplayer;
+      if (!bdplayer) {
+        this.riotSummonerService.getTftSummoner(player.displayName).subscribe(summoner => {
+          player.puuid = summoner.puuid;
+          this.playerService.registerPlayer(player1).subscribe(newPlayer => {
             this.player = newPlayer;
             const team: Team = {
-              name: player.displayName,
-              capitain: player.accountId,
+              name: player1.displayName,
+              capitain: player1.accountId,
               teamType: TeamType.SINGLEPLAYER,
             };
             this.verifyRole(this.authService.currentUserValue.user);
@@ -95,11 +95,19 @@ export class InitComponent implements OnInit {
               this.router.navigate(['player/dashboard']);
             })
           });
-          //})
+        });
+      } else {
+        if (bdplayer.puuid == null) {
+          this.verifyRole(this.authService.currentUserValue.user);
+          this.riotSummonerService.getTftSummoner(player.displayName).subscribe(summoner => {
+            bdplayer.puuid = summoner.puuid;
+            this.playerService.updatePlayer(bdplayer).subscribe(player => {
+              this.router.navigate(['player/dashboard']);
+            });
+          });
         } else {
           this.verifyRole(this.authService.currentUserValue.user);
-          this.router.navigate(['player/dashboard']);
-          /* if (this.playerService.getPlayer.displayName != this.lcuService.getlcuPlayer.displayName) {
+          if (this.playerService.getPlayer.displayName != this.lcuService.getlcuPlayer.displayName) {
             console.log("update")
             var player = this.playerService.getPlayer;
             player.displayName = this.lcuService.getlcuPlayer.displayName;
@@ -108,11 +116,10 @@ export class InitComponent implements OnInit {
             });
           } else {
             this.router.navigate(['player/dashboard']);
-          } */
+          }
         }
-      });
-    }
-    this.router.navigate(['player/dashboard']);
+      }
+    });
   }
 
   verifyUser(player: Player) {
@@ -146,19 +153,23 @@ export class InitComponent implements OnInit {
   }
 
   verifyRole(user: User) {
-    if (user.role.id == 2) {
+    let role = user.role;
+    console.log(role.id == 2)
+    if (role.id == 2) {
+      console.log("deu certo vei")
       this.organizationService.getOrganizationByUserId(user.id).subscribe(organization => {
+        if (organization) {
+          const playerConnect: PlayerConnect = {
+            id: this.playerService.getPlayer.id,
+            summonerId: this.playerService.getPlayer.summonerId,
+            displayName: this.playerService.getPlayer.displayName,
+            organizationId: organization.id
+          };
 
-        const playerConnect: PlayerConnect = {
-          id: this.playerService.getPlayer.id,
-          summonerId: this.playerService.getPlayer.summonerId,
-          displayName: this.playerService.getPlayer.displayName,
-          organizationId: organization.id
-        };
+          console.log(playerConnect);
 
-        console.log(playerConnect);
-
-        this.webSocketService.initWebSocket(playerConnect)
+          this.webSocketService.initWebSocket(playerConnect)
+        }
       });
     } else {
       console.log("carai", this.player)

@@ -35,4 +35,11 @@ export class TournamentService {
             playerId: idPlayer
         });
     }
+
+    eliminatePlayerFromTournament(idGroup: number, summonerId: number): Observable<any> {
+        return this.http.post<any>(`tournament/eliminatePlayer`, {
+            groupId: idGroup,
+            summonerId: summonerId
+        });
+    }
 }

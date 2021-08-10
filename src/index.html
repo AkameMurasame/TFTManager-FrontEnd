@@ -19,6 +19,7 @@
 <script type="text/javascript">
 
   const IPC = require('electron').ipcRenderer;
+  localStorage.removeItem("Api");
   IPC.on('lcu-load', (event, data) => {
     localStorage.setItem("Api", `https://${data.username}:${data.password}@${data.address}:${data.port}`);
   });

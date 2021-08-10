@@ -42,6 +42,11 @@ export class LcuService {
         return this.http.post<CreateLobby>(`${this.lcuUrl}/lol-lobby/v2/lobby`, lobby);
     }
 
+    getLobby() {
+        return this.http.get<any>(`${this.lcuUrl}/lol-lobby/v2/lobby`);
+    }
+
+
     invitePlayers(invite: InvitationLobby[]) {
         return this.http.post<InvitationLobby[]>(`${this.lcuUrl}/lol-lobby/v2/lobby/invitations`, invite);
     }

@@ -24,7 +24,6 @@ export class DashboardComponent implements OnInit {
   }
 
   getPartidasTft() {
-    console.log(this.playerService.getPlayer)
     if (!this.playerService.getPlayer) {
       this.playerService.getPlayerByUserId(this.authService.currentUserValue.user.id).subscribe(player => {
         //this.getInApi(player.puuid);
