@@ -21,6 +21,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 console.log("catch error game")
                 console.log(this.webSocketService.getisPartida);
                 if(this.webSocketService.getisPartida == true) {
+                    this.webSocketService.auditarPartida();
                     this.webSocketService.finishInterval();
                 }
             }

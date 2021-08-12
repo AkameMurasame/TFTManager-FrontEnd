@@ -50,8 +50,8 @@ export class InitComponent implements OnInit {
     let user = new User();
     //user.username = "4976434";
     //user.password = "4976434";
-    user.username = "14391894";
-    user.password = "14391894";
+    user.username = "14562429";
+    user.password = "14562429";
     user.role = role;
 
     this.authService.login(user).subscribe(login => {
@@ -77,12 +77,11 @@ export class InitComponent implements OnInit {
   }
 
   verifyPlayer(id: number, player1: Player) {
-    console.log(this.playerService.getPlayer)
     this.playerService.getPlayerByUserId(id).subscribe(bdplayer => {
       this.player = bdplayer;
       if (!bdplayer) {
-        this.riotSummonerService.getTftSummoner(player.displayName).subscribe(summoner => {
-          player.puuid = summoner.puuid;
+        this.riotSummonerService.getTftSummoner(player1.displayName).subscribe(summoner => {
+          player1.puuid = summoner.puuid;
           this.playerService.registerPlayer(player1).subscribe(newPlayer => {
             this.player = newPlayer;
             const team: Team = {
@@ -97,9 +96,10 @@ export class InitComponent implements OnInit {
           });
         });
       } else {
-        if (bdplayer.puuid == null) {
+        if (!bdplayer.puuid) {
           this.verifyRole(this.authService.currentUserValue.user);
-          this.riotSummonerService.getTftSummoner(player.displayName).subscribe(summoner => {
+          this.riotSummonerService.getTftSummoner(bdplayer.displayName).subscribe(summoner => {
+            console.log(summoner, 103)
             bdplayer.puuid = summoner.puuid;
             this.playerService.updatePlayer(bdplayer).subscribe(player => {
               this.router.navigate(['player/dashboard']);
@@ -107,16 +107,16 @@ export class InitComponent implements OnInit {
           });
         } else {
           this.verifyRole(this.authService.currentUserValue.user);
-          if (this.playerService.getPlayer.displayName != this.lcuService.getlcuPlayer.displayName) {
+         /* if (this.playerService.getPlayer.displayName != this.lcuService.getlcuPlayer.displayName) {
             console.log("update")
             var player = this.playerService.getPlayer;
             player.displayName = this.lcuService.getlcuPlayer.displayName;
             this.playerService.updatePlayer(player).subscribe(player => {
               this.router.navigate(['player/dashboard']);
-            });
-          } else {
+            }); */
+          //} else {
             this.router.navigate(['player/dashboard']);
-          }
+          //}
         }
       }
     });
@@ -154,9 +154,7 @@ export class InitComponent implements OnInit {
 
   verifyRole(user: User) {
     let role = user.role;
-    console.log(role.id == 2)
     if (role.id == 2) {
-      console.log("deu certo vei")
       this.organizationService.getOrganizationByUserId(user.id).subscribe(organization => {
         if (organization) {
           const playerConnect: PlayerConnect = {
@@ -172,7 +170,6 @@ export class InitComponent implements OnInit {
         }
       });
     } else {
-      console.log("carai", this.player)
       const playerConnect: PlayerConnect = {
         id: this.player.id,
         summonerId: this.player.summonerId,

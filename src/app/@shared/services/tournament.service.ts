@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 import { ApiHttpClient } from "src/app/@core/services/api-http-client";
 import { Tournament } from "../models/tournament/tournament";
 import { HttpClient } from '@angular/common/http';
+import { Team } from "../models/team/team";
 
 
 @Injectable({ providedIn: "root" })
@@ -40,6 +41,13 @@ export class TournamentService {
         return this.http.post<any>(`tournament/eliminatePlayer`, {
             groupId: idGroup,
             summonerId: summonerId
+        });
+    }
+
+    auditarTournament(groupId: number, teamList: Team[]) {
+        return this.http.post<void>(`tournament/auditarTournament`, {
+            groupId: groupId,
+            teamList: teamList
         });
     }
 }

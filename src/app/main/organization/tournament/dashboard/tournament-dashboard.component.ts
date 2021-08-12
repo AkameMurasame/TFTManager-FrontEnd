@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Chave } from '../../../../@shared/models/tournament/chave';
-import { Group } from '../../../../@shared/models/tournament/group';
-import { Stage } from '../../../../@shared/models/tournament/stage';
 import { Tournament } from '../../../../@shared/models/tournament/tournament';
 import { ActiveTournamentService } from '../../../../@shared/services/active-tournament.service';
 import { GroupComponent } from '../group/group.component';

@@ -3,6 +3,7 @@ export interface Group {
     stageId: number;
     id: number;
     name: String;
+    idPartida: String;
     capitain: number;
     teamType: String;
     logo: String;

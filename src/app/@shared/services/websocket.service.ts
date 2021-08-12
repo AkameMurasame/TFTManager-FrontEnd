@@ -14,6 +14,7 @@ import { map } from "rxjs/operators";
 import { EventList } from "../models/lcu/EventList";
 import { EventLcu } from "../models/lcu/EventLcu";
 import { TournamentService } from "./tournament.service";
+import { Team } from "../models/team/team";
 
 @Injectable({ providedIn: "root" })
 export class WebsocketService {
@@ -28,6 +29,8 @@ export class WebsocketService {
     lastCountEvent: number = 2;
     activeGroup: number;
     organizationTournament: number;
+    teansGroup: Team[];
+    killNames: Team[];
 
     constructor(private http: HttpClient, private lcuService: LcuService, private playerService: PlayerService, private toastService: ToastService, private tournamentService: TournamentService) { }
 
@@ -57,8 +60,12 @@ export class WebsocketService {
                         for (var x = this.lastCountEvent; x < data.Events.length; x++) {
                             var event = data.Events[x];
                             if (event.EventName == "ChampionKill") {
-                                console.log("jogador eliminado: " + event.KillerName);
-                                if (event.KillerName == "Àkäme") {
+                                this.teansGroup.forEach(e => {
+                                    if (e.name == event.KillerName) {
+                                        this.killNames.push(e);
+                                    }
+                                })
+                                if (event.KillerName == this.player.displayName) {
                                     this.tournamentService.eliminatePlayerFromTournament(this.activeGroup, 4976434).subscribe();
                                 }
                             }
@@ -70,8 +77,18 @@ export class WebsocketService {
         }));
     }
 
+    auditarPartida() {
+        if (this.killNames.length == this.teansGroup.length) {
+            for (let x = 0; x == 4; x++) {
+                if (this.teansGroup.includes(this.killNames[x])) {
+                    this.killNames.splice(x, 1);
+                }
+            }
+            this.tournamentService.auditarTournament(this.activeGroup, this.killNames).subscribe();
+        }
+    }
+
     initIntervalPartida() {
-        console.log('init interval');
         this.intervalPartida = setInterval(func => this.DataPartida().subscribe(), 7 * 1000);
     }
 
@@ -82,7 +99,7 @@ export class WebsocketService {
 
     connect() {
         return new Promise((resolve, reject) => {
-            let stompClient = Stomp.over(new SockJS('http://localhost:8085/websocket'))
+            let stompClient = Stomp.over(new SockJS('https://tft-manager.herokuapp.com/websocket'))
             stompClient.connect({}, (frame) => {
                 var url = stompClient.ws._transport.url;
                 this.sessionId = url.split("/")[5];
@@ -128,6 +145,7 @@ export class WebsocketService {
 
         const teans = object.players;
         this.activeGroup = object.groupId;
+        this.teansGroup = teans;
 
         const lobby: CreateLobby = {
             queueId: 1090
@@ -184,7 +202,8 @@ export class WebsocketService {
                         invitationArray = [];
                         if (this.player.summonerId != playerAtual.capitao.summonerId) {
                             this.stompClientSendMessage(stompClient, '/user/' + playerAtual.capitao.summonerId, JSON.stringify({
-                                message: "INIT_PARTIDA"
+                                message: "INIT_PARTIDA",
+                                players: this.teansGroup
                             }));
                         }
                     });
