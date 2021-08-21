@@ -1,3 +1,4 @@
+import { stagger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -32,34 +33,41 @@ export class TournamentDashboardComponent implements OnInit {
       this.tournament = tournament;
       this.activeTournamentService.getTournamentStages().subscribe(stages => {
         if (this.activeTournamentService.getGroups.length == 0) {
-          this.activeTournamentService.getGroupsStage(stages[0].id).subscribe(group => {
+          stages.forEach(element => {
+            this.activeTournamentService.getGroupsStage(element.id).subscribe(group => {
+              var g = [];
+              var a = [];
 
-            var g = [];
-            var a = [];
-
-            for (var x = 0; x < group.length; x++) {
-              if (x == 0) {
-                g.push(group[x]);
-              } else {
-                if (group[x - 1].groupId == group[x].groupId) {
+              for (var x = 0; x < group.length; x++) {
+                if (x == 0) {
                   g.push(group[x]);
                 } else {
-                  a.push(g);
-                  g = [];
-                  g.push(group[x])
+                  if (group[x - 1].groupId == group[x].groupId) {
+                    g.push(group[x]); 
+                    console.log(x, group.length)                   
+                    if(x == (group.length - 1)) {
+                      a.push(g);
+                      console.log(g, group[x], 51)
+                      g = [];
+                    }
+                  } else {
+                    a.push(g);
+                    g = [];
+                    g.push(group[x])
+                  }
                 }
               }
-            }
 
-            const stage: Chave = {
-              stage: stages[0],
-              groups: a
-            };
+              const stage: Chave = {
+                stage: element,
+                groups: a
+              };
 
-            this.activeTournamentService.setGroups = stage;
-            this.stages = this.activeTournamentService.getGroups;
-            console.log(this.stages)
-          })
+              this.activeTournamentService.setGroups = stage;
+              this.stages = this.activeTournamentService.getGroups;
+              console.log(this.stages)
+            })
+          });
         } else {
           for (var x = stages.length; x == 0; x--) {
             this.activeTournamentService.getGroupsStage(stages[x].id).subscribe(group => {

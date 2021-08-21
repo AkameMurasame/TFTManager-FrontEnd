@@ -1,10 +1,12 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, dialog } from "electron";
 import * as path from "path";
 import * as url from "url";
 
 const LCUConnector = require("lcu-connector");
 const connector = new LCUConnector();
-const IPC = require('electron').ipcRenderer;
+const IPC = require('electron').ipcMain;
+const { autoUpdater } = require('electron-updater');
+const isDev = require('electron-is-dev');
 
 let win: BrowserWindow;
 
@@ -26,28 +28,6 @@ function createWindow() {
 
   connector.start();
   connector.on("connect", async (data) => {
-    win.webContents
-    .executeJavaScript(
-      `localStorage.removeItem('Api');`,
-      true
-    )
-    .then((result) => {
-      win.webContents
-        .executeJavaScript(
-          `localStorage.removeItem('currentUser');`,
-          true
-        )
-        .then((result) => {
-          win.webContents
-            .executeJavaScript(
-              `localStorage.removeItem('currentPlayer');`,
-              true
-            )
-            .then((result) => {
-             
-            });
-        });
-    });
     setTimeout(async () => {
       win.webContents.send('lcu-load', data);
     }, 5000);
@@ -62,6 +42,17 @@ function createWindow() {
 
   win.on("closed", () => {
     win = null;
+  });
+
+  win.once('ready-to-show', () => {
+    autoUpdater.checkForUpdatesAndNotify();
+  });
+
+  autoUpdater.on('update-available', () => {
+    win.webContents.send('update_available');
+  });
+  autoUpdater.on('update-downloaded', () => {
+    win.webContents.send('update_downloaded');
   });
 }
 
@@ -83,4 +74,12 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
+});
+
+IPC.on('app_version', (event) => {
+  event.sender.send('app_version', { version: app.getVersion() });
+});
+
+IPC.on('restart_app', () => {
+  autoUpdater.quitAndInstall();
 });

@@ -15,6 +15,7 @@ import { EventList } from "../models/lcu/EventList";
 import { EventLcu } from "../models/lcu/EventLcu";
 import { TournamentService } from "./tournament.service";
 import { Team } from "../models/team/team";
+import { environment } from "src/environments/environment";
 
 @Injectable({ providedIn: "root" })
 export class WebsocketService {
@@ -99,7 +100,7 @@ export class WebsocketService {
 
     connect() {
         return new Promise((resolve, reject) => {
-            let stompClient = Stomp.over(new SockJS('https://tft-manager.herokuapp.com/websocket'))
+            let stompClient = Stomp.over(new SockJS(environment.webSocketEndPoint))
             stompClient.connect({}, (frame) => {
                 var url = stompClient.ws._transport.url;
                 this.sessionId = url.split("/")[5];

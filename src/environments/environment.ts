@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   version: 0,
-  //restEndPoint: 'http://localhost:8085/api/v1',
-  restEndPoint: 'https://tft-manager.herokuapp.com/api/v1',
+  restEndPoint: 'http://localhost:8080/api/v1',
+  webSocketEndPoint: 'http://localhost:8080/websocket',
   riotApiEndPont: `.api.riotgames.com`
 };
 

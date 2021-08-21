@@ -5,6 +5,6 @@ export class DataDragonService {
   constructor() {}
 
   getUrlProfileIcon(idIcon: number) : string {
-    return `http://ddragon.leagueoflegends.com/cdn/11.10.1/img/profileicon/${idIcon}.png`
+    return `http://ddragon.leagueoflegends.com/cdn/11.16.1/img/profileicon/${idIcon}.png`
   }
 }

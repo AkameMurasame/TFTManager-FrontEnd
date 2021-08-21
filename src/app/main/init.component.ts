@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { IpcRenderer } from 'electron';
 import { SummonerService } from "src/app/@riotApi/index";
 import { TeamType } from '../@shared/enum/teamType.enum';
 import { Player } from '../@shared/models/player/Player';
@@ -23,9 +24,10 @@ import { WebsocketService } from '../@shared/services/websocket.service';
 })
 export class InitComponent implements OnInit {
 
-  isLcu: String = "";
+  isLcu: boolean = false;
   enable: boolean = false;
   player: Player;
+  ipc: IpcRenderer
 
   constructor(private userService: UserService,
     private authService: AuthenticationService,
@@ -36,27 +38,37 @@ export class InitComponent implements OnInit {
     private riotSummonerService: SummonerService,
     private organizationService: OrganizationService,
     private teamService: TeamService,
-    private webSocketService: WebsocketService) { }
+    private webSocketService: WebsocketService) {
+    if ((<any>window).require) {
+      try {
+        this.ipc = (<any>window).require('electron').ipcRenderer;
+      } catch (e) {
+        throw e;
+      }
+    } else {
+      console.warn('App not running inside Electron!');
 
-  async ngOnInit() {
-    await this.verifylolClient();
+      let role = new Role();
+      role.id = 1;
+
+      let user = new User();
+      user.username = "14562429";
+      user.password = "14562429";
+      user.role = role;
+
+      this.authService.login(user).subscribe(login => {
+        this.verifyPlayer(this.authService.currentUserValue.user.id, null);
+      })
+    }
   }
 
-  login() {
-    let role = new Role();
-    role.id = 1;
+  async ngOnInit() {
+    this.ipc.on('lcu-load', (event, data) => {
+      this.lcuService.setLcuUrl = `https://${data.username}:${data.password}@${data.address}:${data.port}`.toString();
+      this.isLcu = true;
+    });
 
-
-    let user = new User();
-    //user.username = "4976434";
-    //user.password = "4976434";
-    user.username = "14562429";
-    user.password = "14562429";
-    user.role = role;
-
-    this.authService.login(user).subscribe(login => {
-      this.verifyPlayer(this.authService.currentUserValue.user.id, null);
-    })
+    await this.verifylolClient();
   }
 
   init() {
@@ -107,14 +119,14 @@ export class InitComponent implements OnInit {
           });
         } else {
           this.verifyRole(this.authService.currentUserValue.user);
-         /* if (this.playerService.getPlayer.displayName != this.lcuService.getlcuPlayer.displayName) {
+          /*if (this.playerService.getPlayer.displayName != this.lcuService.getlcuPlayer.displayName) {
             console.log("update")
             var player = this.playerService.getPlayer;
             player.displayName = this.lcuService.getlcuPlayer.displayName;
             this.playerService.updatePlayer(player).subscribe(player => {
               this.router.navigate(['player/dashboard']);
-            }); */
-          //} else {
+            });
+          } else { */
             this.router.navigate(['player/dashboard']);
           //}
         }
@@ -131,7 +143,6 @@ export class InitComponent implements OnInit {
           })
         });
       } else {
-        //this.authService.logout();
         this.authService.login(this.makeUser(player)).subscribe(login => {
           this.verifyPlayer(this.authService.currentUserValue.user.id, player);
         });
@@ -184,12 +195,11 @@ export class InitComponent implements OnInit {
   }
 
   async verifylolClient() {
-    while (this.isLcu == "") {
-      this.isLcu = this.lcuService.getClientLcu();
+    while (this.isLcu == false) {
       await this.delay(1000);
     }
 
-    if (this.isLcu != "") {
+    if (this.isLcu, 3) {
       this.init();
     }
   }

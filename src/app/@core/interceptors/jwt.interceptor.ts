@@ -24,7 +24,7 @@ export class JwtInterceptor implements HttpInterceptor {
         } if (isLoggedIn && isRito) {
             request = request.clone({
                 setHeaders: {
-                    "X-Riot-Token": `RGAPI-432c1861-b86e-455b-b1a6-f71e2ac17143`
+                    "X-Riot-Token": `RGAPI-67e4880d-ef30-4420-9278-e4e194e6e529`
                 }
             });
         }

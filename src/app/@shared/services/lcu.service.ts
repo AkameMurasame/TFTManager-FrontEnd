@@ -20,13 +20,9 @@ export class LcuService {
         return this.lcuPlayer;
     }
 
-    getClientLcu(): String {
-        let lcu = localStorage.getItem('Api');
-        if (lcu) {
-            this.lcuUrl = lcu;
-            return this.lcuUrl;
-        }
-        return "";
+    public set setLcuUrl(url) {
+        console.log(url)
+        this.lcuUrl = url;
     }
 
     getLcuPlayer(): Observable<Player> {
