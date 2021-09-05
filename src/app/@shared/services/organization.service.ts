@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { ApiHttpClient } from "src/app/@core/services/api-http-client";
+import { TeamStatus } from "../enum/teamStatus.enum";
 import { AddAdmin } from "../models/organization/addAdmin";
 import { Organization } from "../models/organization/organization";
 import { RemoveAdmin } from "../models/organization/removeAdmin";
@@ -71,5 +72,13 @@ export class OrganizationService {
 
     getAllTorunamentByOrganization() {
         return this.http.get<Tournament[]>(`tournament/getAllTournamentsByOrganization/${this.organization.id}`);
+    }
+
+    setStatusTeamGroup(teamId: number, groupId: number, teamStatus: TeamStatus) {
+        return this.http.put<void>(`organization/tournament/setStatusTeamGroup`, {
+            groupId: groupId,
+            teamId: teamId,
+            teamStatus: teamStatus
+        });
     }
 }

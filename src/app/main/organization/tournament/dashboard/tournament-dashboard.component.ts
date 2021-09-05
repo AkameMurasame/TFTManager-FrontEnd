@@ -43,11 +43,9 @@ export class TournamentDashboardComponent implements OnInit {
                   g.push(group[x]);
                 } else {
                   if (group[x - 1].groupId == group[x].groupId) {
-                    g.push(group[x]); 
-                    console.log(x, group.length)                   
-                    if(x == (group.length - 1)) {
+                    g.push(group[x]);
+                    if (x == (group.length - 1)) {
                       a.push(g);
-                      console.log(g, group[x], 51)
                       g = [];
                     }
                   } else {
@@ -65,7 +63,6 @@ export class TournamentDashboardComponent implements OnInit {
 
               this.activeTournamentService.setGroups = stage;
               this.stages = this.activeTournamentService.getGroups;
-              console.log(this.stages)
             })
           });
         } else {
@@ -82,7 +79,9 @@ export class TournamentDashboardComponent implements OnInit {
 
   detalhesGroup(group) {
     this.dialogService.open(GroupComponent, {
-      data: group
+      data: group,
+      height: "75%",
+      width: "75%"
     });
   }
 }

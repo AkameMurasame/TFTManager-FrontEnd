@@ -5,6 +5,8 @@ import { ApiHttpClient } from "src/app/@core/services/api-http-client";
 import { UpdatePlayerLobby } from "../models/lcu/update-player";
 import { Player } from "../models/player/Player";
 import { RequestPartidas } from "../models/player/RequestPartidas";
+import { Group } from "../models/tournament/group";
+import { Tournament } from "../models/tournament/tournament";
 
 @Injectable({ providedIn: "root" })
 export class PlayerService {
@@ -21,6 +23,23 @@ export class PlayerService {
 
   public get getPlayer(): Player {
     return this.player.value;
+  }
+  //${this.player.value.id}
+  getActiveMatchByPlayer(): Observable<Group> {
+    return this.http.get<Group>(`tournament/getActiveMatchByPlayer/14`);
+  }
+
+  getTournamentsByPlayer(): Observable<Tournament[]> {
+    return this.http.get<Tournament[]>(`tournament/getByPlayerId/14`);
+  }
+
+  getMatchesByPlayer(): Observable<any[]> {
+    return this.http.get<any[]>(`tournament/getMatchesByPlayer/14`);
+  }
+
+
+  getNextTournamentByTeam(): Observable<Tournament> {
+    return this.http.get<Tournament>(`tournament/getNextTournamentByTeam/14`);
   }
 
   getPlayerByUserId(id: number): Observable<Player> {

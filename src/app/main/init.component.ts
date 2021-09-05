@@ -10,6 +10,7 @@ import { Team } from '../@shared/models/team/team';
 import { Role } from '../@shared/models/user/Role';
 import { User } from '../@shared/models/user/User';
 import { AuthenticationService } from '../@shared/services/authentication.service';
+import { IpcRenderSService } from '../@shared/services/ipc-render.service';
 import { LcuService } from '../@shared/services/lcu.service';
 import { OrganizationService } from '../@shared/services/organization.service';
 import { PlayerService } from '../@shared/services/player.service';
@@ -27,7 +28,8 @@ export class InitComponent implements OnInit {
   isLcu: boolean = false;
   enable: boolean = false;
   player: Player;
-  ipc: IpcRenderer
+  ipc: IpcRenderer;
+  isElectron: boolean = true;
 
   constructor(private userService: UserService,
     private authService: AuthenticationService,
@@ -38,7 +40,8 @@ export class InitComponent implements OnInit {
     private riotSummonerService: SummonerService,
     private organizationService: OrganizationService,
     private teamService: TeamService,
-    private webSocketService: WebsocketService) {
+    private webSocketService: WebsocketService,
+    private ipcService: IpcRenderSService) {
     if ((<any>window).require) {
       try {
         this.ipc = (<any>window).require('electron').ipcRenderer;
@@ -46,6 +49,7 @@ export class InitComponent implements OnInit {
         throw e;
       }
     } else {
+      this.isElectron = false;
       console.warn('App not running inside Electron!');
 
       let role = new Role();
@@ -119,16 +123,19 @@ export class InitComponent implements OnInit {
           });
         } else {
           this.verifyRole(this.authService.currentUserValue.user);
-          /*if (this.playerService.getPlayer.displayName != this.lcuService.getlcuPlayer.displayName) {
+          if (!this.isElectron) {
+            this.router.navigate(['player/dashboard']);
+          }
+          if (this.playerService.getPlayer.displayName != this.lcuService.getlcuPlayer.displayName) {
             console.log("update")
             var player = this.playerService.getPlayer;
             player.displayName = this.lcuService.getlcuPlayer.displayName;
             this.playerService.updatePlayer(player).subscribe(player => {
               this.router.navigate(['player/dashboard']);
             });
-          } else { */
+          } else {
             this.router.navigate(['player/dashboard']);
-          //}
+          }
         }
       }
     });

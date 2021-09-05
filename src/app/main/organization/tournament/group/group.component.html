@@ -5,7 +5,34 @@
                 <h4 class="card-title">Jogadores</h4>
             </div>
             <div class="card-body">
-                <h5 *ngFor="let player of this.data; let index = index;">{{ player.name }}</h5>
+                <div class="row">
+                    <div class="col-md-12">
+                      <div class="mat-elevation-z1">
+                        <table class="col-12" mat-table [dataSource]="dataSource">
+        
+                          <ng-container matColumnDef="Nick">
+                            <th mat-header-cell *matHeaderCellDef> Nick </th>
+                            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                          </ng-container>
+        
+                          <ng-container matColumnDef="Acoes">
+                            <th mat-header-cell *matHeaderCellDef> Ações </th>
+                            <td mat-cell *matCellDef="let element">
+                              <button type="button" title="Jogador Desistente" mat-icon-button (click)="setStatusDesistente(element.id, element.groupId)">
+                                <mat-icon>disabled_by_default</mat-icon>
+                              </button>
+                              
+                              <button type="button" title="Jogador Ausente" mat-icon-button (click)="setStatusAusente(element.id, element.groupId)">
+                                <mat-icon>group_off</mat-icon>
+                              </button>
+                            </td>
+                          </ng-container>
+        
+                          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                      </div>
+                    </div>
             </div>
         </div>
     </div>

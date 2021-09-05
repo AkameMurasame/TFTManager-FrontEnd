@@ -4,6 +4,7 @@ import { ApiHttpClient } from "src/app/@core/services/api-http-client";
 import { Tournament } from "../models/tournament/tournament";
 import { HttpClient } from '@angular/common/http';
 import { Team } from "../models/team/team";
+import { Group } from "../models/tournament/group";
 
 
 @Injectable({ providedIn: "root" })
