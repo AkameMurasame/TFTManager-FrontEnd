@@ -24,22 +24,21 @@ export class PlayerService {
   public get getPlayer(): Player {
     return this.player.value;
   }
-  //${this.player.value.id}
+  //
   getActiveMatchByPlayer(): Observable<Group> {
-    return this.http.get<Group>(`tournament/getActiveMatchByPlayer/14`);
+    return this.http.get<Group>(`tournament/getActiveMatchByPlayer/${this.player.value.id}`);
   }
 
   getTournamentsByPlayer(): Observable<Tournament[]> {
-    return this.http.get<Tournament[]>(`tournament/getByPlayerId/14`);
+    return this.http.get<Tournament[]>(`tournament/getByPlayerId/${this.player.value.id}`);
   }
 
   getMatchesByPlayer(): Observable<any[]> {
-    return this.http.get<any[]>(`tournament/getMatchesByPlayer/14`);
+    return this.http.get<any[]>(`tournament/getMatchesByPlayer/${this.player.value.id}`);
   }
 
-
   getNextTournamentByTeam(): Observable<Tournament> {
-    return this.http.get<Tournament>(`tournament/getNextTournamentByTeam/14`);
+    return this.http.get<Tournament>(`tournament/getNextTournamentByTeam/${this.player.value.id}`);
   }
 
   getPlayerByUserId(id: number): Observable<Player> {

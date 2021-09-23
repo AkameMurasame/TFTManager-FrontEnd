@@ -15,11 +15,8 @@ export class TournamentComponent implements OnInit {
 
   ngOnInit(): void {
     this.playerService.getTournamentsByPlayer().subscribe(tournaments => {
-      this.tournamentList = tournaments;
-    })
-
-    this.playerService.getMatchesByPlayer().subscribe(tournaments => {
       console.log(tournaments)
+      this.tournamentList = tournaments;
     })
   }
 }

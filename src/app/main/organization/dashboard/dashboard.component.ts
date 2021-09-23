@@ -12,7 +12,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { RemoveAdmin } from 'src/app/@shared/models/organization/removeAdmin';
 import { CadastroComponent } from '../tournament/cadastro/cadastro.component';
 import { Tournament } from 'src/app/@shared/models/tournament/tournament';
-import { WebsocketService } from '../../../@shared/services/websocket.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,7 +28,7 @@ export class DashboardComponent implements OnInit {
 
   readonly dataSourceTournament = new MatTableDataSource<Tournament>();
 
-  readonly displayedColumnsTournament: string[] = ['Nome', 'Data', 'Hora', "qtdPlayer", "qtdPlayerTeam", "Acoes"];
+  readonly displayedColumnsTournament: string[] = ['Nome', 'Data', "qtdPlayer", "qtdPlayerTeam", "Acoes"];
 
   constructor(private router: Router, private organizationService: OrganizationService,
     private dialogService: MatDialog, private authService: AuthenticationService, private toastService: ToastService) { }

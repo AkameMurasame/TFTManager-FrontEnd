@@ -8,9 +8,10 @@ import { PermissionDirective } from './directives/permission.directive';
 import { ToastService } from './services/toast.service';
 import { RiotModule } from '../@riotApi/riot.module';
 import { HotToastModule } from '@ngneat/hot-toast';
+import { ViewMatchComponent } from './components/view-match/view-match.component';
 
 @NgModule({
-  declarations: [SidebarComponent, NavbarComponent, ContentComponent, PermissionDirective],
+  declarations: [SidebarComponent, NavbarComponent, ContentComponent, PermissionDirective, ViewMatchComponent],
   imports: [
     CommonModule,
     RouterModule,

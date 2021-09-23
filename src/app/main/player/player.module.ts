@@ -5,7 +5,7 @@ import { PlayerRoutes } from './player-routes';
 import { SharedModule } from 'src/app/@shared/shared.module';
 import { TournamentComponent } from './dashboard/tournament/tournament.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatchComponent } from './match/match.component';
+import { MatchComponent } from './dashboard/match/match.component';
 
 @NgModule({
   declarations: [DashboardComponent, TournamentComponent, MatchComponent],

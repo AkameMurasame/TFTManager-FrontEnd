@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header row">
+                <div class="col-6">
+                    <img class="logo-img-img" src="{{ this.urlIcon }}" />
+                    <h4> {{ this.player.displayName }}</h4>
+                </div>
+                <div class="col-6">
+                    <h4> {{ this.match.tournament.name }}</h4>
+                    <h4> {{ this.match.tournament.date }}</h4>
+
+                    <h4> {{ this.match.tournament.date }}</h4>
+                </div>
+            </div>
+            <div class="card-body row">
+                <div class="col-6">
+
+                </div>
+                <div class="col-6 row">
+                    <div class="col-12"  *ngFor="let match of this.match.groupTeams; let index = index;">
+                        <div class=""><p>{{ match.name }}</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

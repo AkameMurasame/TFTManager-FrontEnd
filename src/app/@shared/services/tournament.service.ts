@@ -5,14 +5,19 @@ import { Tournament } from "../models/tournament/tournament";
 import { HttpClient } from '@angular/common/http';
 import { Team } from "../models/team/team";
 import { Group } from "../models/tournament/group";
+import { MatchResponse } from "../models/tournament/matchResponse";
 
 
 @Injectable({ providedIn: "root" })
 export class TournamentService {
     constructor(private http: ApiHttpClient, private http2: HttpClient) { }
-
+    
     tournamentRegister(tournament: Tournament): Observable<Tournament> {
         return this.http.post<Tournament>(`tournament/create`, tournament);
+    }
+
+    geMatch(groupId: number): Observable<MatchResponse> {
+        return this.http.get<MatchResponse>(`tournament/getTeamsByMatch/${groupId}`);
     }
 
     getTournamentById(id: number): Observable<Tournament> {
