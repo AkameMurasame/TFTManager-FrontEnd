@@ -1,0 +1,167 @@
+//@import '../../../../../assets/material-dashboard.scss;';
+//@import '../../../../../assets/core/mixins';
+
+#listahistorico {
+    overflow-y: scroll;
+max-height: 650px !important;
+}
+
+.lol-item {
+    width: 32px;
+    height: 32px;
+    margin-left: 2px;
+}
+
+.bg-vitoria {
+    background: #28a7451f;
+}
+
+.false {
+    background: #dc35453d;
+}
+
+.multikill {
+    width: 78px;
+}
+
+.multikill > div {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.75em;
+    line-height: 0.875em;
+    padding: 2px 3px 3px;
+    max-width: 72px;
+    text-align: center;
+    white-space: pre-wrap;
+}
+
+.spell-1 {
+    background-position: 100% 0%;
+    margin-top: -7px;
+}
+
+.spell-2 {
+    background-position: 50% 0%;
+    margin-bottom: -6px;
+}
+
+.margin-perso {
+    margin-bottom: 1px !important;
+}
+
+.img-champ {
+    height: 50px !important;
+    width: 50px !important;
+}
+
+.mdl-card {
+    width: 100%;
+    min-height: 0px;
+}
+
+.partida {
+    border: 1px solid #c8c8c8;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.header-partida {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.header-partida {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    -moz-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-justify-content: space-between;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.header-partida .detalhes {
+    font-size: 13px;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+    padding: 6px 0 7px;
+}
+
+.conteudo-partida {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+    -webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-justify-content: space-between;
+    justify-content: space-between;
+    padding: 10px 20px 8px 10px;
+}
+
+.champion {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+}
+
+.match-data-content__details-kda {
+    width: 67px;
+}
+
+.game-resume-data .match-data-content > div:nth-child(n + 2) {
+    padding: 4px 5px;
+}
+
+.hover-partida {
+    &:after {
+        background-color: rgba(0,0,0,0.05);
+        content: ".";
+        position: absolute;
+        left: 0px;
+        top: 0;
+        width: 0;
+        height: 13%;
+        color: transparent;
+       //@include transition(all .75s);
+    }
+
+    &:hover {
+        &:after {
+            width: 98%;
+        }
+    }
+}

@@ -18,6 +18,10 @@ export class ActiveTournamentService {
         this.groups = new Array<Chave>();
     }
 
+    public get getTournament() : Tournament {
+        return this.activeTournament;
+    }
+
     public get getGroups(): Array<Chave> {
         return this.groups;
     }
@@ -48,5 +52,11 @@ export class ActiveTournamentService {
 
     getGroupsStage(stageid: number): Observable<Group[]> {
         return this.http.get<Group[]>(`tournament/getGroupsByStage/${stageid}`);
+    }
+
+    gerarProximaFase() {
+        return this.http.post<void>(`tournament/generateNextGroups`, {
+            tournamentId: this.activeTournament.id
+        });
     }
 }

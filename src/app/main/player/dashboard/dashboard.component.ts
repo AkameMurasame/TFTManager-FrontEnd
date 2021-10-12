@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatchDTO } from 'src/app/@riotApi';
 import { MatchService } from 'src/app/@riotApi/services/match.service';
 import { Group } from 'src/app/@shared/models/tournament/group';
 import { AuthenticationService } from 'src/app/@shared/services/authentication.service';
@@ -18,12 +19,13 @@ export class DashboardComponent implements OnInit {
   partidas: String[] = [];
   activeGroup: Group;
 
+
   constructor(private playerService: PlayerService, private authService: AuthenticationService, private matchService: MatchService,
     private router: Router, private w: WebsocketService, private lcu: LcuService
   ) { }
 
   ngOnInit() {
-    
+   
   }
 
   tabLoadTimes: Date[] = [];
@@ -34,26 +36,6 @@ export class DashboardComponent implements OnInit {
     }
 
     return this.tabLoadTimes[index];
-  }
-
-  getPartidasTft() {
-    if (!this.playerService.getPlayer) {
-      this.playerService.getPlayerByUserId(this.authService.currentUserValue.user.id).subscribe(player => {
-        //this.getInApi(player.puuid);
-      });
-    } else {
-      //this.getInApi(this.playerService.getPlayer.puuid);
-    }
-  }
-
-  getInApi(puuid: string) {
-    this.matchService.getCodigoPartidasTft(puuid, 100).subscribe(partidas => {
-      console.log(partidas)
-      this.matchService.getPartidaTft(partidas[0]).subscribe(partida => {
-        console.log(partida);
-        console.log(this.matchService.historicoPartidas)
-      })
-    });
   }
 
   getPartidaAtiva() {

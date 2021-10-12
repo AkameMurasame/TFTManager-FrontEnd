@@ -9,4 +9,6 @@ export interface MatchResponse {
     groupTeams: Team[];
 
     playerMatch: Match;
+
+    imgId: string;
 }

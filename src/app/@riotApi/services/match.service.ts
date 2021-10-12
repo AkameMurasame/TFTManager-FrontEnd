@@ -7,16 +7,24 @@ import { MatchDTO } from "src/app/@riotApi/index";
 @Injectable({ providedIn: "root" })
 export class MatchService {
 
-    private codigos: string[] = [];
-
+    private codigos: BehaviorSubject<string[]>;
+    public observableCodigos: Observable<String[]>;
+    private qtdePesquisa = 0;
+    private pesquisado = 0;
     private historico: BehaviorSubject<MatchDTO[]>;
     public observableHistory: Observable<MatchDTO[]>;
+
 
     constructor(private riotApiCore: RiotApiCore) {
         this.historico = new BehaviorSubject<MatchDTO[]>(
             JSON.parse(localStorage.getItem("history")!)
         );
         this.observableHistory = this.historico.asObservable();
+
+        this.codigos = new BehaviorSubject<string[]>(
+            JSON.parse(localStorage.getItem("codigos")!)
+        );
+        this.observableCodigos = this.codigos.asObservable();
     }
 
     public get historicoPartidas(): MatchDTO[] {
@@ -24,33 +32,45 @@ export class MatchService {
     }
 
     public get codigosPartidas(): string[] {
-        return this.codigos;
+        return this.codigos.value;
     }
 
     getCodigoPartidasTft(puuid: string, quantidade: number): Observable<string[]> {
         return this.riotApiCore.get<string[]>(`/tft/match/v1/matches/by-puuid/${puuid}/ids?count=${quantidade}`, "americas").pipe(
             map((partidas) => {
-                if (!this.codigos) {
-                    this.codigos = partidas
-                } else if (this.codigos[0] != partidas[0]) {
-                    this.codigos = partidas;
+                if (!this.codigos.value) {
+                    localStorage.setItem('codigos', JSON.stringify(partidas));
+                    this.qtdePesquisa = partidas.length;
+                    return partidas;
+                } else {
+                    partidas.forEach(e => {
+                        if (!this.codigosPartidas.includes(e)) {
+                            this.qtdePesquisa++;
+                        }
+                    });
+                    return partidas;
                 }
-                return this.codigos;
             })
         );
     }
 
-    getPartidaTft(matchId: string): Observable<MatchDTO> {
-        return this.riotApiCore.get<MatchDTO>(`/tft/match/v1/matches/${matchId}`, "americas").pipe(
-            map((partida) => {
-                let historico = this.historico.value;
-                if (!historico) {
-                    historico = [];
-                }
-                historico.push(partida);
-                localStorage.setItem('history', JSON.stringify(historico));
-                return partida;
-            })
-        );
+    getPartidasTft(matchId: String): Observable<MatchDTO> {    
+        console.log(this.qtdePesquisa, this.pesquisado)
+        if (this.qtdePesquisa != 0 && this.pesquisado != this.qtdePesquisa) {
+            return this.riotApiCore.get<MatchDTO>(`/tft/match/v1/matches/${matchId}`, "americas").pipe(
+                map((partida) => {
+                    let historico = this.historico.value;
+                    if (!historico) {
+                        historico = [];
+                    }
+                    historico.unshift(partida);
+                    localStorage.setItem('history', JSON.stringify(historico));
+                    this.pesquisado++;
+                    return partida;
+                })
+            );
+        } else {
+            return null;
+        }
     }
 }

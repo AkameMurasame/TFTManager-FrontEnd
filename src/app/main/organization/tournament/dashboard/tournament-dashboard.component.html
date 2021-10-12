@@ -25,12 +25,20 @@
                                                 </div>
                                                 <div class="card-body">
                                                     <h4 style="margin-bottom: 7px;">Quantidade de Jogadores: {{ group.length }}</h4>
-                                                    <h4 style="margin-bottom: 7px;">Id da partida: {{ group.idPartida }}</h4>
-                                                    <h4 style="margin-bottom: 7px;">Status: </h4>
-                                                    <button type="button" (click)="detalhesGroup(group)" mat-button
+                                                    <h4 style="margin-bottom: 7px;">Id da partida: {{ group[index].idPartida }}</h4>
+                                                    <h4 style="margin-bottom: 7px;">Status: {{ group[index].groupStatus }}</h4>
+                                                    <button type="button" (click)="detalhesGroup(group, (index + 1))" mat-button
                                                         class="btn btn-success">Detalhes</button>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="row col-12 justify-content-end">
+                                                <button mat-button color="primary" (click)="proximaFase()" type="button">
+                                                  <mat-icon>save</mat-icon>
+                                                  Gerar Proxima Fase
+                                                </button>
+                                              </div>
                                         </div>
                                     </div>
                                 </mat-expansion-panel>

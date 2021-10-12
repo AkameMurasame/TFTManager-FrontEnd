@@ -7,7 +7,8 @@ export const environment = {
   version: 0,
   restEndPoint: 'http://localhost:8080/api/v1',
   webSocketEndPoint: 'http://localhost:8080/websocket',
-  riotApiEndPont: `.api.riotgames.com`
+  riotApiEndPont: `.api.riotgames.com`,
+  xRiotToken: `RGAPI-4343dd3a-8268-4836-b035-19574b32e9ad`
 };
 
 /*

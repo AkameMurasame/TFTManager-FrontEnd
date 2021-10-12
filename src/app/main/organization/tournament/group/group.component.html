@@ -1,39 +1,70 @@
 <div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header card-header-primary">
-                <h4 class="card-title">Jogadores</h4>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                      <div class="mat-elevation-z1">
-                        <table class="col-12" mat-table [dataSource]="dataSource">
-        
-                          <ng-container matColumnDef="Nick">
-                            <th mat-header-cell *matHeaderCellDef> Nick </th>
-                            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-                          </ng-container>
-        
-                          <ng-container matColumnDef="Acoes">
-                            <th mat-header-cell *matHeaderCellDef> Ações </th>
-                            <td mat-cell *matCellDef="let element">
-                              <button type="button" title="Jogador Desistente" mat-icon-button (click)="setStatusDesistente(element.id, element.groupId)">
-                                <mat-icon>disabled_by_default</mat-icon>
-                              </button>
-                              
-                              <button type="button" title="Jogador Ausente" mat-icon-button (click)="setStatusAusente(element.id, element.groupId)">
-                                <mat-icon>group_off</mat-icon>
-                              </button>
-                            </td>
-                          </ng-container>
-        
-                          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                        </table>
-                      </div>
-                    </div>
-            </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header  row card-header-primary">
+        <div class="col-12">
+          <h4> {{ this.tournament.name }} - Grupo {{ this.numeroGroup }}</h4>
         </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6">
+            <div class="card">
+              <div class="card-header card-header-primary">
+                <h4>Jogadores</h4>
+              </div>
+              <div class="card-body row">
+                <div class="mat-elevation-z1">
+                  <table class="col-12" mat-table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="Nome do Jogador">
+                      <th mat-header-cell *matHeaderCellDef> Nick </th>
+                      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Colocação">
+                      <th mat-header-cell *matHeaderCellDef> Colocação </th>
+                      <td mat-cell *matCellDef="let element"> {{element.posicao}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Acoes">
+                      <th mat-header-cell *matHeaderCellDef> Ações </th>
+                      <td mat-cell *matCellDef="let element">
+                        <button type="button" title="Jogador Desistente" mat-icon-button
+                          (click)="setStatusDesistente(element.id, element.groupId)">
+                          <mat-icon>disabled_by_default</mat-icon>
+                        </button>
+
+                        <button type="button" title="Jogador Ausente" mat-icon-button
+                          (click)="setStatusAusente(element.id, element.groupId)">
+                          <mat-icon>group_off</mat-icon>
+                        </button>
+
+                        <button type="button" title="Redefinir Colocação" mat-icon-button
+                          (click)="redefinirColocacao(element.id, element.groupId)">
+                          <mat-icon>group_off</mat-icon>
+                        </button>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card">
+              <div class="card-header card-header-primary">
+                <h4>Resultado</h4>
+              </div>
+              <div class="card-body" *ngIf="this.groupStatus">
+                <img src="{{this.base64String}}" alt="Red dot" width="500px" height="450px"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>

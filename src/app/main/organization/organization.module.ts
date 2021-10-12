@@ -21,6 +21,7 @@ import { MatExpansionModule } from '@angular/material/expansion'
 import { TournamentDashboardComponent } from './tournament/dashboard/tournament-dashboard.component';
 import { GroupComponent } from './tournament/group/group.component';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule,NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { MudarColocacaoComponent } from './tournament/group/mudar-colocacao/mudar-colocacao.component';
 
 const MATERIAL = [
   MatCardModule,
@@ -40,7 +41,7 @@ const MATERIAL = [
 ];
 
 @NgModule({
-  declarations: [CadastroComponent, DashboardComponent, OrganizationComponent, AdicionarAdministradorComponent, TournamentDashboardComponent, GroupComponent],
+  declarations: [CadastroComponent, DashboardComponent, OrganizationComponent, AdicionarAdministradorComponent, TournamentDashboardComponent, GroupComponent, MudarColocacaoComponent],
   imports: [
     CommonModule,
     OrganizationRoutes,

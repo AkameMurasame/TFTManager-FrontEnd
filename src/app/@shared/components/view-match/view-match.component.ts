@@ -19,6 +19,8 @@ export class ViewMatchComponent implements OnInit {
   urlIcon: String = "";
   player: Player;
   match: MatchResponse;
+  file: File = null; // Variable to store file
+  base64String: any;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Match, private lcuService: LcuService, private dataDragonService: DataDragonService, private tournamentService: TournamentService, private playerService: PlayerService) { }
 
@@ -28,6 +30,12 @@ export class ViewMatchComponent implements OnInit {
     this.tournamentService.geMatch(this.data.groupId).subscribe(e => {
       console.log(e)
       this.match = e;
+      if (e.imgId) {
+        this.tournamentService.getImgMatch(this.data.groupId).subscribe(img => {
+          this.base64String = "data:image/png;base64," + img.base64Image;
+          console.log(this.base64String)
+        });
+      }
     })
   }
 
@@ -36,4 +44,24 @@ export class ViewMatchComponent implements OnInit {
       return this.dataDragonService.getUrlProfileIcon(player.profileIconId);
     })
   }
+
+  async onChange(event) {
+    this.file = event.target.files[0];
+    this.base64String = await this.toBase64(this.file);
+    console.log(this.base64String)
+  }
+
+  matchResult() {
+    this.tournamentService.matchResult(this.file, this.data.groupId).subscribe(data => {
+      console.log(data, "foi");
+    });
+  }
+
+  toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+
 }

@@ -1,0 +1,4 @@
+export enum GroupStatus {
+    PARTIDA_FINALIZADA = "PARTIDA_FINALIZADA",
+    AGUARDANDO = "AGUARDANDO"
+}

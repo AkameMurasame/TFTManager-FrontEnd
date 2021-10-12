@@ -6,12 +6,14 @@ import { HttpClient } from '@angular/common/http';
 import { Team } from "../models/team/team";
 import { Group } from "../models/tournament/group";
 import { MatchResponse } from "../models/tournament/matchResponse";
+import { group } from "console";
+import { GroupImgResponse } from "../models/tournament/groupImgResponse";
 
 
 @Injectable({ providedIn: "root" })
 export class TournamentService {
     constructor(private http: ApiHttpClient, private http2: HttpClient) { }
-    
+
     tournamentRegister(tournament: Tournament): Observable<Tournament> {
         return this.http.post<Tournament>(`tournament/create`, tournament);
     }
@@ -55,5 +57,17 @@ export class TournamentService {
             groupId: groupId,
             teamList: teamList
         });
+    }
+
+    matchResult(file: File, groupId: number): Observable<any> {
+        const formData = new FormData();
+        formData.append("print", file, file.name);
+        formData.append("groupId", groupId.toString());
+
+        return this.http.post<any>(`tournament/matchResult`, formData);
+    }
+
+    getImgMatch(groupId: number) {
+        return this.http.get<GroupImgResponse>(`tournament/getImageGroup/${groupId}`);
     }
 }

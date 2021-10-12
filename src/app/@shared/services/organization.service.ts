@@ -81,4 +81,12 @@ export class OrganizationService {
             teamStatus: teamStatus
         });
     }
+
+    redefinirColocacao(teamId: number, groupId: number, colocacao: number) {
+        return this.http.put<void>(`organization/tournament/redefinirColocacao`, {
+            groupId: groupId,
+            teamId: teamId,
+            colocacao: colocacao
+        });
+    }
 }

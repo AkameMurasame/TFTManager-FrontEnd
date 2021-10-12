@@ -2,6 +2,7 @@ import { stagger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { ToastService } from 'src/app/@shared/services/toast.service';
 import { Chave } from '../../../../@shared/models/tournament/chave';
 import { Tournament } from '../../../../@shared/models/tournament/tournament';
 import { ActiveTournamentService } from '../../../../@shared/services/active-tournament.service';
@@ -18,7 +19,7 @@ export class TournamentDashboardComponent implements OnInit {
   tournament: Tournament;
   stages: Chave[];
 
-  constructor(private activeTournamentService: ActiveTournamentService, private activeRoute: ActivatedRoute, private dialogService: MatDialog) {
+  constructor(private activeTournamentService: ActiveTournamentService, private toastService: ToastService, private activeRoute: ActivatedRoute, private dialogService: MatDialog) {
 
   }
 
@@ -60,7 +61,7 @@ export class TournamentDashboardComponent implements OnInit {
                 stage: element,
                 groups: a
               };
-
+              console.log(stage)
               this.activeTournamentService.setGroups = stage;
               this.stages = this.activeTournamentService.getGroups;
             })
@@ -77,11 +78,17 @@ export class TournamentDashboardComponent implements OnInit {
     });
   }
 
-  detalhesGroup(group) {
+  detalhesGroup(group, numeroGroup) {
     this.dialogService.open(GroupComponent, {
-      data: group,
-      height: "75%",
-      width: "75%"
+      data: { "group": group, "numeroGroup": numeroGroup },
+      height: "83%",
+      width: "83%"
+    });
+  }
+
+  proximaFase() {
+    this.activeTournamentService.gerarProximaFase().subscribe(proxima => {
+      this.toastService.success("Proxima fase sendo gerada!");
     });
   }
 }

@@ -1,3 +1,5 @@
+import { GroupStatus } from "../../enum/groupStatus.enum";
+
 export interface Group {
     groupId: number;
     stageId: number;
@@ -7,4 +9,6 @@ export interface Group {
     capitain: number;
     teamType: String;
     logo: String;
+    groupStatus: GroupStatus;
+    posicao: number;
 }

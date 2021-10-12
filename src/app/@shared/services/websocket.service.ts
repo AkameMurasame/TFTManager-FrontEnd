@@ -173,8 +173,8 @@ export class WebsocketService {
                             });
 
                             const invitation: InvitationLobby = {
-                                toSummonerId: 1903736,
-                                toSummonerName: "INU Kuga"
+                                toSummonerId: player.summonerId,
+                                toSummonerName: player.displayName
                             };
 
                             invitationArray.push(invitation);
@@ -193,8 +193,8 @@ export class WebsocketService {
                     });
                 } else {
                     const invitation: InvitationLobby = {
-                        toSummonerId: 1903736,
-                        toSummonerName: "INU Kuga"
+                        toSummonerId: teans[x].capitao.summonerId,
+                        toSummonerName: teans[x].capitao.displayName
                     };
 
                     invitationArray.push(invitation);
