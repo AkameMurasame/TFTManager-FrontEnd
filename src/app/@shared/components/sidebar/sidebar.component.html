@@ -56,6 +56,12 @@
     </ul>
   </div>
   <ul class="nav">
+    <li routerLinkActive="active" class="nav-item" *ngIf="this.checkPermission('ADMIN')">
+      <a class="nav-link" [routerLink]="['/admin']">
+        <i class="material-icons">library_books</i>
+        <p>Administração</p>
+      </a>
+    </li>
     <li routerLinkActive="active" class="nav-item">
       <a class="nav-link" [routerLink]="['/player']">
         <i class="material-icons">dashboard</i>

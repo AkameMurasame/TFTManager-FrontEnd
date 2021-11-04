@@ -65,6 +65,14 @@ export class PlayerService {
     return this.http.post(`player/getPartidasTft`, request);
   }
 
+  getHistory(request: String[], puuid: String): Observable<any> {
+    return this.http.post(`player/getHistory`, {
+      idsPartida: request,
+      puuid: puuid
+    });
+  }
+
+
   getPlayersLike(nickName: string): Observable<Player[]> {
     return this.http.get<Player[]>(`player/getPLayersByNick/${nickName}`);
   }

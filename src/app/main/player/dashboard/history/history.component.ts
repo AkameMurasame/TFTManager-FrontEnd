@@ -11,6 +11,7 @@ import { PlayerService } from 'src/app/@shared/services/player.service';
 export class HistoryComponent implements OnInit {
 
   listMatch: MatchDTO[];
+  fullHistory: MatchDTO[];
   listIndex: number[];
   carregado: boolean = false;
 
@@ -31,6 +32,28 @@ export class HistoryComponent implements OnInit {
   }
 
   getInApi(puuid: string) {
-   
+    this.matchService.getCodigoPartidasTft(puuid, 10).subscribe(codigos => {
+
+      console.log(codigos)
+      let qtd = this.matchService.qtdPesquisa;
+      console.log(qtd);
+
+      while (codigos.length == (qtd - 1)) {
+        codigos.pop();
+        console.log(codigos.length, qtd)
+      }
+
+      if (qtd != 0 || this.matchService.historicoPartidas == null) {
+        this.playerService.getHistory(codigos, puuid).subscribe(history => {
+          this.fullHistory = this.matchService.setNewMatch(history);
+          console.log(this.fullHistory, 1)
+          this.carregado = true;
+        });
+      } else {
+        this.fullHistory = this.matchService.historicoPartidas;
+        console.log(this.fullHistory, 2)
+        this.carregado = true;
+      }
+    });
   }
 }

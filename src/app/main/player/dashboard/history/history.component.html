@@ -2,67 +2,12 @@
     <div class="md-grid">
         <div class="mdl-cell mdl-cell--12-col demo-list-item mdl-list">
             <div class="p-2" id="listahistorico" class="mdl-grid" style="background-color: white;">
-                <ul class="mdl-cell--12-col" *ngFor="let partida of this.listMatch">
-                    <div class="demo-card-wide mdl-card mdl-shadow--2dp"
-                        [ngClass]="{'border border-success bg-vitoria' : this.partida, 'border border-danger bg-derrota' : !this.partida}">
-                        <div class="header-partida">
-                            <div class="detalhes mdl-grid mdl-cell--12-col">
-                                <!-- <div class="mdl-cell--3-col"><b></b><span style="margin-left: 10px">Ranked</span>
-                                </div>
-                                <div class="mdl-cell--2-col"></div>
-                                <div class="mdl-cell--3-col"><i class="icon"></i>Tempo de Partida:
-                                    ~ {{ this.partida.duracao }} Minutos
-                                </div>
-                                <div class="mdl-cell--4-col text-right"><i class="icon"></i>Partida: {{
-                                    this.partida.statusPartida.status }}
-                                </div> -->
-                            </div>
-                        </div>
+                <ul class="mdl-cell--12-col" *ngFor="let partida of this.fullHistory">
+                    <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="margin-bottom: 10px !important;">
                         <div class="conteudo-partida mdl-grid mdl-cell--12-col">
-                            <div class="champion mdl-cell--1-col">
-                                <img alt="Vayne" height="50px" width="50px" class="img-champ" src="">
-                                <div>RUNA</div>
-                            </div>
-                            <div class="mdl-cell--1-col">
-                                <!-- <div style="margin-left: 5px !important;">
-                                    <img alt="" height="22px" width="22px" class="spell-1"
-                                        src="{{ this.partida.spellsPartida[0].urlImg }}">
-                                    <img alt="" height="22px" width="22px" class="spell-2"
-                                        src="{{ this.partida.spellsPartida[1].urlImg }}">
-                                </div> -->
-                            </div>
-                            <div class="mdl-cell--1-col"><i class="icon-kills"
-                                    style="width: 5px"></i>&nbsp;<b>KDA</b><br>
-                                <h5>
-                                    <small>{{ this.partida.kda }}</small>
-                                </h5>
-                            </div>
-                            <div class="build mdl-cell--4-col text-center" >
-                                <img *ngFor="let info of this.listMatch.info.participants[2]" class="lol-item" src="../../../../../assets/set5patch1115/champions/TFT5_Aatrox.png">
-                            </div>
-                            <div class="mdl-cell--5-col">
-                                <!-- <div class="mdl-grid" style="align-items: center !important;">
-                                    <div class="mdl-cell--3-col"><img class="icon-map icon-minion"
-                                            src="https://cdnteemo-a.akamaihd.net/2018/invis.gif"
-                                            style="width: 12px">&nbsp;<b>{{ this.partida.farm }}</b><br>
-                                    </div>
-                                    <div class="mdl-cell--3-col"><img class="icon-map icon-gold"
-                                            src="https://cdnteemo-a.akamaihd.net/2018/invis.gif"
-                                            style="width: 12px">&nbsp;<b>{{ this.partida.gold }}</b><br>
-                                    </div>
-                                    <div class="mdl-cell--3-col"><img class="icon-map icon-ward-green"
-                                            src="https://cdnteemo-a.akamaihd.net/2018/invis.gif"
-                                            style="width: 12px">&nbsp;<b>{{ this.partida.wards }}
-                                        </b><br>
-                                    </div>
-                                    <div class="mdl-cell--3-col">
-                                        <div class="multikill">
-                                            <div>{{ this.partida.multiKill }}</div>
-                                            <br>
-                                            <div>Pts de Visão: {{ this.partida.scoreVisao }}</div>
-                                        </div>
-                                    </div>
-                                </div> -->
+                            <div class="build mdl-cell--4-col text-center">
+                                <img *ngFor="let info of this.partida.participant.units" class="lol-item"
+                                    src="assets/set5patch1115/champions/{{ info.character_id }}.png">
                             </div>
                         </div>
                     </div>

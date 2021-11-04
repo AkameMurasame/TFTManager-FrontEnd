@@ -1,3 +1,4 @@
+import { OrganizationStatusEnum } from "../../enum/organizationStatus.enum";
 import { User } from "../user/User";
 
 export interface Organization {
@@ -8,4 +9,5 @@ export interface Organization {
     bannerUrl?: string;
     logoUrl?: string;
     organizatinoMembers?: User[];
+    organizationStatus?: OrganizationStatusEnum;
 }

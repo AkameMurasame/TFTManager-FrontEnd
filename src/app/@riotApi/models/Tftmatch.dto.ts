@@ -1,8 +1,5 @@
 export interface MatchDTO {
-    /** Match metadata. */
-    metadata: MetadataDTO;
-    /** Match info. */
-    info: InfoDTO;
+    participant: ParticipantDTO
 }
 export interface MetadataDTO {
     /** Match data version. */

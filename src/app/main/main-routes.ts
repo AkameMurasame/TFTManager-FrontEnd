@@ -33,6 +33,12 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: "admin",
+    loadChildren: () =>
+      import('src/app/main/admin/admin.module').then((m) => m.AdminModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '', redirectTo: 'app', pathMatch: 'full'
   }
 ];

@@ -126,9 +126,9 @@ export class InitComponent implements OnInit {
           if (!this.isElectron) {
             this.router.navigate(['player/dashboard']);
           }
-          if (this.playerService.getPlayer.displayName != this.lcuService.getlcuPlayer.displayName) {
+          if (bdplayer.displayName != this.lcuService.getlcuPlayer.displayName) {
             console.log("update")
-            var player = this.playerService.getPlayer;
+            var player = bdplayer;
             player.displayName = this.lcuService.getlcuPlayer.displayName;
             this.playerService.updatePlayer(player).subscribe(player => {
               this.router.navigate(['player/dashboard']);
