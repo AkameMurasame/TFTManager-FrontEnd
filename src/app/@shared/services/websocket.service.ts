@@ -23,15 +23,10 @@ export class WebsocketService {
     connection: Promise<any>;
     player: PlayerConnect;
     sessionId: string;
-    dataPartida: any;
-    isPartida: boolean = false;
     intervalPartida: any;
-    eventsPartida: EventLcu[];
-    lastCountEvent: number = 2;
     activeGroup: number;
     organizationTournament: number;
     teansGroup: Team[];
-    killNames: Team[];
 
     constructor(private http: HttpClient, private lcuService: LcuService, private playerService: PlayerService, private toastService: ToastService, private tournamentService: TournamentService) { }
 
@@ -39,54 +34,11 @@ export class WebsocketService {
         return this.connection;
     }
 
-    public get getdataPartida() {
-        return this.dataPartida;
-    }
-
-    public get getisPartida() {
-        return this.isPartida;
-    }
-
     DataPartida() {
         return this.http.get<EventList>("https://127.0.0.1:2999/liveclientdata/eventdata").pipe(map((data) => {
-            this.isPartida = true;
-            if (data != null) {
-                if (this.eventsPartida == null) {
-                    //this.connection.then((stompClient) => this.stompClientSendMessage(stompClient, `/topic/organization/${this.organizationTournament}`, "oplhar object"));
-                    this.eventsPartida = data.Events;
-                    this.lastCountEvent = data.Events.length;
-                } else {
-                    if (data.Events.length > this.lastCountEvent) {
-                        this.eventsPartida = data.Events;
-                        for (var x = this.lastCountEvent; x < data.Events.length; x++) {
-                            var event = data.Events[x];
-                            if (event.EventName == "ChampionKill") {
-                                this.teansGroup.forEach(e => {
-                                    if (e.name == event.KillerName) {
-                                        this.killNames.push(e);
-                                    }
-                                })
-                                if (event.KillerName == this.player.displayName) {
-                                    this.tournamentService.eliminatePlayerFromTournament(this.activeGroup, 4976434).subscribe();
-                                }
-                            }
-                            this.lastCountEvent = data.Events.length;
-                        }
-                    }
-                }
-            }
+            this.tournamentService.changeMatchStatus(this.activeGroup).subscribe();
+            this.finishInterval();
         }));
-    }
-
-    auditarPartida() {
-        if (this.killNames.length == this.teansGroup.length) {
-            for (let x = 0; x == 4; x++) {
-                if (this.teansGroup.includes(this.killNames[x])) {
-                    this.killNames.splice(x, 1);
-                }
-            }
-            this.tournamentService.auditarTournament(this.activeGroup, this.killNames).subscribe();
-        }
     }
 
     initIntervalPartida() {
@@ -94,7 +46,6 @@ export class WebsocketService {
     }
 
     finishInterval() {
-        this.isPartida = false;
         clearInterval(this.intervalPartida);
     }
 
@@ -181,11 +132,6 @@ export class WebsocketService {
 
                             this.lcuService.invitePlayers(invitationArray).subscribe(invite => {
                                 invitationArray = [];
-                                if (this.player.summonerId != playerAtual.capitao.summonerId) {
-                                    this.stompClientSendMessage(stompClient, '/user/' + player.summonerId, JSON.stringify({
-                                        message: "INIT_PARTIDA"
-                                    }));
-                                }
                             });
                         } else {
                             //mudou o nick
@@ -201,12 +147,6 @@ export class WebsocketService {
 
                     this.lcuService.invitePlayers(invitationArray).subscribe(invite => {
                         invitationArray = [];
-                        if (this.player.summonerId != playerAtual.capitao.summonerId) {
-                            this.stompClientSendMessage(stompClient, '/user/' + playerAtual.capitao.summonerId, JSON.stringify({
-                                message: "INIT_PARTIDA",
-                                players: this.teansGroup
-                            }));
-                        }
                     });
                 }
             }
@@ -220,10 +160,6 @@ export class WebsocketService {
             switch (json.message) {
                 case "CREATE_LOBBY":
                     this.createLobby(json, stompClient);
-                    break;
-
-                case "INIT_PARTIDA":
-                    this.initIntervalPartida();
                     break;
             }
         }));

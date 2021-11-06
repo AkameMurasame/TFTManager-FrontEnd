@@ -15,9 +15,12 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
-    }, maximizable: true
+    }, maximizable: true,
+    height: 240,
+    width: 340
   });
   win.setMenu(null);
+  win.setMenuBarVisibility(false);
   win.loadURL(
     url.format({
       pathname: path.join(__dirname, `/../../dist/TFTManager/index.html`),

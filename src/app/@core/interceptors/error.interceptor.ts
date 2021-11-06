@@ -18,12 +18,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
             if (err.url == "https://127.0.0.1:2999/liveclientdata/eventdata" && err.status == 0) {
-                console.log("catch error game")
-                console.log(this.webSocketService.getisPartida);
-                if(this.webSocketService.getisPartida == true) {
-                    this.webSocketService.auditarPartida();
-                    this.webSocketService.finishInterval();
-                }
+                console.log("catch error game");
             }
             if (err.status === 401) {
 

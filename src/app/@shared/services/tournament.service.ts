@@ -8,6 +8,7 @@ import { Group } from "../models/tournament/group";
 import { MatchResponse } from "../models/tournament/matchResponse";
 import { group } from "console";
 import { GroupImgResponse } from "../models/tournament/groupImgResponse";
+import { GroupStatus } from "../enum/groupStatus.enum";
 
 
 @Injectable({ providedIn: "root" })
@@ -69,5 +70,12 @@ export class TournamentService {
 
     getImgMatch(groupId: number) {
         return this.http.get<GroupImgResponse>(`tournament/getImageGroup/${groupId}`);
+    }
+
+    changeMatchStatus(groupId: number) {
+        return this.http.post<any>(`tournament/changeMatchStatus`, {
+            groupId: groupId,
+            groupStatus: GroupStatus.PARTIDA_INICIADA
+        })
     }
 }
