@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { IpcRenderer } from 'electron';
+import { BrowserWindow, IpcRenderer } from 'electron';
 import { SummonerService } from "src/app/@riotApi/index";
 import { TeamType } from '../@shared/enum/teamType.enum';
 import { Player } from '../@shared/models/player/Player';
@@ -30,6 +30,7 @@ export class InitComponent implements OnInit {
   player: Player;
   ipc: IpcRenderer;
   isElectron: boolean = true;
+  win: BrowserWindow;
 
   constructor(private userService: UserService,
     private authService: AuthenticationService,
@@ -69,7 +70,9 @@ export class InitComponent implements OnInit {
   async ngOnInit() {
     this.ipc.on('lcu-load', (event, data) => {
       this.lcuService.setLcuUrl = `https://${data.username}:${data.password}@${data.address}:${data.port}`.toString();
-      this.isLcu = true;
+      setTimeout(() => {
+        this.isLcu = true;
+      }, 5000);
     });
 
     await this.verifylolClient();
@@ -107,6 +110,7 @@ export class InitComponent implements OnInit {
             };
             this.verifyRole(this.authService.currentUserValue.user);
             this.teamService.teamRegister(team).subscribe(t => {
+              this.changeElectronView();
               this.router.navigate(['player/dashboard']);
             })
           });
@@ -118,6 +122,7 @@ export class InitComponent implements OnInit {
             console.log(summoner, 103)
             bdplayer.puuid = summoner.puuid;
             this.playerService.updatePlayer(bdplayer).subscribe(player => {
+              this.changeElectronView();
               this.router.navigate(['player/dashboard']);
             });
           });
@@ -131,9 +136,11 @@ export class InitComponent implements OnInit {
             var player = bdplayer;
             player.displayName = this.lcuService.getlcuPlayer.displayName;
             this.playerService.updatePlayer(player).subscribe(player => {
+              this.changeElectronView();
               this.router.navigate(['player/dashboard']);
             });
           } else {
+            this.changeElectronView();
             this.router.navigate(['player/dashboard']);
           }
         }
@@ -217,5 +224,9 @@ export class InitComponent implements OnInit {
         resolve(true);
       }, ms);
     });
+  }
+
+  private changeElectronView() {
+    this.ipc.send('change_view');
   }
 }

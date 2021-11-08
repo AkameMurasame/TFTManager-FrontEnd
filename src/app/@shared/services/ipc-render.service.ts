@@ -7,7 +7,6 @@ export class IpcRenderSService {
     ipcRenderer: IpcRenderer;
 
     constructor() {
-        console.log("ENTREI NO IPC")
         if ((<any>window).require) {
             try {
                 this.ipcRenderer = (<any>window).require('electron').ipcRenderer;

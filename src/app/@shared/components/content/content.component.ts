@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerService } from '../../services/player.service';
-import { WebsocketService } from '../../services/websocket.service';
 
 @Component({
   selector: 'app-content',

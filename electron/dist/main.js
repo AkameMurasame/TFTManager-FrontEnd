@@ -10,15 +10,17 @@ var IPC = require('electron').ipcMain;
 var autoUpdater = require('electron-updater').autoUpdater;
 var isDev = require('electron-is-dev');
 var win;
+var login = false;
 function createWindow() {
     var _this = this;
     win = new electron_1.BrowserWindow({
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
-        }, maximizable: true,
+        }, maximizable: false, minimizable: false, closable: false,
         height: 240,
-        width: 340
+        width: 340,
+        icon: path.join(__dirname, '/../icon.ico')
     });
     win.setMenu(null);
     win.setMenuBarVisibility(false);
@@ -45,7 +47,7 @@ function createWindow() {
         event.preventDefault();
         win.hide();
     });
-    win.on("closed", function () {
+    win.on("closed", function (event) {
         win = null;
     });
     win.once('ready-to-show', function () {
@@ -79,5 +81,12 @@ IPC.on('app_version', function (event) {
 });
 IPC.on('restart_app', function () {
     autoUpdater.quitAndInstall();
+});
+IPC.on("change_view", function () {
+    var window = electron_1.BrowserWindow.getFocusedWindow();
+    window.setMaximizable(true);
+    window.setSize(1060, 760);
+    window.setClosable(true);
+    window.maximize();
 });
 //# sourceMappingURL=main.js.map

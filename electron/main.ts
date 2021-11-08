@@ -9,15 +9,17 @@ const { autoUpdater } = require('electron-updater');
 const isDev = require('electron-is-dev');
 
 let win: BrowserWindow;
+let login: boolean = false;
 
 function createWindow() {
   win = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
-    }, maximizable: true,
+    }, maximizable: false, minimizable: false, closable: false,
     height: 240,
-    width: 340
+    width: 340,
+    icon: path.join(__dirname, '/../icon.ico')
   });
   win.setMenu(null);
   win.setMenuBarVisibility(false);
@@ -43,7 +45,7 @@ function createWindow() {
     win.hide()
   })
 
-  win.on("closed", () => {
+  win.on("closed", (event) => {
     win = null;
   });
 
@@ -86,3 +88,11 @@ IPC.on('app_version', (event) => {
 IPC.on('restart_app', () => {
   autoUpdater.quitAndInstall();
 });
+
+IPC.on("change_view", () => {
+  var window = BrowserWindow.getFocusedWindow();
+  window.setMaximizable(true);
+  window.setSize(1060, 760);
+  window.setClosable(true);
+  window.maximize();
+})
