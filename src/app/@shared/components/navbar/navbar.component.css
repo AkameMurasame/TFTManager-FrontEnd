@@ -1,0 +1,80 @@
+.navbar {
+  height: 120px;
+  padding: 0px;
+}
+
+.navbar-gradient {
+  /* background: radial-gradient(128.3% 240.56% at 50% -88.22%, rgba(14, 16, 21, 0) 0%, rgb(14, 16, 21) 75.62%); */
+  background: linear-gradient(transparent, #0b0c10);
+  width: 100%;
+  height: 120px;
+  position: absolute;
+  z-index: 4;
+}
+
+.navbar-logo {
+  height: 110px;
+  width: auto;
+  z-index: 5;
+  position: absolute;
+  left: 32px;
+  top: 5px;
+}
+
+.navbar-banner {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  z-index: 3;
+}
+
+.navbar-wrapper {
+  width: 100%;
+  justify-content: space-between;
+  padding: 0px 32px 0px 0px;
+  position: absolute;
+  z-index: 6;
+}
+
+.nav-item {
+  background-color: #1a1c22;
+  border-radius: 5px;
+  width: 120px;
+  margin: 0px 8px;
+  transition: background-color 1s;
+}
+
+.nav-item.active, .nav-item:hover {
+  background-color: #26262c;
+  position: relative;
+}
+
+.nav-item.active::before {
+  content: "";
+  background-color: #dd364d;
+  height: 3px;
+  width: 100%;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  position: absolute;
+  bottom: 0;
+}
+
+.nav-item a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nav-item a i.material-icons {
+  color: rgb(126, 130, 139) !important;
+}
+
+.nav-item a p {
+  margin: 0;
+  color: rgb(126, 130, 139);
+}
+
+.nav-item.active p, .nav-item.active a i.material-icons, .nav-item:hover p, .nav-item:hover a i.material-icons {
+  color: #efefef !important;
+}

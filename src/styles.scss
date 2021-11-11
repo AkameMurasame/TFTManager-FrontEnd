@@ -1,5 +1,6 @@
 @use '~@angular/material' as mat;
 @import "~bootstrap/scss/bootstrap";
+@import "global_overrides";
 
 @include mat.core();
 
@@ -17023,9 +17024,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
   
   body {
-    background-color: #eee;
-    color: #3C4858;
-    font-weight: 300;
+    background-color: #0b0c10;
+    color: rgb(126, 130, 139);
+    font-weight: 400;
   }
   
   legend {
@@ -18124,8 +18125,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
   
   .card-profile .card-avatar img {
-    width: 100%;
-    height: auto;
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
   }
   
   .card-profile .card-body+.card-footer {

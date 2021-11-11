@@ -1,27 +1,21 @@
-<mat-card>
-  <mat-card-header>
-    <div mat-card-avatar></div>
-    <mat-card-title>Nova Organização</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <form [formGroup]="formulario">
-      <div class="row">
-        <div class="col-12">
-          <mat-form-field>
-            <mat-label>Link do Ultimo campeonato cadastrado:</mat-label>
-            <input required matInput formControlName="linkLastTournemant" />
-            <!-- <mat-error [control]="formulario.control.nomeOrganizacao"></mat-error> -->
-          </mat-form-field>
-        </div>
+<h1 mat-dialog-title>Nova Organização</h1>
+<div mat-dialog-content>
+  <form [formGroup]="formulario">
+    <div class="row">
+      <div class="col-12">
+        <mat-form-field class="full-width">
+          <mat-label>Link do Ultimo campeonato cadastrado:</mat-label>
+          <input required matInput formControlName="linkLastTournemant" />
+          <mat-error *ngIf="formulario.get('linkLastTournemant').invalid">campo obrigatório</mat-error>
+          <!-- <mat-error [control]="formulario.get('nomeOrganizacao')"></mat-error> -->
+        </mat-form-field>
       </div>
-    </form>
-  </mat-card-content>
-  <mat-card-actions>
-    <div class="row col-12 justify-content-end">
-      <button mat-button color="primary" (click)="onSubmit()" type="submit">
-        <mat-icon>save</mat-icon>
-        Salvar
-      </button>
     </div>
-  </mat-card-actions>
-</mat-card>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button color="primary" (click)="onSubmit()" type="submit">
+    <mat-icon>save</mat-icon>
+    Salvar
+  </button>
+</div>

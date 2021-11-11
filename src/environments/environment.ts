@@ -2,13 +2,16 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+// restEndPoint: 'https://tft-manager.herokuapp.com/api/v1',
+//   webSocketEndPoint: 'https://tft-manager.herokuapp.com/websocket',
+
 export const environment = {
   production: false,
   version: 0,
-  restEndPoint: 'http://localhost:8080/api/v1',
-  webSocketEndPoint: 'http://localhost:8080/websocket',
+  restEndPoint: 'https://tft-manager.herokuapp.com/api/v1',
+  webSocketEndPoint: 'https://tft-manager.herokuapp.com/websocket',
   riotApiEndPont: `.api.riotgames.com`,
-  xRiotToken: `RGAPI-36ab423d-d882-4a9f-a35d-45354d8bc5ee`
+  xRiotToken: `RGAPI-ae952963-68e0-45a5-82ab-be1642314a82`
 };
 
 /*

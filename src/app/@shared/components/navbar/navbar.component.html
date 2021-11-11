@@ -1,7 +1,44 @@
-<nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
-  <div class="container-fluid">
-      <div class="navbar-wrapper">
-        <h1 style="margin-left: 5px; font-size: 1.0rem">{{ this.patch }}</h1>
-      </div>
+<nav class="navbar navbar-expand-lg  navbar-absolute fixed-top">
+  <div class="navbar-gradient"></div>
+  <img src="../../../../assets/logo.png" alt="logo" class="navbar-logo" />
+  <img src="../../../../assets/bannerv2.jpg" alt="banner" class="navbar-banner" />
+  <div class="navbar-wrapper">
+    <!-- <h1 style="font-weight: 600;">{{ this.patch }}</h1> -->
+    <h1 style="font-weight: 600;"></h1>
+
+    <ul class="nav">
+      <li routerLinkActive="active" class="nav-item" *ngIf="this.checkPermission('ADMIN')">
+        <a class="nav-link" [routerLink]="['/admin']">
+          <i class="material-icons">library_books</i>
+          <p>Administração</p>
+        </a>
+      </li>
+      <li routerLinkActive="active" class="nav-item">
+        <a class="nav-link" [routerLink]="['/player']">
+          <i class="material-icons">dashboard</i>
+          <p>Dashboard</p>
+        </a>
+      </li>
+      <li routerLinkActive="active" class="nav-item" *ngIf="this.checkPermission('ORGANIZATION')">
+        <a class="nav-link" [routerLink]="['/organization']">
+          <i class="material-icons">content_paste</i>
+          <p>Organização</p>
+        </a>
+      </li>
+      <li routerLinkActive="active" class="nav-item">
+        <a class="nav-link" [routerLink]="['/team']">
+          <i class="material-icons">
+            groups
+          </i>
+          <p>Times</p>
+        </a>
+      </li>
+      <li routerLinkActive="active" class="nav-item">
+        <a class="nav-link" [routerLink]="['/tournament']">
+          <i class="material-icons">library_books</i>
+          <p>Torneios</p>
+        </a>
+      </li>
+    </ul>
   </div>
 </nav>

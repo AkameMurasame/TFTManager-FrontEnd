@@ -1,18 +1,22 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 
-import { AppComponent } from "./app.component";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { SharedModule } from './@shared/shared.module';
+import { MainModule } from './main/main.module';
 
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { AppRoutingModule } from "./RoutesApp";
-import { MainModule } from "./main/main.module";
-import { JwtHelperService, JWT_OPTIONS } from "@auth0/angular-jwt";
-import { JwtInterceptor } from "./@core/interceptors/jwt.interceptor";
-import { ErrorInterceptor } from "./@core/interceptors/error.interceptor";
-import { SharedModule } from "./@shared/shared.module";
-import { ApiHttpClient } from "./@core/services/api-http-client";
-import { RiotApiCore } from "./@riotApi";
+import { LoadingService } from './@shared/loading/loading.service';
+
+import { LoadingComponent } from './@shared/loading/loading.component';
+import { AppComponent } from './app.component';
+
+import { ErrorInterceptor } from './@core/interceptors/error.interceptor';
+import { JwtInterceptor } from './@core/interceptors/jwt.interceptor';
+import { ApiHttpClient } from './@core/services/api-http-client';
+import { RiotApiCore } from './@riotApi';
+import { AppRoutingModule } from './RoutesApp';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,8 +27,10 @@ import { RiotApiCore } from "./@riotApi";
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     ApiHttpClient,
     JwtHelperService,
-    RiotApiCore
+    RiotApiCore,
+    LoadingService
   ],
+  entryComponents: [LoadingComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
