@@ -72,10 +72,10 @@ export class TournamentService {
         return this.http.get<GroupImgResponse>(`tournament/getImageGroup/${groupId}`);
     }
 
-    changeMatchStatus(groupId: number) {
+    changeMatchStatus(groupId: number, status: GroupStatus) {
         return this.http.post<any>(`tournament/changeMatchStatus`, {
             groupId: groupId,
-            groupStatus: GroupStatus.PARTIDA_INICIADA
+            groupStatus: status
         })
     }
 }

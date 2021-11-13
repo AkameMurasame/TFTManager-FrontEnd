@@ -16,6 +16,7 @@ import { EventLcu } from "../models/lcu/EventLcu";
 import { TournamentService } from "./tournament.service";
 import { Team } from "../models/team/team";
 import { environment } from "src/environments/environment";
+import { GroupStatus } from "../enum/groupStatus.enum";
 
 @Injectable({ providedIn: "root" })
 export class WebsocketService {
@@ -27,6 +28,12 @@ export class WebsocketService {
     activeGroup: number;
     organizationTournament: number;
     teansGroup: Team[];
+    dataPartida: any;
+    isPartida: boolean = false;
+    eventsPartida: EventLcu[];
+    lastCountEvent: number = 2;
+    killNames: Team[];
+    isLobby: boolean = false;
 
     constructor(private http: HttpClient, private lcuService: LcuService, private playerService: PlayerService, private toastService: ToastService, private tournamentService: TournamentService) { }
 
@@ -34,18 +41,55 @@ export class WebsocketService {
         return this.connection;
     }
 
+    public get getKillNames() {
+        return this.killNames;
+    }
+
+    public get getisPartida() {
+        return this.isPartida;
+    }
+
     DataPartida() {
         return this.http.get<EventList>("https://127.0.0.1:2999/liveclientdata/eventdata").pipe(map((data) => {
-            this.tournamentService.changeMatchStatus(this.activeGroup).subscribe();
-            this.finishInterval();
+            this.isPartida = true;
+            if (data != null) {
+                if (this.eventsPartida == null) {
+                    if (this.isLobby == true) {
+                        this.changeMatchStatus(GroupStatus.PARTIDA_INICIADA);
+                    }
+                    this.eventsPartida = data.Events;
+                    this.lastCountEvent = data.Events.length;
+                } else {
+                    if (data.Events.length > this.lastCountEvent) {
+                        this.eventsPartida = data.Events;
+                        for (var x = this.lastCountEvent; x < data.Events.length; x++) {
+                            var event = data.Events[x];
+                            if (event.EventName == "ChampionKill") {
+                                this.teansGroup.forEach(e => {
+                                    if (e.name == event.KillerName) {
+                                        this.killNames.push(e);
+                                    }
+                                })
+                                console.log(this.killNames)
+                            }
+                            this.lastCountEvent = data.Events.length;
+                        }
+                    }
+                }
+            }
         }));
     }
 
+    changeMatchStatus(groupStatus: GroupStatus) {
+        this.tournamentService.changeMatchStatus(this.activeGroup, groupStatus).subscribe();
+    }
+
     initIntervalPartida() {
-        this.intervalPartida = setInterval(func => this.DataPartida().subscribe(), 7 * 1000);
+        this.intervalPartida = setInterval(func => this.DataPartida().subscribe(), 5 * 1000);
     }
 
     finishInterval() {
+        this.isPartida = false;
         clearInterval(this.intervalPartida);
     }
 
@@ -77,6 +121,13 @@ export class WebsocketService {
         stompClient.disconnect() //6-1
     }
 
+    initPartida(object) {
+        const teans = object.players;
+        this.activeGroup = object.groupId;
+        this.teansGroup = teans;
+        this.initIntervalPartida();
+    }
+
     connectTopicOrganization(stompClient) {
         if (this.player.organizationId != null) {
             this.stompSubscribe(stompClient, `/topic/organization/${this.player.organizationId}`, (data) => {
@@ -95,6 +146,7 @@ export class WebsocketService {
 
     createLobby(object, stompClient) {
 
+        this.isLobby = true;
         const teans = object.players;
         this.activeGroup = object.groupId;
         this.teansGroup = teans;
@@ -151,7 +203,7 @@ export class WebsocketService {
                 }
             }
         });
-        this.intervalPartida = setInterval(func => this.DataPartida().subscribe(), 7 * 1000);
+        this.initIntervalPartida();
     }
 
     connectCreateLobby(stompClient, player) {
@@ -160,6 +212,9 @@ export class WebsocketService {
             switch (json.message) {
                 case "CREATE_LOBBY":
                     this.createLobby(json, stompClient);
+                    break;
+                case "INIT_PARTIDA":
+                    this.initIntervalPartida(json);
                     break;
             }
         }));

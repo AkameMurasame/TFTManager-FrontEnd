@@ -3,5 +3,5 @@ export const environment = {
   restEndPoint: 'https://tft-manager.herokuapp.com/api/v1',
   webSocketEndPoint: 'https://tft-manager.herokuapp.com/websocket',
   riotApiEndPont: `.api.riotgames.com`,
-  xRiotToken: `RGAPI-36ab423d-d882-4a9f-a35d-45354d8bc5ee`
+  xRiotToken: `RGAPI-ae952963-68e0-45a5-82ab-be1642314a82`
 };
