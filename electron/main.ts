@@ -91,8 +91,8 @@ IPC.on('restart_app', () => {
 
 IPC.on("change_view", () => {
   var window = BrowserWindow.getFocusedWindow();
-  window.setMaximizable(true);
-  window.setSize(1060, 760);
-  window.setClosable(true);
-  window.maximize();
+  win.setMaximizable(true);
+  win.setSize(1060, 760);
+  win.setClosable(true);
+  win.maximize();
 })

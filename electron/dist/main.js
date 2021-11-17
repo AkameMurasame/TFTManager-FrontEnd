@@ -84,9 +84,9 @@ IPC.on('restart_app', function () {
 });
 IPC.on("change_view", function () {
     var window = electron_1.BrowserWindow.getFocusedWindow();
-    window.setMaximizable(true);
-    window.setSize(1060, 760);
-    window.setClosable(true);
-    window.maximize();
+    win.setMaximizable(true);
+    win.setSize(1060, 760);
+    win.setClosable(true);
+    win.maximize();
 });
 //# sourceMappingURL=main.js.map

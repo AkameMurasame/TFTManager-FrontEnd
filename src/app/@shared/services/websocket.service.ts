@@ -32,7 +32,7 @@ export class WebsocketService {
     isPartida: boolean = false;
     eventsPartida: EventLcu[];
     lastCountEvent: number = 2;
-    killNames: Team[];
+    killNames: Team[] = new Array<Team>();
     isLobby: boolean = false;
 
     constructor(private http: HttpClient, private lcuService: LcuService, private playerService: PlayerService, private toastService: ToastService, private tournamentService: TournamentService) { }
@@ -50,10 +50,11 @@ export class WebsocketService {
     }
 
     DataPartida() {
+        console.log(this.killNames)
         return this.http.get<EventList>("https://127.0.0.1:2999/liveclientdata/eventdata").pipe(map((data) => {
-            this.isPartida = true;
             if (data != null) {
                 if (this.eventsPartida == null) {
+                    this.isPartida = true;
                     if (this.isLobby == true) {
                         this.changeMatchStatus(GroupStatus.PARTIDA_INICIADA);
                     }
@@ -64,6 +65,7 @@ export class WebsocketService {
                         this.eventsPartida = data.Events;
                         for (var x = this.lastCountEvent; x < data.Events.length; x++) {
                             var event = data.Events[x];
+                            console.log(event);
                             if (event.EventName == "ChampionKill") {
                                 this.teansGroup.forEach(e => {
                                     if (e.name == event.KillerName) {
@@ -214,7 +216,7 @@ export class WebsocketService {
                     this.createLobby(json, stompClient);
                     break;
                 case "INIT_PARTIDA":
-                    this.initIntervalPartida(json);
+                    this.initPartida(json);
                     break;
             }
         }));
