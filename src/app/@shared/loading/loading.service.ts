@@ -21,7 +21,7 @@ export class LoadingService {
 
   startLoadingBar() {
     const loader = document.createElement('div');
-    loader.classList.add('progress');
+    loader.classList.add('progressbar');
     document.body.appendChild(loader);
     const bar = document.createElement('div');
     bar.classList.add('indeterminate');
@@ -29,7 +29,7 @@ export class LoadingService {
   }
 
   stopLoadingBar() {
-    document.querySelector(`.progress`).remove();
+    document.querySelector(`.progressbar`).remove();
   }
 
   startLocalLoading(seletor: string) {

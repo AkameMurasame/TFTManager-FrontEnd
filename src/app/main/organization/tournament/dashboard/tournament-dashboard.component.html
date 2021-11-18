@@ -1,52 +1,52 @@
 <app-content>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header card-header-primary">
-                    <h4 class="card-title">Chaves: {{ this.tournament.name }}</h4>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header card-header-primary">
+          <h4 class="card-title">Chaves: {{ this.tournament.name }}</h4>
 
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <mat-accordion class="example-headers-align" multi>
-                                <mat-expansion-panel *ngFor="let item of this.stages;">
-                                    <mat-expansion-panel-header>
-                                        <mat-panel-description>
-                                            <h4>Chave: {{ item.stage.name }}</h4>
-                                        </mat-panel-description>
-                                    </mat-expansion-panel-header>
-
-                                    <div class="row">
-                                        <div class="col-4" *ngFor="let group of item.groups; let index = index;">
-                                            <div class="card">
-                                                <div class="card-header card-header-primary">
-                                                    <h4 class="card-title">Grupo: {{ index + 1 }}</h4>
-                                                </div>
-                                                <div class="card-body">
-                                                    <h4 style="margin-bottom: 7px;">Quantidade de Jogadores: {{ group.length }}</h4>
-                                                    <h4 style="margin-bottom: 7px;">Id da partida: {{ group[index].idPartida }}</h4>
-                                                    <h4 style="margin-bottom: 7px;">Status: {{ group[index].groupStatus }}</h4>
-                                                    <button type="button" (click)="detalhesGroup(group, (index + 1))" mat-button
-                                                        class="btn btn-success">Detalhes</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row col-12 justify-content-end">
-                                                <button mat-button color="primary" (click)="proximaFase()" type="button">
-                                                  <mat-icon>save</mat-icon>
-                                                  Gerar Proxima Fase
-                                                </button>
-                                              </div>
-                                        </div>
-                                    </div>
-                                </mat-expansion-panel>
-                            </mat-accordion>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <mat-accordion class="example-headers-align" multi>
+                <mat-expansion-panel *ngFor="let item of this.stages;">
+                  <mat-expansion-panel-header>
+                    <mat-panel-description>
+                      <h4>Chave: {{ item.stage.name }}</h4>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+
+                  <div class="row">
+                    <div class="col-4" *ngFor="let group of item.groups; let index = index;">
+                      <div class="card">
+                        <div class="card-header card-header-primary">
+                          <h4 class="card-title">Grupo: {{ index + 1 }}</h4>
+                        </div>
+                        <div class="card-body key" style="display: flex; flex-direction: column;">
+                          <h4><mat-icon>person</mat-icon> Jogadores: {{ group.length }}</h4>
+                          <h4 *ngIf="group[index].idPartida">Id da partida: {{ group[index].idPartida }}</h4>
+                          <!-- <h4 style="margin-bottom: 16px;">Status: {{ group[index].groupStatus }}</h4> -->
+                          <h4 *ngIf="group[index].groupStatus === 'AGUARDANDO'"><mat-icon>pending</mat-icon> Aguardando Início</h4>
+                          <h4 *ngIf="group[index].groupStatus === 'PARTIDA_INICIADA'"><mat-icon>hourglass_top</mat-icon> Em Partida</h4>
+                          <h4 *ngIf="group[index].groupStatus === 'PARTIDA_FINALIZADA'"><mat-icon>check_circle</mat-icon> Partida Finalizada</h4>
+                          <button mat-stroked-button color="primary" (click)="detalhesGroup(group, (index + 1))">
+                            Detalhes
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+            <div class="col-md-12 d-flex justify-content-center mt-3">
+              <button type="button" (click)="proximaFase()" mat-button
+                            class="btn btn-success">Gerar Próxima Fase</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </app-content>

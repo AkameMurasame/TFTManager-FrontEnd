@@ -1,6 +1,7 @@
 .navbar {
   height: 120px;
   padding: 0px;
+  z-index: 1;
 }
 
 .navbar-gradient {
@@ -18,7 +19,7 @@
   z-index: 5;
   position: absolute;
   left: 32px;
-  top: 5px;
+  top: 2px;
 }
 
 .navbar-banner {

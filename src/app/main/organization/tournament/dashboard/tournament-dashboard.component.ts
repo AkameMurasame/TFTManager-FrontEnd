@@ -2,6 +2,7 @@ import { stagger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { LoadingService } from 'src/app/@shared/loading/loading.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { Chave } from '../../../../@shared/models/tournament/chave';
 import { Tournament } from '../../../../@shared/models/tournament/tournament';
@@ -19,7 +20,12 @@ export class TournamentDashboardComponent implements OnInit {
   tournament: Tournament;
   stages: Chave[];
 
-  constructor(private activeTournamentService: ActiveTournamentService, private toastService: ToastService, private activeRoute: ActivatedRoute, private dialogService: MatDialog) {
+  constructor(
+    private activeTournamentService: ActiveTournamentService, 
+    private toastService: ToastService, 
+    private activeRoute: ActivatedRoute,
+    private loadingService: LoadingService,
+    private dialogService: MatDialog) {
 
   }
 
@@ -30,6 +36,7 @@ export class TournamentDashboardComponent implements OnInit {
   }
 
   getActiveTournament() {
+    this.loadingService.startLoadingBar();
     this.activeTournamentService.getTournamentById(this.tournamentId).subscribe(tournament => {
       this.tournament = tournament;
       this.activeTournamentService.getTournamentStages().subscribe(stages => {
@@ -70,12 +77,14 @@ export class TournamentDashboardComponent implements OnInit {
           for (var x = stages.length; x == 0; x--) {
             this.activeTournamentService.getGroupsStage(stages[x].id).subscribe(group => {
               console.log(group)
+              this.loadingService.stopLoadingBar();
             })
           }
           this.stages = this.activeTournamentService.getGroups;
         }
       });
-    });
+      this.loadingService.stopLoadingBar();
+    })
   }
 
   detalhesGroup(group, numeroGroup) {
