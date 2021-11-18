@@ -1,5 +1,11 @@
 <div class="row col-12">
-    <div class="col-3" *ngFor="let tournament of this.tournamentList; let index = index;">
+    <div class="not-found">
+      <ng-container *ngIf="loaded && tournamentList?.length === 0">
+        <p>Não foram encontrados resultados.</p>
+        <img src="assets/Bee_Sad_Emote.png" />
+      </ng-container>
+    </div>
+    <div class="col-3" *ngFor="let tournament of tournamentList; let index = index;">
         <a [routerLink]="['/tournament/view', tournament.id]">
             <div class="card">
                 <img src="{{ tournament.banner }}" class="card-img-top" alt="...">

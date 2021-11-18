@@ -72,6 +72,15 @@ export class TournamentService {
         return this.http.get<GroupImgResponse>(`tournament/getImageGroup/${groupId}`);
     }
 
+    organizationMatchResult(file: File, groupId: number): Observable<any> {
+      const formData = new FormData();
+      formData.append("print", file, file.name);
+      formData.append("groupId", groupId.toString());
+      formData.append("playerName", "INU Honda")
+
+      return this.http.post<any>(`tournament/organizationMatchResult`, formData);
+  }
+
     changeMatchStatus(groupId: number, status: GroupStatus) {
         return this.http.post<any>(`tournament/changeMatchStatus`, {
             groupId: groupId,

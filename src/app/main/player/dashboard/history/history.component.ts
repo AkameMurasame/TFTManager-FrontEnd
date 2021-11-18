@@ -11,7 +11,7 @@ import { PlayerService } from 'src/app/@shared/services/player.service';
 export class HistoryComponent implements OnInit {
 
   listMatch: MatchDTO[];
-  fullHistory: MatchDTO[];
+  fullHistory: MatchDTO[] = [];
   listIndex: number[];
   carregado: boolean = false;
 

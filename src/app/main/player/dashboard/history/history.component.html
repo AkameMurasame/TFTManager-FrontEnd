@@ -1,7 +1,11 @@
 <div class="main-content" *ngIf="this.carregado">
     <div class="md-grid">
         <div class="mdl-cell mdl-cell--12-col demo-list-item mdl-list">
-            <div class="p-2" id="listahistorico" class="mdl-grid" style="background-color: white;">
+          <div *ngIf="this.fullHistory?.length === 0" class="not-found">
+            aaaaaaaaaaaa
+            <img src="assets/Bee_Sad_Emote.png" />
+          </div>
+            <div *ngIf="this.fullHistory?.length > 0" class="p-2" id="listahistorico" class="mdl-grid" style="background-color: white;">
                 <ul class="mdl-cell--12-col" *ngFor="let partida of this.fullHistory">
                     <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="margin-bottom: 10px !important;">
                         <div class="conteudo-partida mdl-grid mdl-cell--12-col">

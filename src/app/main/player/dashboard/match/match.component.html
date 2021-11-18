@@ -1,4 +1,10 @@
 <div class="row col-12">
+  <div class="not-found">
+    <ng-container *ngIf="loaded && matchList?.length === 0">
+      <p>Não foram encontrados resultados.</p>
+      <img src="assets/Bee_Sad_Emote.png" />
+    </ng-container>
+  </div>
   <div class="col-6" *ngFor="let match of this.matchList; let index = index;" style="cursor: pointer;"
     (click)="openPartida(match)">
     <div class="card">

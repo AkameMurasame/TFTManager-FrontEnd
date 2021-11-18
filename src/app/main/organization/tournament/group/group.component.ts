@@ -21,12 +21,18 @@ export class GroupComponent implements OnInit {
   numeroGroup: number;
   groupStatus: boolean;
   base64String: string;
+  groupId: number;
 
   readonly dataSource = new MatTableDataSource<any>();
 
   readonly displayedColumns: string[] = ['Nome do Jogador', 'Colocação', 'Acoes'];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogService: MatDialog, private tournamentService: TournamentService, private activeTournamentService: ActiveTournamentService, private organizationService: OrganizationService, private toastService: ToastService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, 
+  private dialogService: MatDialog, 
+  private tournamentService: TournamentService, 
+  private activeTournamentService: ActiveTournamentService, 
+  private organizationService: OrganizationService, 
+  private toastService: ToastService) { }
 
   ngOnInit(): void {
     if (this.data.group[0].posicao != null) {
@@ -42,6 +48,7 @@ export class GroupComponent implements OnInit {
     }
     this.numeroGroup = this.data.numeroGroup;
     this.tournament = this.activeTournamentService.getTournament;
+    this.groupId = this.data.group[0].groupId;
     this.groupStatus = this.data.group[0].groupStatus == GroupStatus.PARTIDA_FINALIZADA;
 
     if (this.groupStatus) {
@@ -51,6 +58,12 @@ export class GroupComponent implements OnInit {
     }
 
     console.log(this.data, this.tournament)
+  }
+
+  madoka(files) {
+    this.tournamentService.organizationMatchResult(files[0], this.groupId).subscribe(res => {
+      console.log(res);
+    })
   }
 
   setStatusAusente(playerId: number, groupId: number) {
