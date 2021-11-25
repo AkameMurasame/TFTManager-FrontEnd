@@ -9,6 +9,7 @@ import { MatchResponse } from "../models/tournament/matchResponse";
 import { group } from "console";
 import { GroupImgResponse } from "../models/tournament/groupImgResponse";
 import { GroupStatus } from "../enum/groupStatus.enum";
+import { environment } from "src/environments/environment";
 
 
 @Injectable({ providedIn: "root" })
@@ -73,18 +74,24 @@ export class TournamentService {
     }
 
     organizationMatchResult(file: File, groupId: number): Observable<any> {
-      const formData = new FormData();
-      formData.append("print", file, file.name);
-      formData.append("groupId", groupId.toString());
-      formData.append("playerName", "INU Honda")
+        const formData = new FormData();
+        formData.append("print", file, file.name);
+        formData.append("groupId", groupId.toString());
+        formData.append("playerName", "INU Honda")
 
-      return this.http.post<any>(`tournament/organizationMatchResult`, formData);
-  }
+        return this.http.post<any>(`tournament/organizationMatchResult`, formData);
+    }
 
     changeMatchStatus(groupId: number, status: GroupStatus) {
         return this.http.post<any>(`tournament/changeMatchStatus`, {
             groupId: groupId,
             groupStatus: status
         })
+    }
+
+    generateTxt(stageId: number) {
+        return this.http2.get(`${environment.restEndPoint}/tournament/getStageFormatTXT/${stageId}`, {
+            responseType: 'blob'
+          });
     }
 }

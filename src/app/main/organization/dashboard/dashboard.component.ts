@@ -95,7 +95,11 @@ export class DashboardComponent implements OnInit {
   }
 
   adicionarAdministrador() {
-    this.dialogService.open(AdicionarAdministradorComponent);
+    this.dialogService.open(AdicionarAdministradorComponent).afterClosed().subscribe(res => {
+      this.organizationService.getOrganizationMenbers().subscribe(menbers => {
+        this.dataSource.data = menbers;
+      });
+    });
   }
 
   detalhesTournament(idTournament: number) {

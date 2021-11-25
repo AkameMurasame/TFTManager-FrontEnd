@@ -47,7 +47,7 @@ export class OrganizationService {
 
     addAdmin(addAdmin: AddAdmin): Observable<Organization> {
         return this.http
-            .post<Organization>(`organization/addAdmin`, addAdmin)
+            .put<Organization>(`organization/addAdmin`, addAdmin)
             .pipe(
                 map((organization: Organization) => {
                     this.organization = organization;

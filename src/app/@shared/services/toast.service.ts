@@ -10,6 +10,7 @@ export class ToastService {
         this.toast.warning(message, {
             position: 'top-right',
             dismissible: true,
+            duration: 10000,
             style: {
                 padding: '12px',
             },
@@ -21,6 +22,7 @@ export class ToastService {
         this.toast.error(message, {
             position: 'top-right',
             dismissible: true,
+            duration: 10000,
             style: {
                 padding: '12px',
             },
@@ -31,6 +33,7 @@ export class ToastService {
         this.toast.success(message, {
             position: 'top-right',
             dismissible: true,
+            duration: 10000,
             style: {
                 padding: '12px',
             },

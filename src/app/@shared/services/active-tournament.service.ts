@@ -55,7 +55,7 @@ export class ActiveTournamentService {
     }
 
     gerarProximaFase() {
-        return this.http.post<void>(`tournament/generateNextGroups`, {
+        return this.http.post<any>(`tournament/generateNextGroups`, {
             tournamentId: this.activeTournament.id
         });
     }

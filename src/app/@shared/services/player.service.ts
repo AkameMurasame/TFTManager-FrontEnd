@@ -72,7 +72,6 @@ export class PlayerService {
     });
   }
 
-
   getPlayersLike(nickName: string): Observable<Player[]> {
     return this.http.get<Player[]>(`player/getPLayersByNick/${nickName}`);
   }

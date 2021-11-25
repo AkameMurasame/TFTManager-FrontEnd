@@ -7,4 +7,5 @@ export class Player {
     puuid!: string;
     summonerId!: number;
     summonerLevel!: number;
+    userId!: number;
 }

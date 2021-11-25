@@ -51,22 +51,24 @@ export class AdicionarAdministradorComponent implements OnInit, OnDestroy {
       nick: [, [Validators.required]],
     });
 
-    this.formulario.controls.nick.valueChanges.subscribe(nick => {
+    /* this.formulario.controls.nick.valueChanges.subscribe(nick => {
       if (nick.length > 3) {
         this.playerService.getPlayersLike(nick).subscribe(players => {
           console.log(players)
           this.playersPorNick = players;
         })
       }
-    })
+    }) */
   }
 
   onSubmit() {
     const _formulario = this.formulario.value;
 
     const addAdmin: AddAdmin = {
-      displayName: _formulario.nickPlayer
+      displayName: _formulario.nick
     };
+  
+    console.log("Aqui", _formulario);
 
     this.subscriptions.push(this.organizationService.addAdmin(addAdmin).subscribe((result) => {
       this.toast.success("Administrador adicionado!");

@@ -166,6 +166,7 @@ export class WebsocketService {
                     this.lcuService.findPlayer(teans[x].name).subscribe(player => {
                         if (player != null) {
                             player.id = playerAtual.capitao.id;
+                            player.puuid = null;
                             const update: UpdatePlayerLobby = {
                                 player: player,
                                 key: "410e8677-7073-48dd-a882-8a5e53d5a833"
@@ -187,8 +188,6 @@ export class WebsocketService {
                             this.lcuService.invitePlayers(invitationArray).subscribe(invite => {
                                 invitationArray = [];
                             });
-                        } else {
-                            //mudou o nick
                         }
                     });
                 } else {

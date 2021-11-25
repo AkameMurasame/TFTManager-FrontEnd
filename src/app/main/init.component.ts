@@ -58,7 +58,7 @@ export class InitComponent implements OnInit {
 
       let user = new User();
       user.username = "14562429";
-      user.password = "14562429";
+      user.password = "209721183";
       user.role = role;
 
       this.authService.login(user).subscribe(login => {
@@ -96,6 +96,7 @@ export class InitComponent implements OnInit {
   }
 
   verifyPlayer(id: number, player1: Player) {
+    console.log(player1, 98)
     this.playerService.getPlayerByUserId(id).subscribe(bdplayer => {
       this.player = bdplayer;
       if (!bdplayer) {
@@ -149,12 +150,25 @@ export class InitComponent implements OnInit {
   }
 
   verifyUser(player: Player) {
+    console.log(player, 153)
     this.userService.getUserByName(player.summonerId.toString()).subscribe(user => {
       if (!user) {
-        this.userService.userRegister(this.makeUser(player)).subscribe(newUser => {
-          this.authService.login(this.makeUser(player)).subscribe(login => {
-            this.verifyPlayer(this.authService.currentUserValue.user.id, player);
-          })
+        this.userService.getPlayerByNick(player.displayName).subscribe(playerx => {
+          console.log(playerx, 157)
+          if (!playerx) {
+            console.log(player, 159)
+            this.userService.userRegister(this.makeUser(player)).subscribe(newUser => {
+              this.authService.login(this.makeUser(player)).subscribe(login => {
+                this.verifyPlayer(this.authService.currentUserValue.user.id, player);
+              })
+            });
+          } else {
+            this.userService.updateUser(this.makeUser(player), playerx.userId).subscribe(userr => {
+              this.authService.login(this.makeUser(player)).subscribe(login => {
+                this.verifyPlayer(this.authService.currentUserValue.user.id, player);
+              })
+            })
+          }
         });
       } else {
         this.authService.login(this.makeUser(player)).subscribe(login => {
@@ -171,7 +185,7 @@ export class InitComponent implements OnInit {
 
     let user = new User();
     user.username = player.summonerId.toString();
-    user.password = player.summonerId.toString();
+    user.password = player.accountId.toString();
     user.role = role;
 
     return user;

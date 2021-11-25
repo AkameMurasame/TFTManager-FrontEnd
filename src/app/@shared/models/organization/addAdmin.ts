@@ -1,3 +1,3 @@
 export interface AddAdmin {
-    displayName?: number
+    displayName?: string
 }

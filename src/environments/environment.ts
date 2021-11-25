@@ -2,22 +2,22 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-// export const environment = {
-//   production: false,
-//   version: 0,
-//   restEndPoint: 'http://localhost:8080/api/v1',
-//   webSocketEndPoint: 'http://localhost:8080/websocket',
-//   riotApiEndPont: `.api.riotgames.com`,
-//   xRiotToken: `RGAPI-3d65dbf3-4b92-4af7-b19b-4099de92251a`
-// };
+ export const environment = {
+   production: false,
+   version: 0,
+   restEndPoint: 'http://localhost:8080/api/v1',
+   webSocketEndPoint: 'http://localhost:8080/websocket',
+   riotApiEndPont: `.api.riotgames.com`,
+   xRiotToken: `RGAPI-b04c8d5f-4195-46d0-baae-751826cabc5a`
+ };
 
-export const environment = {
+/* export const environment = {
   production: true,
   restEndPoint: 'https://tft-manager.herokuapp.com/api/v1',
   webSocketEndPoint: 'https://tft-manager.herokuapp.com/websocket',
   riotApiEndPont: `.api.riotgames.com`,
-  xRiotToken: `RGAPI-0e396ed9-33bc-4b49-bf80-838e2370853d`
-};
+  xRiotToken: `RGAPI-63aa747a-146a-492c-a3ff-4b957e29aad2`
+}; */
 
 /*
  * For easier debugging in development mode, you can import the following file

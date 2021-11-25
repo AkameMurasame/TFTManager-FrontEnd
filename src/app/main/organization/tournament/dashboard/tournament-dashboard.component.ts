@@ -4,10 +4,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingService } from 'src/app/@shared/loading/loading.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
+import { TournamentService } from 'src/app/@shared/services/tournament.service';
 import { Chave } from '../../../../@shared/models/tournament/chave';
 import { Tournament } from '../../../../@shared/models/tournament/tournament';
 import { ActiveTournamentService } from '../../../../@shared/services/active-tournament.service';
 import { GroupComponent } from '../group/group.component';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-tournament-dashboard',
@@ -21,11 +23,12 @@ export class TournamentDashboardComponent implements OnInit {
   stages: Chave[];
 
   constructor(
-    private activeTournamentService: ActiveTournamentService, 
-    private toastService: ToastService, 
+    private activeTournamentService: ActiveTournamentService,
+    private toastService: ToastService,
     private activeRoute: ActivatedRoute,
     private loadingService: LoadingService,
-    private dialogService: MatDialog) {
+    private tournamentService: TournamentService,
+    private dialogService: MatDialog,) {
 
   }
 
@@ -97,7 +100,15 @@ export class TournamentDashboardComponent implements OnInit {
 
   proximaFase() {
     this.activeTournamentService.gerarProximaFase().subscribe(proxima => {
-      this.toastService.success("Proxima fase sendo gerada!");
+      console.log(proxima);
+      this.toastService.success(proxima.response);
     });
+  }
+
+  generateStagetxt(stageId) {
+    this.tournamentService.generateTxt(stageId).subscribe(res => {
+      saveAs(res, "tabela.txt")
+      this.toastService.success("Tabela Salva!");
+    })
   }
 }
