@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { dialog } from 'electron';
 import { GroupStatus } from 'src/app/@shared/enum/groupStatus.enum';
 import { TeamStatus } from 'src/app/@shared/enum/teamStatus.enum';
 import { Tournament } from 'src/app/@shared/models/tournament/tournament';
@@ -19,51 +20,51 @@ export class GroupComponent implements OnInit {
 
   tournament: Tournament;
   numeroGroup: number;
-  groupStatus: boolean;
-  base64String: string;
-  groupId: number;
+  groupStatus: String;
+  file: File = null; // Variable to store file
+  base64String: any;
+  nick: string = '';
 
   readonly dataSource = new MatTableDataSource<any>();
 
   readonly displayedColumns: string[] = ['Nome do Jogador', 'Colocação', 'Acoes'];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, 
-  private dialogService: MatDialog, 
-  private tournamentService: TournamentService, 
-  private activeTournamentService: ActiveTournamentService, 
-  private organizationService: OrganizationService, 
-  private toastService: ToastService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogService: MatDialog,
+    private tournamentService: TournamentService,
+    private organizationService: OrganizationService,
+    private toastService: ToastService,
+    private activeTournamentService: ActiveTournamentService) { }
 
   ngOnInit(): void {
-    if (this.data.group[0].posicao != null) {
-      let bag = [8];
-      this.data.group.forEach(element => {
-        bag[element.posicao - 1] = element;
-      });
-
-      this.data.group = bag;
-      this.dataSource.data = this.data.group;
-    } else {
-      this.dataSource.data = this.data.group;
-    }
-    this.numeroGroup = this.data.numeroGroup;
-    this.tournament = this.activeTournamentService.getTournament;
-    this.groupId = this.data.group[0].groupId;
-    this.groupStatus = this.data.group[0].groupStatus == GroupStatus.PARTIDA_FINALIZADA;
-
-    if (this.groupStatus) {
-      this.tournamentService.getImgMatch(this.data.group[0].groupId).subscribe(img => {
-        this.base64String = "data:image/png;base64," + img.base64Image;
-      });
-    }
-
-    console.log(this.data, this.tournament)
+    this.init();
   }
 
-  madoka(files) {
-    this.tournamentService.organizationMatchResult(files[0], this.groupId).subscribe(res => {
-      console.log(res);
-    })
+  init() {
+    this.numeroGroup = this.data.numeroGroup;
+    this.tournament = this.activeTournamentService.getTournament;
+    this.tournamentService.getTeamsByGroup(this.data.groupId).subscribe(teams => {
+      this.dataSource.data = teams;
+      this.groupStatus = teams[0].groupStatus;
+      if (this.groupStatus === "PARTIDA_FINALIZADA") {
+        this.tournamentService.getImgMatch(this.data.groupId).subscribe(img => {
+          this.base64String = "data:image/png;base64," + img.base64Image;
+        });
+      }
+    });
+  }
+
+  async onChange(event) {
+    this.file = event.target.files[0];
+    this.base64String = await this.toBase64(this.file);
+    console.log(this.base64String)
+  }
+
+  matchResult() {
+    this.tournamentService.organizationMatchResult(this.file, this.data.groupId, this.nick).subscribe(data => {
+      this.toastService.success(data.response);
+      this.init();
+    });
   }
 
   setStatusAusente(playerId: number, groupId: number) {
@@ -81,4 +82,11 @@ export class GroupComponent implements OnInit {
   redefinirColocacao(playerId: number, groupId: number) {
     this.dialogService.open(MudarColocacaoComponent, { data: { "teamId": playerId, "groupId": groupId } });
   }
+
+  toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
 }

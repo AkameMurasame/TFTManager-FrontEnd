@@ -50,10 +50,6 @@ export class ActiveTournamentService {
             );
     }
 
-    getGroupsStage(stageid: number): Observable<Group[]> {
-        return this.http.get<Group[]>(`tournament/getGroupsByStage/${stageid}`);
-    }
-
     gerarProximaFase() {
         return this.http.post<any>(`tournament/generateNextGroups`, {
             tournamentId: this.activeTournament.id

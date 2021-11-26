@@ -10,6 +10,7 @@ import { group } from "console";
 import { GroupImgResponse } from "../models/tournament/groupImgResponse";
 import { GroupStatus } from "../enum/groupStatus.enum";
 import { environment } from "src/environments/environment";
+import { TournamentGroup } from "../models/tournament/TournamentGroup";
 
 
 @Injectable({ providedIn: "root" })
@@ -73,11 +74,11 @@ export class TournamentService {
         return this.http.get<GroupImgResponse>(`tournament/getImageGroup/${groupId}`);
     }
 
-    organizationMatchResult(file: File, groupId: number): Observable<any> {
+    organizationMatchResult(file: File, groupId: number, nick: string): Observable<any> {
         const formData = new FormData();
         formData.append("print", file, file.name);
         formData.append("groupId", groupId.toString());
-        formData.append("playerName", "INU Honda")
+        formData.append("playerName", nick)
 
         return this.http.post<any>(`tournament/organizationMatchResult`, formData);
     }
@@ -93,5 +94,13 @@ export class TournamentService {
         return this.http2.get(`${environment.restEndPoint}/tournament/getStageFormatTXT/${stageId}`, {
             responseType: 'blob'
           });
+    }
+    
+    getGroupsByStageId(stageid: number): Observable<TournamentGroup[]> {
+        return this.http.get<TournamentGroup[]>(`tournament/getGroupsByStage/${stageid}`);
+    }
+
+    getTeamsByGroup(groupId: number) {
+        return this.http.get<any[]>(`tournament/getPlayersByGroup/${groupId}`);
     }
 }

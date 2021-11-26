@@ -1,0 +1,33 @@
+<div class="row">
+     <div class="col-4" *ngFor="let group of groups; let index = index;">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">Grupo: {{ index + 1 }}</h4>
+            </div>
+            <div class="card-body key" style="display: flex; flex-direction: column;">
+                <h4>
+                    <mat-icon>person</mat-icon> Jogadores: {{ group.qtdPlayers }}
+                </h4>
+                <h4 *ngIf="group.idPartida">Id da partida: {{ group.idPartida }}</h4>
+
+                <h4 *ngIf="group.groupStatus === 'AGUARDANDO'">
+                    <mat-icon>pending</mat-icon> Aguardando Início
+                </h4>
+                <h4 *ngIf="group.groupStatus === 'PARTIDA_INICIADA'">
+                    <mat-icon>hourglass_top</mat-icon> Em Partida
+                </h4>
+                <h4 *ngIf="group.groupStatus === 'PARTIDA_FINALIZADA'">
+                    <mat-icon>check_circle</mat-icon> Partida Finalizada
+                </h4>
+                <button mat-stroked-button color="primary" (click)="detalhesGroup(group.id, (index + 1), group.groupStatus)">
+                    Detalhes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 d-flex justify-content-center mt-3">
+    <button type="button" (click)="generateStagetxt(stage)" mat-button class="btn btn-success">Copiar
+        Jogadores</button>
+</div>

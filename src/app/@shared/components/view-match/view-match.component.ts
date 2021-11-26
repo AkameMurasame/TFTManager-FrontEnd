@@ -7,6 +7,7 @@ import { MatchResponse } from '../../models/tournament/matchResponse';
 import { DataDragonService } from '../../services/data-dragon.service';
 import { LcuService } from '../../services/lcu.service';
 import { PlayerService } from '../../services/player.service';
+import { ToastService } from '../../services/toast.service';
 import { TournamentService } from '../../services/tournament.service';
 
 @Component({
@@ -22,18 +23,20 @@ export class ViewMatchComponent implements OnInit {
   file: File = null; // Variable to store file
   base64String: any;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Match, private lcuService: LcuService, private dataDragonService: DataDragonService, private tournamentService: TournamentService, private playerService: PlayerService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Match,  private toastService: ToastService, private lcuService: LcuService, private dataDragonService: DataDragonService, private tournamentService: TournamentService, private playerService: PlayerService) { }
 
   ngOnInit(): void {
     this.player = this.lcuService.lcuPlayer;
     this.urlIcon = this.dataDragonService.getUrlProfileIcon(this.player.profileIconId);
+    this.init();
+  }
+
+  init() {
     this.tournamentService.geMatch(this.data.groupId).subscribe(e => {
-      console.log(e)
       this.match = e;
       if (e.imgId) {
         this.tournamentService.getImgMatch(this.data.groupId).subscribe(img => {
           this.base64String = "data:image/png;base64," + img.base64Image;
-          console.log(this.base64String)
         });
       }
     })
@@ -53,7 +56,8 @@ export class ViewMatchComponent implements OnInit {
 
   matchResult() {
     this.tournamentService.matchResult(this.file, this.data.groupId).subscribe(data => {
-      console.log(data, "foi");
+      this.toastService.success(data.response);
+      this.init();
     });
   }
 
@@ -63,5 +67,4 @@ export class ViewMatchComponent implements OnInit {
     reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
   });
-
 }

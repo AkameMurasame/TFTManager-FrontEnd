@@ -4,6 +4,7 @@ import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { GroupStatus } from "src/app/@shared/enum/groupStatus.enum";
 import { AuthenticationService } from "src/app/@shared/services/authentication.service";
+import { ToastService } from "src/app/@shared/services/toast.service";
 import { LcuService } from "../../@shared/services/lcu.service";
 import { WebsocketService } from "../../@shared/services/websocket.service";
 
@@ -12,7 +13,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     //loaderComponent: LoaderComponent;
     //errorComponent: ErrorComponent;
-    constructor(private authenticationService: AuthenticationService, private webSocketService: WebsocketService) {
+    constructor(private authenticationService: AuthenticationService, private webSocketService: WebsocketService, private toast: ToastService) {
         //this.loaderComponent = new LoaderComponent();
     }
 
@@ -34,6 +35,11 @@ export class ErrorInterceptor implements HttpInterceptor {
             if (err.status === 401) {
 
             }
+
+            if (err.status === 500) {
+                this.toast.error("Ocorreu um erro inesperado!")
+            }
+
             return throwError(err.error);
         }));
     }
