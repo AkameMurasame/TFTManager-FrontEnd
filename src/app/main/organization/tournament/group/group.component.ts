@@ -45,7 +45,8 @@ export class GroupComponent implements OnInit {
     this.tournament = this.activeTournamentService.getTournament;
     this.tournamentService.getTeamsByGroup(this.data.groupId).subscribe(teams => {
       this.dataSource.data = teams;
-      this.groupStatus = teams[0].groupStatus;
+      this.groupStatus = teams[0].groupStatus.toString();
+      console.log(this.groupStatus)
       if (this.groupStatus === "PARTIDA_FINALIZADA") {
         this.tournamentService.getImgMatch(this.data.groupId).subscribe(img => {
           this.base64String = "data:image/png;base64," + img.base64Image;

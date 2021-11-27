@@ -13,14 +13,27 @@
             </div>
             <div class="card-body row">
                 <div class="col-6">
-                    <div class="col-12" *ngFor="let match of this.match.groupTeams; let index = index;">
-                        <div class="">
-                            <p>{{ match.name }}</p>
-                        </div>
+                    <div class="mat-elevation-z1">
+                        <table class="col-12" mat-table [dataSource]="dataSource">
+
+                            <ng-container matColumnDef="Nome do Jogador">
+                                <th mat-header-cell *matHeaderCellDef> Nick </th>
+                                 <td mat-cell *matCellDef="let element">nick teste</td> 
+                               <!-- <td mat-cell *matCellDef="let element"> {{element.name}} </td>-->
+                            </ng-container>
+
+                            <ng-container matColumnDef="Colocação">
+                                <th mat-header-cell *matHeaderCellDef> Colocação </th>
+                                <td mat-cell *matCellDef="let element"> {{element.posicao}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
                     </div>
                 </div>
                 <div class="col-6 row">
-                    <div class="text-center" *ngIf="!match.playerMatch.posicao">
+                    <div class="text-center" *ngIf="!match.groupTeams[0].posicao">
                         <input class="form-control" type="file" (change)="onChange($event)">
 
                         <button (click)="matchResult()" class="btn btn-success">
@@ -30,7 +43,7 @@
 
                     <div>
                         <h6>Print Resultado</h6>
-                        <img src="{{this.base64String}}" alt="Red dot" width="300px" height="250px" />
+                        <img src="{{this.base64String}}" width="300px" height="250px" />
                     </div>
                 </div>
             </div>

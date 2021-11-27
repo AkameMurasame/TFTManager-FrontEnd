@@ -16,7 +16,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
-    }, maximizable: false, minimizable: false, closable: false,
+    }, maximizable: false, minimizable: false, closable: true,
     height: 240,
     width: 340,
     icon: path.join(__dirname, '/../icon.ico')

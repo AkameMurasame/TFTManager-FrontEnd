@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { map } from 'rxjs/operators';
 import { Match } from '../../models/player/Match';
 import { Player } from '../../models/player/Player';
@@ -23,6 +24,10 @@ export class ViewMatchComponent implements OnInit {
   file: File = null; // Variable to store file
   base64String: any;
 
+  readonly dataSource = new MatTableDataSource<any>();
+
+  readonly displayedColumns: string[] = ['Nome do Jogador', 'Colocação'];
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: Match,  private toastService: ToastService, private lcuService: LcuService, private dataDragonService: DataDragonService, private tournamentService: TournamentService, private playerService: PlayerService) { }
 
   ngOnInit(): void {
@@ -34,6 +39,8 @@ export class ViewMatchComponent implements OnInit {
   init() {
     this.tournamentService.geMatch(this.data.groupId).subscribe(e => {
       this.match = e;
+      this.dataSource.data = e.groupTeams;
+      console.log(e.groupTeams)
       if (e.imgId) {
         this.tournamentService.getImgMatch(this.data.groupId).subscribe(img => {
           this.base64String = "data:image/png;base64," + img.base64Image;

@@ -11,6 +11,7 @@ import { GroupImgResponse } from "../models/tournament/groupImgResponse";
 import { GroupStatus } from "../enum/groupStatus.enum";
 import { environment } from "src/environments/environment";
 import { TournamentGroup } from "../models/tournament/TournamentGroup";
+import { ITeam } from "../models/team/iteam";
 
 
 @Injectable({ providedIn: "root" })
@@ -101,6 +102,6 @@ export class TournamentService {
     }
 
     getTeamsByGroup(groupId: number) {
-        return this.http.get<any[]>(`tournament/getPlayersByGroup/${groupId}`);
+        return this.http.get<ITeam[]>(`tournament/getPlayersByGroup/${groupId}`);
     }
 }

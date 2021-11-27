@@ -1,26 +1,3 @@
-<!-- <h1 mat-dialog-title>Alterar Colocação</h1>
-<div mat-dialog-content>
-  <form [formGroup]="formulario">
-    <div class="row">
-      <div class="col-12">
-        <mat-form-field>
-          <mat-label>Colocacao: </mat-label>
-          <input matInput formControlName="colocacao" />
-        </mat-form-field>
-      </div>
-    </div>
-  </form>
-</div>
-<div mat-dialog-actions>
-  <button mat-stroked-button color="primary" (click)="onSubmit()" type="submit">
-    <mat-icon>save</mat-icon>
-    Salvar
-  </button>
-</div>
-
-
- -->
-
 <div class="row">
   <div class="col-12">
     <div class="card">
@@ -83,23 +60,26 @@
               <div class="card-header card-header-primary">
                 <h4>Resultado</h4>
               </div>
-              <!-- <label id="drop-file" for="upload">
+
+              <div class="card-body">
+                <!-- <label id="drop-file" for="upload">
                 <mat-icon>insert_photo</mat-icon>
                 <input type="file" id="upload" (change)="madoka($event.target.files)" style="display:none">
               </label> -->
+                <div class="text-center" *ngIf="data.groupStatus != 'PARTIDA_FINALIZADA'">
+                  <input class="form-control" type="file" (change)="onChange($event)">
 
-              <div class="text-center" *ngIf="data.groupStatus != 'PARTIDA_FINALIZADA'">
-                <input class="form-control" type="file" (change)="onChange($event)">
+                  <input class="form-control" type="text" [(ngModel)]="nick">
 
-                <input class="form-control" type="text" [(ngModel)]="nick">
+                  <button (click)="matchResult()" class="btn btn-success">
+                    Upload
+                  </button>
+                </div>
 
-                <button (click)="matchResult()" class="btn btn-success">
-                  Upload
-                </button>
-              </div>
-
-              <div class="card-body" *ngIf="data.groupStatus === 'PARTIDA_FINALIZADA'">
-                <img src="{{this.base64String}}" alt="Red dot" width="500px" height="450px" />
+                <div *ngIf="data.groupStatus === 'PARTIDA_FINALIZADA'">
+                  <h6>Print Resultado</h6>
+                  <img src="{{this.base64String}}" width="300px" height="250px" />
+                </div>
               </div>
             </div>
           </div>
