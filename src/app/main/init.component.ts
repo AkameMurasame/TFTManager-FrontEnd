@@ -57,8 +57,8 @@ export class InitComponent implements OnInit {
       role.id = 1;
 
       let user = new User();
-      user.username = "14562429";
-      user.password = "209721183";
+      user.username = "4976434";
+      user.password = "203027214";
       user.role = role;
 
       this.authService.login(user).subscribe(login => {
