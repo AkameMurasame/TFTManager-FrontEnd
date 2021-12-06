@@ -62,18 +62,24 @@
               </div>
 
               <div class="card-body">
-                <!-- <label id="drop-file" for="upload">
-                <mat-icon>insert_photo</mat-icon>
-                <input type="file" id="upload" (change)="madoka($event.target.files)" style="display:none">
-              </label> -->
+
                 <div class="text-center" *ngIf="data.groupStatus != 'PARTIDA_FINALIZADA'">
-                  <input class="form-control" type="file" (change)="onChange($event)">
 
-                  <input class="form-control" type="text" [(ngModel)]="nick">
+                  <div class="row">
+                    <div class="col-12">
 
-                  <button (click)="matchResult()" class="btn btn-success">
-                    Upload
-                  </button>
+                      <label>Print:</label>
+                      <input class="form-control" type="file" (change)="onChange($event)">
+                      
+                      <label style="margin-top: 5px;">Nick do primeiro lugar:</label>
+                      <input class="form-control" type="text" [(ngModel)]="nick">
+
+
+                      <button (click)="matchResult()" class="btn btn-success">
+                        Upload
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 <div *ngIf="data.groupStatus === 'PARTIDA_FINALIZADA'">

@@ -19,7 +19,7 @@ export class HistoryComponent implements OnInit {
   constructor(private playerService: PlayerService, private loadingService: LoadingService, private authService: AuthenticationService, private matchService: MatchService) { }
 
   ngOnInit(): void {
-    this.getPartidasTft();
+    //this.getPartidasTft();
   }
 
   getPartidasTft() {

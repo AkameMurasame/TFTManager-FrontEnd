@@ -31,7 +31,7 @@ export class InitComponent implements OnInit {
   ipc: IpcRenderer;
   isElectron: boolean = true;
   win: BrowserWindow;
-  statusMessage = "Iniciando Aplicação";
+  statusMessage = "Identificando League Client";
   loadingDots = "...";
   loadingDotsInterval;
 
@@ -188,12 +188,14 @@ export class InitComponent implements OnInit {
           if (!playerx) {
             console.log(player, 159)
             this.userService.userRegister(this.makeUser(player)).subscribe(newUser => {
+              this.statusMessage = "Efetuando Login";
               this.authService.login(this.makeUser(player)).subscribe(login => {
                 this.verifyPlayer(this.authService.currentUserValue.user.id, player);
               })
             });
           } else {
             this.userService.updateUser(this.makeUser(player), playerx.userId).subscribe(userr => {
+              this.statusMessage = "Efetuando Login";
               this.authService.login(this.makeUser(player)).subscribe(login => {
                 this.verifyPlayer(this.authService.currentUserValue.user.id, player);
               })

@@ -18,8 +18,8 @@ function createWindow() {
             nodeIntegration: true,
             contextIsolation: false
         }, maximizable: false, minimizable: false, closable: true,
-        height: 240,
-        width: 340,
+        height: 340,
+        width: 540,
         icon: path.join(__dirname, '/../icon.ico')
     });
     win.setMenu(null);
