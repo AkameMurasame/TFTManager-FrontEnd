@@ -31,6 +31,9 @@ export class InitComponent implements OnInit {
   ipc: IpcRenderer;
   isElectron: boolean = true;
   win: BrowserWindow;
+  statusMessage = "Iniciando Aplicação";
+  loadingDots = "...";
+  loadingDotsInterval;
 
   constructor(private userService: UserService,
     private authService: AuthenticationService,
@@ -68,6 +71,13 @@ export class InitComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.loadingDotsInterval = setInterval(() => {
+      if (this.loadingDots.length === 3) {
+        this.loadingDots = ".";
+      } else {
+        this.loadingDots += ".";
+      }
+    }, 300)
     this.ipc.on('lcu-load', (event, data) => {
       this.lcuService.setLcuUrl = `https://${data.username}:${data.password}@${data.address}:${data.port}`.toString();
       setTimeout(() => {
@@ -83,6 +93,7 @@ export class InitComponent implements OnInit {
       if (this.authService.currentUserValue) {
         if (this.authService.currentUserValue.user.username == player.summonerId.toString()) {
           this.authService.logout();
+          this.statusMessage = "Efetuando Login";
           this.authService.login(this.makeUser(player)).subscribe(login => {
             this.verifyPlayer(this.authService.currentUserValue.user.id, player);
           })
@@ -95,13 +106,28 @@ export class InitComponent implements OnInit {
     });
   }
 
+  navigateToHomePage() {
+    this.loadingDots = "";
+    clearInterval(this.loadingDotsInterval)
+    setTimeout(() => {
+      this.statusMessage = "Tudo Pronto!";
+    })
+    
+    setTimeout(() => {
+      this.router.navigate(['player/dashboard']);
+    }, 500)
+  }
+
   verifyPlayer(id: number, player1: Player) {
+    this.statusMessage = "Verificando Jogador";
     console.log(player1, 98)
     this.playerService.getPlayerByUserId(id).subscribe(bdplayer => {
       this.player = bdplayer;
       if (!bdplayer) {
         this.riotSummonerService.getTftSummoner(player1.displayName).subscribe(summoner => {
+          this.statusMessage = "Coletando dados do Invocador";
           player1.puuid = summoner.puuid;
+          this.statusMessage = "Registrando Invocador no TFT Manager";
           this.playerService.registerPlayer(player1).subscribe(newPlayer => {
             this.player = newPlayer;
             const team: Team = {
@@ -112,37 +138,40 @@ export class InitComponent implements OnInit {
             this.verifyRole(this.authService.currentUserValue.user);
             this.teamService.teamRegister(team).subscribe(t => {
               this.changeElectronView();
-              this.router.navigate(['player/dashboard']);
+              this.navigateToHomePage();
             })
           });
         });
       } else {
         if (!bdplayer.puuid) {
           this.verifyRole(this.authService.currentUserValue.user);
+          this.statusMessage = "Coletando dados do Invocador";
           this.riotSummonerService.getTftSummoner(bdplayer.displayName).subscribe(summoner => {
             console.log(summoner, 103)
             bdplayer.puuid = summoner.puuid;
+            this.statusMessage = "Atualizando dados do Invocador";
             this.playerService.updatePlayer(bdplayer).subscribe(player => {
               this.changeElectronView();
-              this.router.navigate(['player/dashboard']);
+              this.navigateToHomePage();
             });
           });
         } else {
           this.verifyRole(this.authService.currentUserValue.user);
           if (!this.isElectron) {
-            this.router.navigate(['player/dashboard']);
+            this.navigateToHomePage();
           }
           if (bdplayer.displayName != this.lcuService.getlcuPlayer.displayName) {
             console.log("update")
             var player = bdplayer;
             player.displayName = this.lcuService.getlcuPlayer.displayName;
+            this.statusMessage = "Atualizando dados do Invocador";
             this.playerService.updatePlayer(player).subscribe(player => {
               this.changeElectronView();
-              this.router.navigate(['player/dashboard']);
+              this.navigateToHomePage();
             });
           } else {
             this.changeElectronView();
-            this.router.navigate(['player/dashboard']);
+            this.navigateToHomePage();
           }
         }
       }
@@ -150,6 +179,7 @@ export class InitComponent implements OnInit {
   }
 
   verifyUser(player: Player) {
+    this.statusMessage = "Verificando Usuário"
     console.log(player, 153)
     this.userService.getUserByName(player.summonerId.toString()).subscribe(user => {
       if (!user) {

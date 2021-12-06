@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { map } from 'rxjs/operators';
+import { LoadingService } from '../../loading/loading.service';
 import { Match } from '../../models/player/Match';
 import { Player } from '../../models/player/Player';
 import { MatchResponse } from '../../models/tournament/matchResponse';
@@ -28,7 +29,7 @@ export class ViewMatchComponent implements OnInit {
 
   readonly displayedColumns: string[] = ['Nome do Jogador', 'Colocação'];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Match,  private toastService: ToastService, private lcuService: LcuService, private dataDragonService: DataDragonService, private tournamentService: TournamentService, private playerService: PlayerService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Match, private loadingService: LoadingService,  private toastService: ToastService, private lcuService: LcuService, private dataDragonService: DataDragonService, private tournamentService: TournamentService, private playerService: PlayerService) { }
 
   ngOnInit(): void {
     this.player = this.lcuService.lcuPlayer;
@@ -37,6 +38,7 @@ export class ViewMatchComponent implements OnInit {
   }
 
   init() {
+    this.loadingService.startLoadingBar();
     this.tournamentService.geMatch(this.data.groupId).subscribe(e => {
       this.match = e;
       this.dataSource.data = e.groupTeams;
@@ -44,7 +46,10 @@ export class ViewMatchComponent implements OnInit {
       if (e.imgId) {
         this.tournamentService.getImgMatch(this.data.groupId).subscribe(img => {
           this.base64String = "data:image/png;base64," + img.base64Image;
+          this.loadingService.stopLoadingBar();
         });
+      } else {
+        this.loadingService.stopLoadingBar();
       }
     })
   }

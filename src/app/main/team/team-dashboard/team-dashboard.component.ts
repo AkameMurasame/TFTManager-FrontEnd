@@ -20,10 +20,10 @@ export class TeamDashboardComponent implements OnInit {
   constructor(private loadingService: LoadingService, private dialogService: MatDialog, private teamService: TeamService) { }
 
   ngOnInit(): void {
-    this.loadingService.startLocalLoading('.card-body');
+    this.loadingService.startLoadingBar();
     this.teamService.getTeamsByPlayerId().subscribe(teams => {
       this.teams = teams;
-      this.loadingService.stopLocalLoading('.card-body');
+      this.loadingService.stopLoadingBar();
     });
   }
 

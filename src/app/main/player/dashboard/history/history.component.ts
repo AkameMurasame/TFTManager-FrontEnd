@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatchDTO, MatchService } from 'src/app/@riotApi';
+import { LoadingService } from 'src/app/@shared/loading/loading.service';
 import { AuthenticationService } from 'src/app/@shared/services/authentication.service';
 import { PlayerService } from 'src/app/@shared/services/player.service';
 
@@ -15,7 +16,7 @@ export class HistoryComponent implements OnInit {
   listIndex: number[];
   carregado: boolean = false;
 
-  constructor(private playerService: PlayerService, private authService: AuthenticationService, private matchService: MatchService) { }
+  constructor(private playerService: PlayerService, private loadingService: LoadingService, private authService: AuthenticationService, private matchService: MatchService) { }
 
   ngOnInit(): void {
     this.getPartidasTft();
@@ -32,6 +33,7 @@ export class HistoryComponent implements OnInit {
   }
 
   getInApi(puuid: string) {
+    this.loadingService.startLoadingBar();
     this.matchService.getCodigoPartidasTft(puuid, 10).subscribe(codigos => {
 
       console.log(codigos)
@@ -48,12 +50,16 @@ export class HistoryComponent implements OnInit {
           this.fullHistory = this.matchService.setNewMatch(history);
           console.log(this.fullHistory, 1)
           this.carregado = true;
+          this.loadingService.stopLoadingBar();
         });
       } else {
         this.fullHistory = this.matchService.historicoPartidas;
         console.log(this.fullHistory, 2)
         this.carregado = true;
+        this.loadingService.stopLoadingBar();
       }
-    });
+    }).add(() => {
+      this.loadingService.stopLoadingBar();
+    })
   }
 }

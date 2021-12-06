@@ -1,0 +1,21 @@
+.match-dialog {
+  margin-top: -60px;
+  margin-right: -24px;
+  margin-left: -24px;
+  overflow-x: hidden;
+
+  .card-header {
+    padding-bottom: 4px;
+  }
+
+  .card-body {
+    max-height: 392px; 
+    overflow-y: auto;
+  }
+
+  .print-result img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}

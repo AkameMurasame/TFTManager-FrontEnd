@@ -1,52 +1,60 @@
-<div class="row">
+  <div class="row match-dialog">
     <div class="col-12">
-        <div class="card">
-            <div class="card-header row">
-                <div class="col-6">
-                    <img class="logo-img-img" src="{{ this.urlIcon }}" />
-                    <h4> {{ this.player.displayName }}</h4>
-                </div>
-                <div class="col-6">
-                    <h4> {{ this.match.tournament.name }}</h4>
-                    <h4> {{ this.match.tournament.date }}</h4>
-                </div>
-            </div>
-            <div class="card-body row">
-                <div class="col-6">
-                    <div class="mat-elevation-z1">
-                        <table class="col-12" mat-table [dataSource]="dataSource">
-
-                            <ng-container matColumnDef="Nome do Jogador">
-                                <th mat-header-cell *matHeaderCellDef> Nick </th>
-                                 <td mat-cell *matCellDef="let element">nick teste</td> 
-                               <!-- <td mat-cell *matCellDef="let element"> {{element.name}} </td>-->
-                            </ng-container>
-
-                            <ng-container matColumnDef="Colocação">
-                                <th mat-header-cell *matHeaderCellDef> Colocação </th>
-                                <td mat-cell *matCellDef="let element"> {{element.posicao}} </td>
-                            </ng-container>
-
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-6 row">
-                    <div class="text-center" *ngIf="!match.groupTeams[0].posicao">
-                        <input class="form-control" type="file" (change)="onChange($event)">
-
-                        <button (click)="matchResult()" class="btn btn-success">
-                            Upload
-                        </button>
-                    </div>
-
-                    <div>
-                        <h6>Print Resultado</h6>
-                        <img src="{{this.base64String}}" width="300px" height="250px" />
-                    </div>
-                </div>
-            </div>
+      <div class="card">
+        <div class="card-header row">
+          <div class="col-6">
+            <img class="logo-img-img" src="{{ this.urlIcon }}" />
+            <h4> {{ this.player.displayName }}</h4>
+          </div>
+          <div class="col-6">
+            <h4> {{ this.match.tournament.name }}</h4>
+            <h4> {{ this.match.tournament.date | date: 'dd/MM/yyyy — h:mm' }}</h4>
+          </div>
         </div>
+        <div class="card-body row">
+          <div class="row" *ngIf="!match.groupTeams[0].posicao">
+            <!-- <div class="col-12">
+              <mat-form-field class="full-width">
+                <mat-label>Nick Vencedor:</mat-label>
+                <input required matInput />
+              </mat-form-field>
+            </div> -->
+            <div class="col-12">
+              <div class="text-center">
+                <input class="form-control" type="file" (change)="onChange($event)">
+  
+                <button (click)="matchResult()" class="btn btn-success">
+                  Upload
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="print-result" *ngIf="match.groupTeams[0].posicao">
+              <h6>Print Resultado</h6>
+              <img src="{{this.base64String}}" />
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="mat-elevation-z1">
+              <table class="col-12" mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="Nome do Jogador">
+                  <th mat-header-cell *matHeaderCellDef> Nick </th>
+                  <td mat-cell *matCellDef="let element">nick teste</td>
+                  <!-- <td mat-cell *matCellDef="let element"> {{element.name}} </td>-->
+                </ng-container>
+
+                <ng-container matColumnDef="Colocação">
+                  <th mat-header-cell *matHeaderCellDef> Colocação </th>
+                  <td mat-cell *matCellDef="let element"> {{element.posicao}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>

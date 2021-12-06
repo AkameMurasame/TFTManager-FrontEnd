@@ -1,0 +1,18 @@
+.logo {
+  height: 200px;
+  width: auto;
+  transform: translateX(16px);
+}
+
+p {
+  color: #efefef;
+  font-size: 20px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 90vh;
+}

@@ -28,12 +28,12 @@ export class MatchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadingService.startLocalLoading('.not-found');
+    this.loadingService.startLoadingBar();
     this.urlIcon = this.dataDragonService.getUrlProfileIcon(this.lcuService.lcuPlayer.profileIconId);
     this.playerService.getMatchesByPlayer().subscribe(matchs => {
       console.log(matchs)
       this.matchList = matchs;
-      this.loadingService.stopLocalLoading('.not-found');
+      this.loadingService.stopLoadingBar();
       this.loaded = true;
     })
   }

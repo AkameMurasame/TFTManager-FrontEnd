@@ -1,22 +1,23 @@
 <div class="row col-12">
-  <div class="not-found">
-    <ng-container *ngIf="loaded && matchList?.length === 0">
-      <p>Não foram encontrados resultados.</p>
-      <img src="assets/Bee_Sad_Emote.png" />
-    </ng-container>
+  <div class="not-found" *ngIf="loaded && matchList?.length === 0">
+    <p>Não foram encontrados resultados.</p>
+    <img src="assets/Bee_Sad_Emote.png" />
   </div>
   <div class="col-6" *ngFor="let match of this.matchList; let index = index;" style="cursor: pointer;"
     (click)="openPartida(match)">
     <div class="card">
-      <div class="card-header">
-        <img class="logo-img-img" src="{{ this.urlIcon }}" />
-        <h4>{{ match.name }}</h4>
-        <h4 *ngIf="match.posicao">Posição: {{ match.posicao }}</h4>
-        <h4 *ngIf="!match.posicao">Este Campeonato ainda não começou</h4>
+      <div class="card-header card-header--img">
+        <img class="header-img" src="{{ this.urlIcon }}" />
+        <!-- <img class="header-img" src="https://pbs.twimg.com/media/D6xvE31XYAAn4nb.jpg" /> -->
+        <div>
+          <h4>{{ match.name }}</h4>
+          <h4 *ngIf="match.posicao">Posição: {{ match.posicao }}</h4>
+          <h4 class="mb-0" *ngIf="!match.posicao">Este Campeonato ainda não começou</h4>
+        </div>
       </div>
       <div class="card-body">
         <p>{{ match.tournament }}</p>
-        <p>{{ match.date }}</p>
+        <p>{{ match.date | date: 'dd/MM/yyyy — h:mm' }}</p>
       </div>
     </div>
   </div>

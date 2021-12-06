@@ -280,3 +280,48 @@
     font-size: 80px;
   }
 }
+
+.card-title {
+  font-weight: bold;
+}
+
+.mat-dialog-container {
+  overflow-y: hidden !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #efefef; 
+}
+  
+::-webkit-scrollbar-thumb {
+  background: #dd364d; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(207, 16, 80); 
+}
+
+.mat-tab-header-pagination-chevron {
+  border-color: #efefef !important;
+}
+
+.mat-tab-header-pagination-disabled .mat-tab-header-pagination-chevron {
+  border-color: #efefef50 !important;
+}
+
+.card-header--img {
+  display: flex;
+  align-items: center;
+}
+
+.header-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #efefef;
+  margin-right: 16px;
+}

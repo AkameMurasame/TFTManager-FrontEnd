@@ -67,7 +67,7 @@
 
                   <ng-container matColumnDef="Data">
                     <th mat-header-cell *matHeaderCellDef> Data </th>
-                    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy — h:mm'}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="qtdPlayer">

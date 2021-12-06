@@ -16,11 +16,11 @@ export class TournamentComponent implements OnInit {
   constructor(private loadingService: LoadingService, private playerService: PlayerService) { }
 
   ngOnInit(): void {
-    this.loadingService.startLocalLoading('.not-found');
+    this.loadingService.startLoadingBar();
     this.playerService.getTournamentsByPlayer().subscribe(tournaments => {
       console.log(tournaments)
       this.tournamentList = tournaments;
-      this.loadingService.stopLocalLoading('.not-found');
+      this.loadingService.stopLoadingBar();
       this.loaded = true;
     })
   }

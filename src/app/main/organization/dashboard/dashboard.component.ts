@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { RemoveAdmin } from 'src/app/@shared/models/organization/removeAdmin';
 import { CadastroComponent } from '../tournament/cadastro/cadastro.component';
 import { Tournament } from 'src/app/@shared/models/tournament/tournament';
+import { LoadingService } from 'src/app/@shared/loading/loading.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,10 +31,20 @@ export class DashboardComponent implements OnInit {
 
   readonly displayedColumnsTournament: string[] = ['Nome', 'Data', "qtdPlayer", "qtdPlayerTeam", "Acoes"];
 
-  constructor(private router: Router, private organizationService: OrganizationService,
+  constructor(private router: Router, private organizationService: OrganizationService, private loadingService: LoadingService,
     private dialogService: MatDialog, private authService: AuthenticationService, private toastService: ToastService) { }
 
+  loadCounter = 0;
+
+  checkFinishLoad() {
+    this.loadCounter++;
+    if (this.loadCounter === 2) {
+      this.loadingService.stopLoadingBar();
+    }
+  }
+
   ngOnInit() {
+    this.loadingService.startLoadingBar();
     if (this.organizationService.getOrganization == null) {
       this.organizationService.getOrganizationByUserId(this.authService.currentUserValue.user.id).subscribe(org => {
         if (org != null) {
@@ -43,6 +54,7 @@ export class DashboardComponent implements OnInit {
           this.dialogService.open(OrganizationComponent).afterClosed().subscribe(result => {
             this.organization = this.organizationService.getOrganization;
             if (this.organization == null) {
+              this.loadingService.stopLoadingBar();
               this.toastService.error("Conclua o cadastro de organização!")
               this.router.navigate(['player']);
             } else {
@@ -57,15 +69,23 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.loadCounter = 0;
+  }
+
   popularTabelas() {
     this.organizationService.getOrganizationMenbers().subscribe(menbers => {
       this.dataSource.data = menbers;
-    });
+    }).add(() => {
+      this.checkFinishLoad();
+    })
 
     this.organizationService.getAllTorunamentByOrganization().subscribe(tournaments => {
       console.log(tournaments)
       this.dataSourceTournament.data = tournaments;
-    });
+    }).add(() => {
+      this.checkFinishLoad();
+    })
   }
 
   novoCampeonato() {
