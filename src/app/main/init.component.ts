@@ -90,19 +90,7 @@ export class InitComponent implements OnInit {
 
   init() {
     this.lcuService.getLcuPlayer().subscribe(player => {
-      if (this.authService.currentUserValue) {
-        if (this.authService.currentUserValue.user.username == player.summonerId.toString()) {
-          this.authService.logout();
-          this.statusMessage = "Efetuando Login";
-          this.authService.login(this.makeUser(player)).subscribe(login => {
-            this.verifyPlayer(this.authService.currentUserValue.user.id, player);
-          })
-        } else {
-          this.verifyUser(player);
-        }
-      } else {
-        this.verifyUser(player);
-      }
+      this.verifyUser(player);
     });
   }
 
@@ -112,7 +100,7 @@ export class InitComponent implements OnInit {
     setTimeout(() => {
       this.statusMessage = "Tudo Pronto!";
     })
-    
+
     setTimeout(() => {
       this.router.navigate(['player/dashboard']);
     }, 500)
