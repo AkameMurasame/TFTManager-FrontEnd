@@ -17,6 +17,7 @@ import { TournamentService } from "./tournament.service";
 import { Team } from "../models/team/team";
 import { environment } from "src/environments/environment";
 import { GroupStatus } from "../enum/groupStatus.enum";
+import { MatchService } from "./match.service";
 
 @Injectable({ providedIn: "root" })
 export class WebsocketService {
@@ -32,10 +33,15 @@ export class WebsocketService {
     isPartida: boolean = false;
     eventsPartida: EventLcu[];
     lastCountEvent: number = 2;
-    killNames: Team[] = new Array<Team>();
+    killNames: EventLcu[] = new Array<EventLcu>();
     isLobby: boolean = false;
 
-    constructor(private http: HttpClient, private lcuService: LcuService, private playerService: PlayerService, private toastService: ToastService, private tournamentService: TournamentService) { }
+    constructor(private http: HttpClient,
+        private lcuService: LcuService,
+        private playerService: PlayerService,
+        private toastService: ToastService,
+        private tournamentService: TournamentService,
+        private matchService: MatchService) { }
 
     public get getconnection() {
         return this.connection;
@@ -67,11 +73,7 @@ export class WebsocketService {
                             var event = data.Events[x];
                             console.log(event);
                             if (event.EventName == "ChampionKill") {
-                                this.teansGroup.forEach(e => {
-                                    if (e.name == event.KillerName) {
-                                        this.killNames.push(e);
-                                    }
-                                })
+                                this.killNames.push(event);
                                 console.log(this.killNames)
                             }
                             this.lastCountEvent = data.Events.length;
@@ -92,6 +94,12 @@ export class WebsocketService {
 
     finishInterval() {
         this.isPartida = false;
+        var posicao = this.killNames.length;
+        console.log("posicao", posicao)
+        if (posicao == 7 || posicao == 8) {
+            this.changeMatchStatus(GroupStatus.PARTIDA_FINALIZADA);
+            this.matchService.matchResult(this.activeGroup);
+        }
         clearInterval(this.intervalPartida);
     }
 
@@ -225,7 +233,7 @@ export class WebsocketService {
     initWebSocket(player: PlayerConnect) {
         this.player = player;
         this.connection = this.connect();
-
+        console.log("to aqui")
         this.connection.then((stompClient) => this.stompClientSendMessage(stompClient, '/app/register', JSON.stringify(player)))
             .then((stompClient) => {
                 return stompClient;

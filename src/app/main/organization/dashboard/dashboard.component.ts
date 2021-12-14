@@ -125,4 +125,14 @@ export class DashboardComponent implements OnInit {
   detalhesTournament(idTournament: number) {
     this.router.navigate(['/organization/tournament/dashboard/' + idTournament]);
   }
+
+  initTournament(tournamentId: number) {
+    this.organizationService.initTournament(tournamentId).subscribe(data => {
+      this.toastService.success(data.response)
+      this.organizationService.getAllTorunamentByOrganization().subscribe(tournaments => {
+        console.log(tournaments)
+        this.dataSourceTournament.data = tournaments;
+      })
+    })
+  }
 }

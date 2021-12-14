@@ -1,6 +1,6 @@
 export enum GroupStatus {
-    PARTIDA_FINALIZADA = 4,
-    AGUARDANDO = 1,
-    PARTIDA_INICIADA = 3,
-    LOBBY = 2
+    PARTIDA_FINALIZADA = 3,
+    AGUARDANDO = 0,
+    PARTIDA_INICIADA = 2,
+    LOBBY = 1
 }

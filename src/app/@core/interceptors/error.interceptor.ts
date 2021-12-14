@@ -24,11 +24,6 @@ export class ErrorInterceptor implements HttpInterceptor {
                 console.log(this.webSocketService.getisPartida);
                 if (this.webSocketService.getisPartida == true) {
                     this.webSocketService.finishInterval();
-                    var posicao = this.webSocketService.getKillNames.length;
-                    console.log("posicao", posicao)
-                    if (posicao == 7 || posicao == 6) {
-                        this.webSocketService.changeMatchStatus(GroupStatus.PARTIDA_FINALIZADA);
-                    }
                 }
                 console.log("catch error game");
             }

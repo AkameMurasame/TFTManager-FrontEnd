@@ -17,9 +17,9 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
-        }, maximizable: false, minimizable: false, closable: true,
-        height: 340,
-        width: 540,
+        }, maximizable: true, minimizable: false, closable: true,
+        height: 360,
+        width: 560,
         icon: path.join(__dirname, '/../icon.ico')
     });
     win.setMenu(null);
@@ -77,14 +77,13 @@ electron_1.app.on("window-all-closed", function () {
     }
 });
 IPC.on('app_version', function (event) {
-    event.sender.send('app_version', { version: electron_1.app.getVersion() });
+    win.webContents.send('app_version', { version: electron_1.app.getVersion() });
 });
 IPC.on('restart_app', function () {
     autoUpdater.quitAndInstall();
 });
 IPC.on("change_view", function () {
     var window = electron_1.BrowserWindow.getFocusedWindow();
-    win.setMaximizable(true);
     win.setSize(1060, 760);
     win.setClosable(true);
     win.maximize();

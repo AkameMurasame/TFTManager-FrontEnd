@@ -89,4 +89,10 @@ export class OrganizationService {
             colocacao: colocacao
         });
     }
+
+    initTournament(tournamentId: number) {
+        return this.http.post<any>(`tournament/initTournament`, {
+            id: tournamentId
+        })
+    }
 }

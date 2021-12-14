@@ -27,7 +27,7 @@ export class GroupComponent implements OnInit {
 
   readonly dataSource = new MatTableDataSource<any>();
 
-  readonly displayedColumns: string[] = ['Nome do Jogador', 'Colocação', 'Acoes'];
+  readonly displayedColumns: string[] = ['Nome do Jogador', 'Colocação',  'Status', 'Acoes'];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private dialogService: MatDialog,
@@ -45,6 +45,7 @@ export class GroupComponent implements OnInit {
     this.tournament = this.activeTournamentService.getTournament;
     this.tournamentService.getTeamsByGroup(this.data.groupId).subscribe(teams => {
       this.dataSource.data = teams;
+      console.log(teams)
       this.groupStatus = teams[0].groupStatus.toString();
       console.log(this.groupStatus)
       if (this.groupStatus === "PARTIDA_FINALIZADA") {
@@ -71,12 +72,14 @@ export class GroupComponent implements OnInit {
   setStatusAusente(playerId: number, groupId: number) {
     this.organizationService.setStatusTeamGroup(playerId, groupId, TeamStatus.AUSENTE).subscribe(req => {
       this.toastService.success("Status alterado com sucesso!");
+      this.init();
     });
   }
 
   setStatusDesistente(playerId: number, groupId: number) {
     this.organizationService.setStatusTeamGroup(playerId, groupId, TeamStatus.DESISTIU).subscribe(req => {
       this.toastService.success("Status alterado com sucesso!");
+      this.init();
     });
   }
 

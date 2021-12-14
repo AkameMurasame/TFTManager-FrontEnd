@@ -16,9 +16,9 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
-    }, maximizable: false, minimizable: false, closable: true,
-    height: 340,
-    width: 540,
+    }, maximizable: true, minimizable: false, closable: true,
+    height: 360,
+    width: 560,
     icon: path.join(__dirname, '/../icon.ico')
   });
   win.setMenu(null);
@@ -82,7 +82,7 @@ app.on("window-all-closed", () => {
 });
 
 IPC.on('app_version', (event) => {
-  event.sender.send('app_version', { version: app.getVersion() });
+  win.webContents.send('app_version', { version: app.getVersion() });
 });
 
 IPC.on('restart_app', () => {
@@ -91,7 +91,6 @@ IPC.on('restart_app', () => {
 
 IPC.on("change_view", () => {
   var window = BrowserWindow.getFocusedWindow();
-  win.setMaximizable(true);
   win.setSize(1060, 760);
   win.setClosable(true);
   win.maximize();

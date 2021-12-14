@@ -28,6 +28,30 @@
                       <td mat-cell *matCellDef="let element"> {{element.posicao}} </td>
                     </ng-container>
 
+                    <ng-container matColumnDef="Status">
+                      <th mat-header-cell *matHeaderCellDef> Status </th>
+                      <td mat-cell *matCellDef="let element">
+                        <h4 *ngIf="element.status === null">
+                          <mat-icon>pending</mat-icon> Em Partida
+                        </h4>
+                        <h4 *ngIf="element.status === 1">
+                          <mat-icon>hourglass_top</mat-icon> Em Partida
+                        </h4>
+                        <h4 *ngIf="element.status === 2">
+                          <mat-icon>cancel</mat-icon> Ausente
+                        </h4>
+                        <h4 *ngIf="element.status === 3">
+                          <mat-icon>cancel</mat-icon> Desistiu
+                        </h4>
+                        <h4 *ngIf="element.status === 4">
+                          <mat-icon>close</mat-icon> Eliminado
+                        </h4>
+                        <h4 *ngIf="element.status === 5">
+                          <mat-icon>check_circle</mat-icon> Classificado
+                        </h4>
+                      </td>
+                    </ng-container>
+
                     <ng-container matColumnDef="Acoes">
                       <th mat-header-cell *matHeaderCellDef> Ações </th>
                       <td mat-cell *matCellDef="let element">
@@ -70,7 +94,7 @@
 
                       <label>Print:</label>
                       <input class="form-control" type="file" (change)="onChange($event)">
-                      
+
                       <label style="margin-top: 5px;">Nick do primeiro lugar:</label>
                       <input class="form-control" type="text" [(ngModel)]="nick">
 

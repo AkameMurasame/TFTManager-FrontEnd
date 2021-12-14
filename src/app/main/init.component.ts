@@ -34,6 +34,7 @@ export class InitComponent implements OnInit {
   statusMessage = "Identificando League Client";
   loadingDots = "...";
   loadingDotsInterval;
+  appVersion: string;
 
   constructor(private userService: UserService,
     private authService: AuthenticationService,
@@ -49,6 +50,10 @@ export class InitComponent implements OnInit {
     if ((<any>window).require) {
       try {
         this.ipc = (<any>window).require('electron').ipcRenderer;
+        this.ipc.send('app_version');
+        this.ipc.on('app_version', (event, data) => {
+          this.appVersion = data.version;
+        });
       } catch (e) {
         throw e;
       }
@@ -108,7 +113,6 @@ export class InitComponent implements OnInit {
 
   verifyPlayer(id: number, player1: Player) {
     this.statusMessage = "Verificando Jogador";
-    console.log(player1, 98)
     this.playerService.getPlayerByUserId(id).subscribe(bdplayer => {
       this.player = bdplayer;
       if (!bdplayer) {
@@ -135,7 +139,6 @@ export class InitComponent implements OnInit {
           this.verifyRole(this.authService.currentUserValue.user);
           this.statusMessage = "Coletando dados do Invocador";
           this.riotSummonerService.getTftSummoner(bdplayer.displayName).subscribe(summoner => {
-            console.log(summoner, 103)
             bdplayer.puuid = summoner.puuid;
             this.statusMessage = "Atualizando dados do Invocador";
             this.playerService.updatePlayer(bdplayer).subscribe(player => {
@@ -149,7 +152,6 @@ export class InitComponent implements OnInit {
             this.navigateToHomePage();
           }
           if (bdplayer.displayName != this.lcuService.getlcuPlayer.displayName) {
-            console.log("update")
             var player = bdplayer;
             player.displayName = this.lcuService.getlcuPlayer.displayName;
             this.statusMessage = "Atualizando dados do Invocador";
@@ -168,13 +170,10 @@ export class InitComponent implements OnInit {
 
   verifyUser(player: Player) {
     this.statusMessage = "Verificando Usuário"
-    console.log(player, 153)
     this.userService.getUserByName(player.summonerId.toString()).subscribe(user => {
       if (!user) {
         this.userService.getPlayerByNick(player.displayName).subscribe(playerx => {
-          console.log(playerx, 157)
           if (!playerx) {
-            console.log(player, 159)
             this.userService.userRegister(this.makeUser(player)).subscribe(newUser => {
               this.statusMessage = "Efetuando Login";
               this.authService.login(this.makeUser(player)).subscribe(login => {
@@ -213,6 +212,7 @@ export class InitComponent implements OnInit {
 
   verifyRole(user: User) {
     let role = user.role;
+
     if (role.id == 2) {
       this.organizationService.getOrganizationByUserId(user.id).subscribe(organization => {
         if (organization) {
@@ -222,8 +222,6 @@ export class InitComponent implements OnInit {
             displayName: this.playerService.getPlayer.displayName,
             organizationId: organization.id
           };
-
-          console.log(playerConnect);
 
           this.webSocketService.initWebSocket(playerConnect)
         }
@@ -235,8 +233,6 @@ export class InitComponent implements OnInit {
         displayName: this.player.displayName,
         organizationId: null
       };
-
-      console.log(playerConnect);
 
       this.webSocketService.initWebSocket(playerConnect);
     }
@@ -261,6 +257,8 @@ export class InitComponent implements OnInit {
   }
 
   private changeElectronView() {
-    this.ipc.send('change_view');
+    if(this.isElectron) {
+      this.ipc.send('change_view');
+    }
   }
 }
