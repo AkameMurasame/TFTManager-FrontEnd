@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var electron_1 = require("electron");
 var path = require("path");
-var url = require("url");
 var LCUConnector = require("lcu-connector");
 var connector = new LCUConnector();
 var IPC = require('electron').ipcMain;
@@ -17,18 +16,14 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
-        }, maximizable: true, minimizable: false, closable: true,
+        }, maximizable: true, closable: true,
         height: 360,
         width: 560,
         icon: path.join(__dirname, '/../icon.ico')
     });
     win.setMenu(null);
     win.setMenuBarVisibility(false);
-    win.loadURL(url.format({
-        pathname: path.join(__dirname, "/../../dist/TFTManager/index.html"),
-        protocol: "file:",
-        slashes: true,
-    }));
+    win.loadFile(__dirname + "/../../dist/TFTManager/index.html");
     connector.start();
     connector.on("connect", function (data) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
         var _this = this;
@@ -43,10 +38,6 @@ function createWindow() {
         });
     }); });
     win.webContents.openDevTools();
-    win.on('minimize', function (event) {
-        event.preventDefault();
-        win.hide();
-    });
     win.on("closed", function (event) {
         win = null;
     });

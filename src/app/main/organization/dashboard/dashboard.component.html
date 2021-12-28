@@ -83,11 +83,16 @@
                   <ng-container matColumnDef="Acoes">
                     <th mat-header-cell *matHeaderCellDef> Ações </th>
                     <td mat-cell *matCellDef="let element">
-                      <button type="button" *ngIf="element.tournamentStatus != 'CHECKIN'" (click)="detalhesTournament(element.id)" mat-button
-                        class="btn btn-success">Detalhes</button>
 
-                        <button *ngIf="element.tournamentStatus == 'CHECKIN'" type="button" (click)="initTournament(element.id)" mat-button
-                        class="btn btn-success">Começar</button>
+                      <button type="button" *ngIf="element.tournamentStatus != 'CHECKIN'"
+                        (click)="detalhesTournament(element.id)" mat-button class="btn btn-success">Detalhes</button>
+
+                      <button style="margin-right: 5px;" *ngIf="element.tournamentStatus == 'CHECKIN'" type="button"
+                        (click)="initTournament(element.id)" mat-button class="btn btn-success">Começar</button>
+
+                      <button type="button" *ngIf="element.tournamentStatus == 'CHECKIN'" (click)="deletarTournament(element.id)"
+                        mat-button class="btn btn-danger">Deletar</button>
+
                     </td>
                   </ng-container>
 

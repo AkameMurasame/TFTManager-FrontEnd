@@ -27,9 +27,9 @@ export class ViewMatchComponent implements OnInit {
 
   readonly dataSource = new MatTableDataSource<any>();
 
-  readonly displayedColumns: string[] = ['Nome do Jogador', 'Colocação'];
+  readonly displayedColumns: string[] = ['Nome do Jogador', 'Colocação', 'Status'];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Match, private loadingService: LoadingService,  private toastService: ToastService, private lcuService: LcuService, private dataDragonService: DataDragonService, private tournamentService: TournamentService, private playerService: PlayerService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Match, private loadingService: LoadingService, private toastService: ToastService, private lcuService: LcuService, private dataDragonService: DataDragonService, private tournamentService: TournamentService, private playerService: PlayerService) { }
 
   ngOnInit(): void {
     this.player = this.lcuService.lcuPlayer;
@@ -41,16 +41,9 @@ export class ViewMatchComponent implements OnInit {
     this.loadingService.startLoadingBar();
     this.tournamentService.geMatch(this.data.groupId).subscribe(e => {
       this.match = e;
+      console.log(this.match)
       this.dataSource.data = e.groupTeams;
-      console.log(e.groupTeams)
-      if (e.imgId) {
-        this.tournamentService.getImgMatch(this.data.groupId).subscribe(img => {
-          this.base64String = "data:image/png;base64," + img.base64Image;
-          this.loadingService.stopLoadingBar();
-        });
-      } else {
-        this.loadingService.stopLoadingBar();
-      }
+      this.loadingService.stopLoadingBar();
     })
   }
 
@@ -64,13 +57,6 @@ export class ViewMatchComponent implements OnInit {
     this.file = event.target.files[0];
     this.base64String = await this.toBase64(this.file);
     console.log(this.base64String)
-  }
-
-  matchResult() {
-    this.tournamentService.matchResult(this.file, this.data.groupId).subscribe(data => {
-      this.toastService.success(data.response);
-      this.init();
-    });
   }
 
   toBase64 = file => new Promise((resolve, reject) => {

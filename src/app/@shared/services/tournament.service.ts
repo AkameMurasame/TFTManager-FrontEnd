@@ -63,40 +63,16 @@ export class TournamentService {
         });
     }
 
-    matchResult(file: File, groupId: number): Observable<any> {
-        const formData = new FormData();
-        formData.append("print", file, file.name);
-        formData.append("groupId", groupId.toString());
-
-        return this.http.post<any>(`tournament/matchResult`, formData);
-    }
-
     getImgMatch(groupId: number) {
         return this.http.get<GroupImgResponse>(`tournament/getImageGroup/${groupId}`);
-    }
-
-    organizationMatchResult(file: File, groupId: number, nick: string): Observable<any> {
-        const formData = new FormData();
-        formData.append("print", file, file.name);
-        formData.append("groupId", groupId.toString());
-        formData.append("playerName", nick)
-
-        return this.http.post<any>(`tournament/organizationMatchResult`, formData);
-    }
-
-    changeMatchStatus(groupId: number, status: GroupStatus) {
-        return this.http.post<any>(`tournament/changeMatchStatus`, {
-            groupId: groupId,
-            groupStatus: status
-        })
     }
 
     generateTxt(stageId: number) {
         return this.http2.get(`${environment.restEndPoint}/tournament/getStageFormatTXT/${stageId}`, {
             responseType: 'blob'
-          });
+        });
     }
-    
+
     getGroupsByStageId(stageid: number): Observable<TournamentGroup[]> {
         return this.http.get<TournamentGroup[]>(`tournament/getGroupsByStage/${stageid}`);
     }

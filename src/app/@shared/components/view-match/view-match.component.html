@@ -12,13 +12,13 @@
         </div>
       </div>
       <div class="card-body row">
-        <div class="row" *ngIf="!match.groupTeams[0].posicao">
-          <!-- <div class="col-12">
+        <!-- <div class="row" *ngIf="!match.groupTeams[0].posicao">
+           <div class="col-12">
               <mat-form-field class="full-width">
                 <mat-label>Nick Vencedor:</mat-label>
                 <input required matInput />
               </mat-form-field>
-            </div> -->
+            </div>
           <div class="col-12">
             <div class="text-center">
               <input class="form-control" type="file" (change)="onChange($event)">
@@ -34,7 +34,7 @@
             <h6>Print Resultado</h6>
             <img src="{{this.base64String}}" />
           </div>
-        </div>
+        </div> -->
         <div class="col-12">
           <div class="mat-elevation-z1">
             <table class="col-12" mat-table [dataSource]="dataSource">
@@ -47,6 +47,30 @@
               <ng-container matColumnDef="Colocação">
                 <th mat-header-cell *matHeaderCellDef> Colocação </th>
                 <td mat-cell *matCellDef="let element"> {{element.posicao}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Status">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element">
+                  <h4 *ngIf="element.status === null">
+                    <mat-icon>pending</mat-icon> Em Partida
+                  </h4>
+                  <h4 *ngIf="element.status === 1">
+                    <mat-icon>hourglass_top</mat-icon> Em Partida
+                  </h4>
+                  <h4 *ngIf="element.status === 2">
+                    <mat-icon>cancel</mat-icon> Ausente
+                  </h4>
+                  <h4 *ngIf="element.status === 3">
+                    <mat-icon>cancel</mat-icon> Desistiu
+                  </h4>
+                  <h4 *ngIf="element.status === 4">
+                    <mat-icon>close</mat-icon> Eliminado
+                  </h4>
+                  <h4 *ngIf="element.status === 5">
+                    <mat-icon>check_circle</mat-icon> Classificado
+                  </h4>
+                </td>
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

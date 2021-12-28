@@ -6,6 +6,7 @@ import { GroupStatus } from 'src/app/@shared/enum/groupStatus.enum';
 import { TeamStatus } from 'src/app/@shared/enum/teamStatus.enum';
 import { Tournament } from 'src/app/@shared/models/tournament/tournament';
 import { ActiveTournamentService } from 'src/app/@shared/services/active-tournament.service';
+import { MatchService } from 'src/app/@shared/services/match.service';
 import { OrganizationService } from 'src/app/@shared/services/organization.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { TournamentService } from 'src/app/@shared/services/tournament.service';
@@ -34,7 +35,8 @@ export class GroupComponent implements OnInit {
     private tournamentService: TournamentService,
     private organizationService: OrganizationService,
     private toastService: ToastService,
-    private activeTournamentService: ActiveTournamentService) { }
+    private activeTournamentService: ActiveTournamentService,
+    private matchService: MatchService) { }
 
   ngOnInit(): void {
     this.init();
@@ -45,14 +47,7 @@ export class GroupComponent implements OnInit {
     this.tournament = this.activeTournamentService.getTournament;
     this.tournamentService.getTeamsByGroup(this.data.groupId).subscribe(teams => {
       this.dataSource.data = teams;
-      console.log(teams)
       this.groupStatus = teams[0].groupStatus.toString();
-      console.log(this.groupStatus)
-      if (this.groupStatus === "PARTIDA_FINALIZADA") {
-        this.tournamentService.getImgMatch(this.data.groupId).subscribe(img => {
-          this.base64String = "data:image/png;base64," + img.base64Image;
-        });
-      }
     });
   }
 
@@ -63,7 +58,7 @@ export class GroupComponent implements OnInit {
   }
 
   matchResult() {
-    this.tournamentService.organizationMatchResult(this.file, this.data.groupId, this.nick).subscribe(data => {
+    this.matchService.organizationMatchResult(this.data.groupId, this.nick).subscribe(data => {
       this.toastService.success(data.response);
       this.init();
     });
@@ -76,8 +71,8 @@ export class GroupComponent implements OnInit {
     });
   }
 
-  setStatusDesistente(playerId: number, groupId: number) {
-    this.organizationService.setStatusTeamGroup(playerId, groupId, TeamStatus.DESISTIU).subscribe(req => {
+  setStatusEmPartida(playerId: number, groupId: number) {
+    this.organizationService.setStatusTeamGroup(playerId, groupId, TeamStatus.GAME).subscribe(req => {
       this.toastService.success("Status alterado com sucesso!");
       this.init();
     });
@@ -85,6 +80,13 @@ export class GroupComponent implements OnInit {
 
   redefinirColocacao(playerId: number, groupId: number) {
     this.dialogService.open(MudarColocacaoComponent, { data: { "teamId": playerId, "groupId": groupId } });
+  }
+
+  wo() {
+    this.matchService.wo(this.data.groupId).subscribe(data => {
+      this.toastService.success(data.response);
+      this.init();
+    });
   }
 
   toBase64 = file => new Promise((resolve, reject) => {

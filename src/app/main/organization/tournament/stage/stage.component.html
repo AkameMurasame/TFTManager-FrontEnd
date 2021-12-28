@@ -19,6 +19,9 @@
                 <h4 *ngIf="group.groupStatus === 'PARTIDA_FINALIZADA'">
                     <mat-icon>check_circle</mat-icon> Partida Finalizada
                 </h4>
+                <h4 *ngIf="group.groupStatus === 'PARTIDA_FINALIZADA_WO'">
+                    <mat-icon>check_circle</mat-icon> Partida Finalizada por WO
+                </h4>
                 <button mat-stroked-button color="primary" (click)="detalhesGroup(group.id, (index + 1), group.groupStatus)">
                     Detalhes
                 </button>

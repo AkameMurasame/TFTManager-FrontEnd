@@ -23,6 +23,7 @@ export class TeamDashboardComponent implements OnInit {
     this.loadingService.startLoadingBar();
     this.teamService.getTeamsByPlayerId().subscribe(teams => {
       this.teams = teams;
+      console.log(teams)
       this.loadingService.stopLoadingBar();
     });
   }

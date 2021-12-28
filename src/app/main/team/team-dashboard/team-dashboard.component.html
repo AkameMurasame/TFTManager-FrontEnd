@@ -12,10 +12,10 @@
                         <div class="col-md-4" *ngFor="let team of this.teams">
                             <div class="card card-profile">
                                 <div class="card-avatar">
-                                    <img class="img" src="{{ this.team.logo }}" />
+                                    <img  class="img" src="{{ team.logo }}" />
                                 </div>
                                 <div class="card-body">
-                                    <h4 class="card-title mb-3">{{ this.team.name }}</h4>
+                                    <h4 class="card-title mb-3">{{ team.name }}</h4>
                                     <button mat-stroked-button color="primary" type="submit">
                                         Ver Time
                                     </button>

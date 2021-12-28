@@ -65,8 +65,8 @@ export class InitComponent implements OnInit {
       role.id = 1;
 
       let user = new User();
-      user.username = "4976434";
-      user.password = "203027214";
+      user.username = "1903736";
+      user.password = "200119872";
       user.role = role;
 
       this.authService.login(user).subscribe(login => {
@@ -181,6 +181,7 @@ export class InitComponent implements OnInit {
               })
             });
           } else {
+            this.statusMessage = "Atualizando Usuário";
             this.userService.updateUser(this.makeUser(player), playerx.userId).subscribe(userr => {
               this.statusMessage = "Efetuando Login";
               this.authService.login(this.makeUser(player)).subscribe(login => {

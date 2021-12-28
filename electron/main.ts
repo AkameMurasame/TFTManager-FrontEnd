@@ -16,20 +16,14 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
-    }, maximizable: true, minimizable: false, closable: true,
+    }, maximizable: true, closable: true,
     height: 360,
     width: 560,
     icon: path.join(__dirname, '/../icon.ico')
   });
   win.setMenu(null);
   win.setMenuBarVisibility(false);
-  win.loadURL(
-    url.format({
-      pathname: path.join(__dirname, `/../../dist/TFTManager/index.html`),
-      protocol: "file:",
-      slashes: true,
-    })
-  );
+  win.loadFile(__dirname + `/../../dist/TFTManager/index.html`);
 
   connector.start();
   connector.on("connect", async (data) => {
@@ -39,11 +33,6 @@ function createWindow() {
   });
 
   win.webContents.openDevTools();
-
-  win.on('minimize', function (event) {
-    event.preventDefault()
-    win.hide()
-  })
 
   win.on("closed", (event) => {
     win = null;
@@ -90,8 +79,5 @@ IPC.on('restart_app', () => {
 });
 
 IPC.on("change_view", () => {
-  var window = BrowserWindow.getFocusedWindow();
   win.setSize(1060, 760);
-  win.setClosable(true);
-  win.maximize();
 })

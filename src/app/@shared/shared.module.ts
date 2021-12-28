@@ -10,6 +10,7 @@ import { RiotModule } from '../@riotApi/riot.module';
 import { HotToastModule } from '@ngneat/hot-toast';
 import { ViewMatchComponent } from './components/view-match/view-match.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [SidebarComponent, NavbarComponent, ContentComponent, PermissionDirective, ViewMatchComponent],
@@ -18,7 +19,8 @@ import { MatTableModule } from '@angular/material/table';
     RouterModule,
     RiotModule,
     HotToastModule,
-    MatTableModule
+    MatTableModule,
+    MatIconModule
   ],
   exports: [SidebarComponent, NavbarComponent, ContentComponent, PermissionDirective],
   providers: [ToastService]

@@ -3,7 +3,7 @@
       <p>Não foram encontrados resultados.</p>
       <img src="assets/Bee_Sad_Emote.png" />
     </div>
-    <div class="col-6" *ngFor="let tournament of tournamentList; let index = index;">
+    <div class="col-4" *ngFor="let tournament of tournamentList; let index = index;">
         <a [routerLink]="['/tournament/view', tournament.id]">
             <div class="card">
                 <img src="{{ tournament.banner }}" class="card-img-top" alt="...">

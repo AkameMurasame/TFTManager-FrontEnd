@@ -95,4 +95,8 @@ export class OrganizationService {
             id: tournamentId
         })
     }
+
+    deleteTournament(tournamentId: number) {
+        return this.http.delete<any>(`tournament/delete/${tournamentId}`);
+    }
 }

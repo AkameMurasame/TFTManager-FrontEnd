@@ -1,7 +1,7 @@
 import { stagger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingService } from 'src/app/@shared/loading/loading.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { TournamentService } from 'src/app/@shared/services/tournament.service';
@@ -26,7 +26,8 @@ export class TournamentDashboardComponent implements OnInit {
     private activeTournamentService: ActiveTournamentService,
     private toastService: ToastService,
     private activeRoute: ActivatedRoute,
-    private loadingService: LoadingService) {
+    private loadingService: LoadingService,
+    private router: Router) {
 
   }
 
@@ -52,5 +53,9 @@ export class TournamentDashboardComponent implements OnInit {
       console.log(proxima);
       this.toastService.success(proxima.response);
     });
+  }
+
+  atualizarDados() {
+    this.getActiveTournament();
   }
 }

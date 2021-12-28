@@ -1,4 +1,5 @@
 export enum TeamStatus {
     AUSENTE = "AUSENTE",
-    DESISTIU = "DESISTIU"
+    PARTIDA = "DESISTIU",
+    GAME = "GAME"
 }

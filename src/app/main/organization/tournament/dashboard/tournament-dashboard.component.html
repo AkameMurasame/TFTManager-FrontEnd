@@ -2,9 +2,15 @@
   <div class="row">
     <div class="col-12">
       <div class="card">
-        <div class="card-header card-header-primary">
-          <h4 class="card-title">Chaves: {{ this.tournament.name }}</h4>
-
+        <div class="card-header row card-header-primary">
+          <div class="col-9">
+            <h4 class="card-title">Chaves: {{ this.tournament.name }}</h4>
+          </div>
+          <div class="col-3" style="align-items: end;justify-content: end;display: flex;">
+            <button type="button" title="atualiza dados" mat-button class="btn btn-success" (click)="atualizarDados()">
+              Atualizar Dados
+            </button>
+          </div>
         </div>
         <div class="card-body">
           <div class="row">
@@ -17,12 +23,12 @@
                     </mat-panel-description>
                   </mat-expansion-panel-header>
 
-                  <app-stage [stage] = "item.id"></app-stage>
-                
+                  <app-stage [stage]="item.id"></app-stage>
+
                 </mat-expansion-panel>
               </mat-accordion>
             </div>
-            <div class="col-md-12 d-flex justify-content-center mt-3">
+            <div class="col-md-12 d-flex justify-content-center mt-3"  *ngIf="this.tournament.tournamentStatus == 'TABELA_CRIADA'">
               <button type="button" (click)="proximaFase()" mat-button class="btn btn-success">Gerar Próxima
                 Fase</button>
             </div>

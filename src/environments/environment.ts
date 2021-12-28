@@ -3,13 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 /* export const environment = {
-   production: false,
-   version: 0,
-   restEndPoint: 'http://localhost:8080/api/v1',
-   webSocketEndPoint: 'http://localhost:8080/websocket',
-   riotApiEndPont: `.api.riotgames.com`,
-   xRiotToken: `RGAPI-b04c8d5f-4195-46d0-baae-751826cabc5a`
- }; */
+  production: false,
+  version: 0,
+  restEndPoint: 'http://localhost:8080/api/v1',
+  webSocketEndPoint: 'http://localhost:8080/websocket',
+  riotApiEndPont: `.api.riotgames.com`,
+  xRiotToken: `RGAPI-b04c8d5f-4195-46d0-baae-751826cabc5a`
+}; */
 
 export const environment = {
   production: true,

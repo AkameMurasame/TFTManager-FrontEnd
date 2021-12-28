@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit {
 
   validarBtn(status) {
     console.log(status)
-    if(status != "CHECKIN" && status != "FINALIZADO") {
+    if (status != "CHECKIN" && status != "FINALIZADO") {
       return true;
     } else {
       false;
@@ -133,6 +133,13 @@ export class DashboardComponent implements OnInit {
         console.log(tournaments)
         this.dataSourceTournament.data = tournaments;
       })
+    })
+  }
+
+  deletarTournament(tournamentId: number) {
+    this.organizationService.deleteTournament(tournamentId).subscribe(data => {
+      this.toastService.success(data.response);
+      this.popularTabelas();
     })
   }
 }

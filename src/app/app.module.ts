@@ -11,12 +11,13 @@ import { LoadingService } from './@shared/loading/loading.service';
 
 import { LoadingComponent } from './@shared/loading/loading.component';
 import { AppComponent } from './app.component';
-
 import { ErrorInterceptor } from './@core/interceptors/error.interceptor';
 import { JwtInterceptor } from './@core/interceptors/jwt.interceptor';
 import { ApiHttpClient } from './@core/services/api-http-client';
 import { RiotApiCore } from './@riotApi';
 import { AppRoutingModule } from './RoutesApp';
+import { InjectableRxStompConfig, RxStompService, rxStompServiceFactory } from '@stomp/ng2-stompjs';
+import { myRxStompConfig } from './rx-stomp.config';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,7 +29,16 @@ import { AppRoutingModule } from './RoutesApp';
     ApiHttpClient,
     JwtHelperService,
     RiotApiCore,
-    LoadingService
+    LoadingService,
+    {
+      provide: InjectableRxStompConfig,
+      useValue: myRxStompConfig,
+    },
+    {
+      provide: RxStompService,
+      useFactory: rxStompServiceFactory,
+      deps: [InjectableRxStompConfig],
+    },
   ],
   entryComponents: [LoadingComponent],
   bootstrap: [AppComponent]
